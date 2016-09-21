@@ -16,21 +16,23 @@
 
 <body ng-app="inquire" ng-controller="inquireController" class="mainContent">
     <h3>Welcome to Yellow Hugh Richard Bank</h3>
-    <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo right">Logo</a>
-            <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="balance_inquire.html">Balance Inquire</a></li>
-                <li><a href="debit.html">Debit</a></li>
-                <li><a href="deposit.html">Deposit</a></li>
-                <li><a href="inquire.html">Inquire</a></li>
-            </ul>
-        </div>
-    </nav>
     <div>
-            <a class="waves-effect waves-light btn" ng-click="test();">super inquire</a>
-
+        <nav>
+            <div class="nav-wrapper blue-grey ">
+                <a href="#" class="brand-logo right">Logo</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="balance_inquire.html">Balance Inquire</a></li>
+                    <li><a href="debit.html">Debit</a></li>
+                    <li><a href="deposit.html">Deposit</a></li>
+                    <li><a href="inquire.html">Inquire</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <br>
+    <div>
+        <a class="waves-effect waves-light btn" ng-click="test();">super inquire</a>
         <a class="waves-effect waves-light btn" ng-click="inquire();">inquire</a>
     </div>
     <!--  <table ng-table="tableParams" class="table centered bordered highlight" show-filter="true">
@@ -68,9 +70,10 @@
                 </tr>
             </tbody>
         </table>
-        <div>
-            count: {{count}}.
-        </div>
+    </div>
+    <br>
+    <div ng-show="showTable">
+        count: {{count}}
     </div>
 </body>
 

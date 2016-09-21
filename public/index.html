@@ -4,7 +4,8 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>    <!-- material icon -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+    <!-- material icon -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/css.css">
     <script src="/js/mainApp.js"></script>
@@ -14,23 +15,25 @@
 
 <body ng-app="mainApp" ng-controller="mainController" class="mainContent">
     <h3>Welcome to Yellow Hugh Richard Bank</h3>
-    <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo right">Logo</a>
-            <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="balance_inquire.html">Balance Inquire</a></li>
-                <li><a href="debit.html">Debit</a></li>
-                <li><a href="deposit.html">Deposit</a></li>
-                <li><a href="inquire.html">Inquire</a></li>
-            </ul>
-        </div>
-    </nav>
     <div>
-        <a class="waves-effect waves-light btn" ng-click="textAjax();">button</a>
-        <a class="waves-effect waves-light btn" ng-click="inquire();">inquire</a>
+        <nav>
+            <div class="nav-wrapper blue-grey ">
+                <a href="#" class="brand-logo right">Logo</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="balance_inquire.html">Balance Inquire</a></li>
+                    <li><a href="debit.html">Debit</a></li>
+                    <li><a href="deposit.html">Deposit</a></li>
+                    <li><a href="inquire.html">Inquire</a></li>
+                </ul>
+            </div>
+        </nav>
     </div>
-    
+    <br>
+    <div>
+        <a class="waves-effect waves-light btn" ng-click="addCustomer();">add customer</a>
+        <a class="waves-effect waves-light btn" ng-click="postRequest();">postRequest</a>
+    </div>
 </body>
 
 </html>
