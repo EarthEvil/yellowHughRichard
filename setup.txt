@@ -1,0 +1,22 @@
+instruction:
+
+
+install mysql:
+sudo apt-get update
+sudo apt-get install mysql-server
+sudo mysql_secure_installation
+sudo mysql_install_db
+
+install nodejs
+npm install express --save // save locally to node_modules	
+
+
+
+NOTE:
+Typical workflow: Spend hours deciding on Angular vs Backbone vs Ember vs X. Then you build your routes, models, views, controllers on the client. After you are done, now build models, controllers, routes on the server. In a way you are doing double amount of work.
+
+
+
+
+GOOD website:
+

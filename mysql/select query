@@ -1,0 +1,7 @@
+customer:
+
+select * from customer where customer_id = 1;
+
+Inquire:
+
+select * from transaction where fromaccount = 1 or toaccount = 1;

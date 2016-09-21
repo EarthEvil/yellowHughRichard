@@ -1,0 +1,77 @@
+<html lang="en">
+
+<head>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/css.css">
+    <script src="/js/inquire.js"></script>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/esvit/ng-table/1.0.0/dist/ng-table.min.css">
+    <script src="https://cdn.rawgit.com/esvit/ng-table/1.0.0/dist/ng-table.js
+"></script>
+</head>
+
+<body ng-app="inquire" ng-controller="inquireController" class="mainContent">
+    <h3>Welcome to Yellow Hugh Richard Bank</h3>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo right">Logo</a>
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="balance_inquire.html">Balance Inquire</a></li>
+                <li><a href="debit.html">Debit</a></li>
+                <li><a href="deposit.html">Deposit</a></li>
+                <li><a href="inquire.html">Inquire</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div>
+            <a class="waves-effect waves-light btn" ng-click="test();">super inquire</a>
+
+        <a class="waves-effect waves-light btn" ng-click="inquire();">inquire</a>
+    </div>
+    <!--  <table ng-table="tableParams" class="table centered bordered highlight" show-filter="true">
+        <tr ng-repeat="transaction in transactionHistory">
+            <td title="'Date'" filter="{ date: 'text'}" sortable="'date'">
+                {{transaction.date}}</td>
+            <td title="'Transaction ID'" >
+                {{transaction.transaction_id}}</td>
+            <td title="'From'" filter="{ fromaccount: 'number'}" sortable="'fromaccount'">
+                {{transaction.fromaccount}}</td>
+            <td title="'To'" filter="{ toaccount: 'number'}" sortable="'toaccount'">
+                {{transaction.toaccount}}</td>
+            <td title="'Amount'" filter="{ amount: 'number'}" sortable="'amount'">
+                {{transaction.amount}}</td>
+        </tr>
+    </table> -->
+    <div id="transactionTable" ng-show="showTable">
+        <table class="bordered highlight responsive-table ">
+            <thead>
+                <tr>
+                    <th data-field="date">Date</th>
+                    <th data-field="transaction_id">Transaction ID</th>
+                    <th data-field="from">From</th>
+                    <th data-field="to">To</th>
+                    <th data-field="amount">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="transaction in transactionHistory">
+                    <td>{{ transaction.time }}</td>
+                    <td>{{ transaction.transaction_id }}</td>
+                    <td>{{ transaction.fromaccount }}</td>
+                    <td>{{ transaction.toaccount }}</td>
+                    <td>${{ transaction.amount }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            count: {{count}}.
+        </div>
+    </div>
+</body>
+
+</html>
