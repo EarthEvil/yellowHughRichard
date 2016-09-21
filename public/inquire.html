@@ -32,8 +32,8 @@
     </div>
     <br>
     <div>
-        <a class="waves-effect waves-light btn" ng-click="test();">super inquire</a>
-        <a class="waves-effect waves-light btn" ng-click="inquire();">inquire</a>
+        <a class="waves-effect waves-light btn" ng-click="thoughtputTest(100);">thoughtputTest</a>
+        <a class="waves-effect waves-light btn" ng-click="getTransaction();">inquire</a>
     </div>
     <!--  <table ng-table="tableParams" class="table centered bordered highlight" show-filter="true">
         <tr ng-repeat="transaction in transactionHistory">
@@ -62,11 +62,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="transaction in transactionHistory">
-                    <td>{{ transaction.time }}</td>
-                    <td>{{ transaction.transaction_id }}</td>
-                    <td>{{ transaction.fromaccount }}</td>
-                    <td>{{ transaction.toaccount }}</td>
-                    <td>${{ transaction.amount }}</td>
+                    <td>{{ transaction.time}}</td>
+                    <td>{{ transaction.transaction_id}}</td>
+                    <td>{{ transaction.account_id}}</td>
+                    <td>{{ transaction.transaction_type}}</td>
+                    <td>${{ transaction.amount}}</td>
                 </tr>
             </tbody>
         </table>

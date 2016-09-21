@@ -17,6 +17,13 @@ Typical workflow: Spend hours deciding on Angular vs Backbone vs Ember vs X. The
 
 
 
+Github command:
+git status
+git add .
+git checkout -- filename
+git commit -m "commit message"
+git push origin master
+
 
 GOOD website:
 

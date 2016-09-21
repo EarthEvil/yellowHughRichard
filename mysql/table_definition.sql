@@ -12,19 +12,25 @@ CREATE TABLE account
 	balance		 		NUMERIC	,
 	PRIMARY KEY (account_id),
 	FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
-	ON DELETE CASCADE);
+	ON DELETE CASCADE);w
 
 CREATE TABLE transaction
 	(transaction_id	 	int NOT NULL AUTO_INCREMENT,
-	fromaccount		 	int NOT NULL,
-	toaccount		 	int NOT NULL,
+	account_id		 	int NOT NULL,
+	transaction_type 	varchar(8) NOT NULL,
 	amount			 	NUMERIC,
 	time 				DATE, 
 	PRIMARY KEY (transaction_id),
-	FOREIGN KEY (fromaccount) REFERENCES account(account_id)
-	ON DELETE CASCADE,
-	FOREIGN KEY (toaccount) REFERENCES account(account_id)
+	FOREIGN KEY (account_id) REFERENCES account(account_id)
 	ON DELETE CASCADE);
 
 # populate table
 
+
+customer:
+
+select * from customer where customer_id = 1;
+
+Inquire:
+
+select * from transaction where fromaccount = 1 or toaccount = 1;

@@ -5,24 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/css/css.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+    <script src="js/deposit.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
 </head>
 
-<body ng-app="mainApp" ng-controller="mainController" class="mainContent">
-    <h3>Welcome to Yellow Hugh Richard Bank</h3>
-    <nav>
-        <div class="nav-wrapper blue-grey ">
-            <a href="#" class="brand-logo right">Logo</a>
-            <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="balance_inquire.html">Balance Inquire</a></li>
-                <li><a href="debit.html">Debit</a></li>
-                <li><a href="deposit.html">Deposit</a></li>
-                <li><a href="inquire.html">Inquire</a></li>
-            </ul>
-        </div>
-    </nav>
+<body ng-app="deposit" ng-controller="depositController" class="mainContent">
+    <div>
+        <h3>Welcome to Yellow Hugh Richard Bank</h3>
+        <nav>
+            <div class="nav-wrapper blue-grey ">
+                <a href="#" class="brand-logo right">Logo</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="balance_inquire.html">Balance Inquire</a></li>
+                    <li><a href="debit.html">Debit</a></li>
+                    <li><a href="deposit.html">Deposit</a></li>
+                    <li><a href="inquire.html">Inquire</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <br>
+    <div>
+        <form ng-submit="deposit(accountID, amount)">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="type your account id" ng-model="accountID" type="text" class="validate" required="" aria-required="true">
+                    <label for="account_id">Account ID</label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="amount" ng-model="amount" type="text" class="validate" required="" aria-required="true">
+                    <label for="amount">Amount</label>
+                </div>
+                <button class="btn waves-effect waves-light" type="submit"> deposit
+                </button>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
