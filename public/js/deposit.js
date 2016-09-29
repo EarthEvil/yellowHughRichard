@@ -8,7 +8,7 @@ function depositController($window, $scope, $http) {
         console.log($scope.amount);
         console.log($scope.accountID);
         $http({
-            url: "http://localhost:3000/deposit/",
+            url: "http://ec2-54-86-74-235.compute-1.amazonaws.com/deposit/",
             method: "POST",
             data: {
                 account_id: account_id,

@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
+var favicon = require('serve-favicon');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -27,36 +28,42 @@ mysqlConnection.connect(function(err) {
 });
 
 app.use(express.static('public'));
+app.use(favicon(__dirname + '/public/images/favicon/favicon.ico'));
 
 var start = process.hrtime();
 
 var elapsed_time = function(note) {
     var precision = 3; // 3 decimal places
     var elapsed = process.hrtime(start)[1] / 1000000; // divide by a million to get nano to milli
-    console.log(process.hrtime(start)[0] + " s, " + elapsed.toFixed(precision) + " ms - " + note); // print message + time
+    console.log(process.hrtime(start)[0] + " s, " + elapsed.toFixed(precision) + " ms - " + note + "\n"); // print message + time
     start = process.hrtime(); // reset the timer
 }
 
+app.get('/', function(req, res) {
+    console.log("hah");
+    res.sendFile(__dirname + "/public/" + "index.html");
+});
 
-router.route('/customer/:customer_id')
-    .get(function(req, res) {
-        var query = 'select * from customer where customer_id = ' + req.params.customer_id;
-        mysqlConnection.query(query, function(err, rows, fields) {
-            if (!err) {
-                res.send(rows);
-            } else {
-                console.log("qurey error");
-            }
-        });
+app.get('/customer/:customer_id', function(req, res) {
+    var query = 'select * from customer where customer_id = ' + req.params.customer_id;
+    mysqlConnection.query(query, function(err, rows, fields) {
+        if (!err) {
+            res.send(rows);
+        } else {
+            console.log("qurey error");
+        }
     });
+});
 
 app.get('/inquire/:account_id', function(req, res) {
+    elapsed_time("star inquire");
     var query = 'select * from transaction where account_id =' + req.params.account_id;
     mysqlConnection.query(query, function(err, rows, fields) {
         console.log(req.ip + "request query: " + query);
         if (!err) {
             res.send(rows);
-            console.log(rows);
+            elapsed_time("end inquire");
+            // console.log(rows);
 
         } else {
 
@@ -70,20 +77,22 @@ app.get('/inquire/:account_id', function(req, res) {
 app.get('/thoughtputTest/:runs', function(req, res) {
     var query = 'select * from transaction limit 1;';
     elapsed_time("start querying");
-    for (var i = 0; i <1000; i++) {
-        mysqlConnection.query(query
-        );
+    for (var i = 0; i < 1000; i++) {
+        mysqlConnection.query(query);
     }
     elapsed_time("start querying");
 });
 
 app.get('/balanceinqure/:account_id', function(req, res) {
+    elapsed_time("star inquire");
+
     var query = 'select * from account where account_id =' + req.params.account_id;
     mysqlConnection.query(query, function(err, rows, fields) {
         console.log(req.ip + " request query: " + query);
         if (!err) {
             res.send(rows);
-            console.log(rows);
+            elapsed_time("end inquire");
+
 
         } else {
             console.log("qurey error");
@@ -94,9 +103,7 @@ app.get('/balanceinqure/:account_id', function(req, res) {
 });
 
 
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + "/public" + "index.html");
-});
+
 
 app.post('/', function(req, res) {
     res.send('POST request to homepage');
@@ -127,6 +134,8 @@ function addTransaction(account_id, transaction_type, amount) {
     mysqlConnection.query(transactionQuery, function(err, rows, fields) {
         if (!err) {
             console.log("EXECUTED: " + transactionQuery);
+            elapsed_time("end inquire");
+
             // 
         } else {
             console.log("ERROR: " + transactionQuery);
@@ -134,6 +143,8 @@ function addTransaction(account_id, transaction_type, amount) {
     });
 }
 app.post('/debit', function(req, res) {
+    elapsed_time("star inquire");
+
     var account_id = req.body.account_id;
     var amount = parseInt(req.body.amount);
     // get amount
@@ -152,6 +163,8 @@ app.post('/debit', function(req, res) {
 });
 
 app.post('/deposit', function(req, res) {
+    elapsed_time("star inquire");
+
     var account_id = req.body.account_id;
     var amount = parseInt(req.body.amount);
     // get amount
@@ -169,26 +182,11 @@ app.post('/deposit', function(req, res) {
     res.send('POST request to homepage');
 });
 
-
-// app.get('/customer/:customer_id', function(req, res) {
-//     var query = 'select * from customer where customer_id = ' + req.params.customer_id;
-//     mysqlConnection.query(query, function(err, rows, fields) {
-//         if (!err) {
-//             res.send(rows);
-//         } else {
-//             console.log("qurey error");
-//         }
-//     })
-// });
-
-
-
-
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('', router);
 
-var server = app.listen(process.env.PORT || 3000, function() {
+var server = app.listen(80, function() {
     var host = server.address.address;
     var port = server.address.port;
     console.log("app is listening at http://%s:%s", host, port);

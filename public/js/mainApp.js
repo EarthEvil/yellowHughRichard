@@ -6,7 +6,7 @@ mainController.$injec = ["$scope", "$http"]
 function mainController($scope, $http) {
     $scope.addCustomer = function(name, age, address) {
         $http({
-            url: "http://localhost:3000/addCustomer/",
+            url: "http://ec2-54-86-74-235.compute-1.amazonaws.com/addCustomer/",
             method: "POST",
             data: {
                 name: name,
@@ -24,7 +24,7 @@ function mainController($scope, $http) {
     };
     $scope.postRequest = function() {
         $http({
-            url: "http://localhost:3000/addCustomer",
+            url: "http://ec2-54-86-74-235.compute-1.amazonaws.com/addCustomer",
             method: "POST",
             data: { customer_id: '1' }
         }).then(function(data, status, headers, config) {

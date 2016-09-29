@@ -14,7 +14,7 @@ function inquireController(NgTableParams, $window, $scope, $http) {
 
     $scope.thoughtputTest = function(runs) {
         $http({
-            url: "http://localhost:3000/thoughtputTest/" + runs,
+            url: "http://ec2-54-86-74-235.compute-1.amazonaws.com/thoughtputTest/" + runs,
             method: "GET"
             
         }).then(function(data, status, headers, config) {
@@ -29,7 +29,7 @@ function inquireController(NgTableParams, $window, $scope, $http) {
 
         $scope.showTable = true;
         $http({
-            url: "http://localhost:3000/inquire/" + 1,
+            url: "http://ec2-54-86-74-235.compute-1.amazonaws.com/inquire/" + 1,
             method: "GET"
                 // data: {
                 //     account_id: 1
@@ -49,30 +49,3 @@ function inquireController(NgTableParams, $window, $scope, $http) {
     };
 
 }
-// inquire.controller("inquireController", function($window, $scope, $http) {
-//     $scope.showTable = false;
-//     var error = function() {
-//         console.log("error!");
-//     }
-
-
-//     $scope.inquire = function() {
-
-//         $scope.showTable = true;
-//         $http({
-//             url: "http://localhost:3000/inquire/" + 1,
-//             method: "GET"
-//                 // data: data
-//         }).then(function(data, status, headers, config) {
-//             $scope.transactionHistory = data.data;
-//             console.log("success", $scope.transactionHistory);
-//             var self = this;
-//             self.tableParams = new NgTableParams({}, { dataset: $scope.transactionHistory });
-
-//         }, function() {
-//             console.log("erfsdfror!");
-
-//         });
-//     };
-
-// });

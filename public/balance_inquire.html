@@ -4,12 +4,13 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/css.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
     <script src="js/balance_inquire.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/css.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link rel="shortcut icon" href="favicon.ico" />
 </head>
 
 <body ng-app="balanceInquire" ng-controller="balanceInquireController" class="mainContent">
@@ -20,7 +21,7 @@
                 <a href="#" class="brand-logo right">Logo</a>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="balance_inquire.html">Balance Inquire</a></li>
+                    <li class="active"><a href="balance_inquire.html">Balance Inquire</a></li>
                     <li><a href="debit.html">Debit</a></li>
                     <li><a href="deposit.html">Deposit</a></li>
                     <li><a href="inquire.html">Inquire</a></li>
@@ -41,7 +42,7 @@
             </div>
         </form>
     </div>
-    <div id="alert" ng-show = "isEmptyResultSet">
+    <div id="alert" ng-show="isEmptyResultSet">
         <div class="card-panel">
             <span class="red-text text-darken-2">NOT RESULT FOUND WITH ACCOUNT ID: {{accountID}} </span>
         </div>
