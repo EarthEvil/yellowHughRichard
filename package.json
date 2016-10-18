@@ -1,0 +1,36 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "CPEG489 Senior Design -\r Project: Transaction Processing in the Cloud\r Group Name: Elastic",
+  "main": "database.js",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "multer": "^1.2.0",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "node": "^0.0.0",
+    "serve-favicon": "^2.3.0",
+    "mysql": "^2.11.1",
+    "passport" : "~0.1.17",
+    "passport-local" : "~0.1.6",
+    "express-session": "~1.0.0",
+    "connect-flash" : "~0.1.1",     
+    "bcrypt-nodejs" : "latest",
+    "pm2": "^2.0.18"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EarthEvil/yellowHughRichard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EarthEvil/yellowHughRichard/issues"
+  },
+  "homepage": "https://github.com/EarthEvil/yellowHughRichard#readme"
+}

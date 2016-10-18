@@ -4,7 +4,8 @@ balanceInquire.controller("balanceInquireController", balanceInquireController);
 balanceInquireController.$inject = ["$window", "$scope", "$http"]
 
 function balanceInquireController($window, $scope, $http) {
-    // $scope.accountID = 0;
+    var url = "http://localhost:3000";
+    // var url = "http://ec2-54-86-74-235.compute-1.amazonaws.com/deposit";
     var error = function() {
         console.log("error!");
     }
@@ -20,7 +21,7 @@ function balanceInquireController($window, $scope, $http) {
     $scope.getBalance = function(accountID) {
         console.log("acc: " + accountID);
         $http({
-            url: "http://ec2-54-86-74-235.compute-1.amazonaws.com/balanceinqure/" + accountID,
+            url: url + "/api/balanceinqure/" + accountID,
             method: "GET"
                 // data: data
         }).then(function(data, status, headers, config) {

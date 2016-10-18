@@ -4,9 +4,11 @@ mainApp.controller("mainController", mainController);
 mainController.$injec = ["$scope", "$http"]
 
 function mainController($scope, $http) {
+     var url = "http://localhost:3000";
+    // var url = "http://ec2-54-86-74-235.compute-1.amazonaws.com/deposit";
     $scope.addCustomer = function(name, age, address) {
         $http({
-            url: "http://ec2-54-86-74-235.compute-1.amazonaws.com/addCustomer/",
+            url: url + "/api/addCustomer/",
             method: "POST",
             data: {
                 name: name,
@@ -24,7 +26,7 @@ function mainController($scope, $http) {
     };
     $scope.postRequest = function() {
         $http({
-            url: "http://ec2-54-86-74-235.compute-1.amazonaws.com/addCustomer",
+            url: url + "/api/addCustomer",
             method: "POST",
             data: { customer_id: '1' }
         }).then(function(data, status, headers, config) {

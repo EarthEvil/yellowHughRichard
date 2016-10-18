@@ -6,6 +6,15 @@ CREATE TABLE customer
 	address	 			varchar(30),
 	PRIMARY KEY (customer_id));
 
+CREATE TABLE user
+	(user_id 		int NOT NULL AUTO_INCREMENT,
+	username 			varchar(30),
+	salt	 			varchar(20),
+	hash	 			varchar(64),
+	INDEX (username),
+	PRIMARY KEY (user_id));
+
+
 CREATE TABLE account
 	(account_id	 		int NOT NULL AUTO_INCREMENT,
 	customer_id		 	int,
@@ -19,7 +28,7 @@ CREATE TABLE transaction
 	account_id		 	int NOT NULL,
 	transaction_type 	varchar(8) NOT NULL,
 	amount			 	NUMERIC,
-	time 				DATE, 
+	time 				DATETIME, 
 	PRIMARY KEY (transaction_id),
 	FOREIGN KEY (account_id) REFERENCES account(account_id)
 	ON DELETE CASCADE);

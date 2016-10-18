@@ -7,11 +7,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script src="/js/inquire.js"></script>
+    <script src="/js/FileSaver.min.js"></script>
+    <script src="/js/smart-table.js"></script>
+    <!-- <script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script> -->
     <script src="https://cdn.rawgit.com/esvit/ng-table/1.0.0/dist/ng-table.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/css.css">
     <link rel="stylesheet" href="https://cdn.rawgit.com/esvit/ng-table/1.0.0/dist/ng-table.min.css">
     <link rel="shortcut icon" href="favicon.ico" />
+    <style>
+    .mainContent {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1000px;
+        position: relative;
+        width: 100%;
+    }
+    
+    .toRight {
+        float: right;
+    }
+    </style>
 </head>
 
 <body ng-app="inquire" ng-controller="inquireController" class="mainContent">
@@ -32,23 +47,38 @@
     </div>
     <br>
     <div>
-        <a class="waves-effect waves-light btn" ng-click="thoughtputTest(100);">thoughtputTest</a>
-        <a class="waves-effect waves-light btn" ng-click="getTransaction();">inquire</a>
+        <a class="waves-effect waves-light btn" ng-click="thoughtputTest(100)">thoughtputTest</a>
+        <a class="waves-effect waves-light btn" ng-click="getTransaction()">inquire</a>
     </div>
-    <!--  <table ng-table="tableParams" class="table centered bordered highlight" show-filter="true">
-        <tr ng-repeat="transaction in transactionHistory">
-            <td title="'Date'" filter="{ date: 'text'}" sortable="'date'">
-                {{transaction.date}}</td>
-            <td title="'Transaction ID'" >
-                {{transaction.transaction_id}}</td>
-            <td title="'From'" filter="{ fromaccount: 'number'}" sortable="'fromaccount'">
-                {{transaction.fromaccount}}</td>
-            <td title="'To'" filter="{ toaccount: 'number'}" sortable="'toaccount'">
-                {{transaction.toaccount}}</td>
-            <td title="'Amount'" filter="{ amount: 'number'}" sortable="'amount'">
-                {{transaction.amount}}</td>
-        </tr>
-    </table> -->
+    <div id="transactionTable" ng-show="showTable">
+        <table st-table="hah" class="bordered highlight responsive-table ">
+            <thead>
+                <tr>
+                    <th data-field="date">Date</th>
+                    <th data-field="transaction_id">Transaction ID</th>
+                    <th data-field="from">From</th>
+                    <th data-field="type">Type</th>
+                    <th data-field="amount">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="transaction in transactionHistory">
+                    <td>{{ transaction.time | date:'medium'}}</td>
+                    <td>{{ transaction.transaction_id}}</td>
+                    <td>{{ transaction.account_id}}</td>
+                    <td>{{ transaction.transaction_type}}</td>
+                    <td>{{ transaction.amount | currency}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-center" st-pagination="" st-items-by-page="5" colspan="4">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- 
     <div id="transactionTable" ng-show="showTable">
         <table class="bordered highlight responsive-table ">
             <thead>
@@ -62,18 +92,22 @@
             </thead>
             <tbody>
                 <tr ng-repeat="transaction in transactionHistory">
-                    <td>{{ transaction.time}}</td>
+                    <td>{{ transaction.time | date:'medium'}}</td>
                     <td>{{ transaction.transaction_id}}</td>
                     <td>{{ transaction.account_id}}</td>
                     <td>{{ transaction.transaction_type}}</td>
-                    <td>${{ transaction.amount}}</td>
+                    <td>{{ transaction.amount | currency}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
+    -->
     <br>
     <div ng-show="showTable">
         count: {{count}}
+    </div>
+    <div>
+        <a class="waves-effect waves-light btn toRight" ng-click="exportData()" ng-show="showTable">Export</a>
     </div>
 </body>
 
