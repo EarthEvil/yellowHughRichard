@@ -21,9 +21,10 @@
     .toRight {
         float: right;
     }
-    .center{
+    
+    .center {
         position: relative;
-        width: 100%; 
+        width: 100%;
     }
     /*.btn {
         width: 100px;
@@ -37,19 +38,19 @@
             <div class="card white darken-1 ">
                 <div class="card-content black-text">
                     <div class="row">
-                        <form class="col s6" ng-submit="log(accountID, amount)">
+                        <form class="col s6" ng-submit="login(username, password)">
                             <div class="row">
                                 <span class="card-title">Log In</span>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="first_name" type="text" class="validate" autocomplete="off">
-                                    <label for="first_name">First Name</label>
+                                    <input id="username" ng-model="username" type="text" class="validate" autocomplete="off" required="" aria-required="true">
+                                    <label for="username">username</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate">
+                                    <input id="password" ng-model="password" type="password" class="validate" required="" aria-required="true">
                                     <label for="password">Password</label>
                                 </div>
                             </div>

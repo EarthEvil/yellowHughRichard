@@ -1,12 +1,23 @@
-var mysqlConnection = require(__dirname+ '\\database.js')
+var mysqlConnection = require(__dirname + '/database.js');
 var express = require('express');
 var router = express.Router();
-
+var path = require('path');
 module.exports = function(app, passport) {
+    router.post('/signin', passport.authenticate('local-signin', {
+        successRedirect: '/loginSuccess', // redirect to the secure profile section
+        failureRedirect: '/loginFail', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
+
+    // router.post('/signup', function(req, res) {
+    //     console.log("you here");
+    //     res.send("good");
+
+    // });
 
     router.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/profile', // redirect to the secure profile section
-        failureRedirect: '/signup', // redirect back to the signup page if there is an error
+        successRedirect: '/loginSuccess', // redirect to the secure profile section
+        failureRedirect: '/loginFail', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
 
@@ -27,9 +38,7 @@ module.exports = function(app, passport) {
             console.log(req.ip + "request query: " + query);
             if (!err) {
                 res.send(rows);
-
             } else {
-
                 console.log("qurey error");
                 console.log("params: " + req.params.account_id);
                 console.log(query);
@@ -136,5 +145,12 @@ module.exports = function(app, passport) {
         res.send('POST request to homepage');
     });
     app.use('/api', router);
+
+    app.get('/loginSuccess', function(req, res) {
+        res.send("success");
+    });
+    app.get('/loginFail', function(req, res) {
+        res.send("fail");
+    });
 
 }

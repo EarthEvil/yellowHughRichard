@@ -4,8 +4,8 @@ mainApp.controller("mainController", mainController);
 mainController.$injec = ["$scope", "$http"]
 
 function mainController($scope, $http) {
-     var url = "http://localhost:3000";
-    // var url = "http://ec2-54-86-74-235.compute-1.amazonaws.com/deposit";
+     // var url = "http://localhost:3000";
+    var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
     $scope.addCustomer = function(name, age, address) {
         $http({
             url: url + "/api/addCustomer/",

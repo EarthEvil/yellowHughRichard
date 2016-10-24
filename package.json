@@ -15,7 +15,7 @@
     "passport-local" : "~0.1.6",
     "express-session": "~1.0.0",
     "connect-flash" : "~0.1.1",     
-    "bcrypt-nodejs" : "latest",
+    "bcryptjs" : "latest",
     "pm2": "^2.0.18"
   },
   "devDependencies": {},

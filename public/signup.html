@@ -1,0 +1,82 @@
+<html lang="en">
+
+<head>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script src="/js/signup.js"></script>
+    <style>
+    .mainContent {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 150px;
+        max-width: 1000px;
+        position: relative;
+        width: 100%;
+    }
+    
+    .toRight {
+        float: right;
+    }
+    
+    .center {
+        position: relative;
+        width: 100%;
+    }
+    /*.btn {
+        width: 100px;
+    }*/
+    </style>
+</head>
+
+<body ng-app="signup" ng-controller="signupController" class="mainContent">
+    <div class="row">
+        <h4>SIGN UP</h4>
+    </div>
+    <form class="col s12" ng-submit="signup()">
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="first_name" type="text" class="validate" ng-model="first_name">
+                <label for="first_name">First Name</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="last_name" type="text" class="validate" ng-model="last_name">
+                <label for="last_name">Last Name</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="userID" type="text" class="validate" ng-model="userID">
+                <label for="userID">User ID</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="email" type="email" class="validate" ng-model="email">
+                <label for="email">Email</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password" type="password" class="validate" ng-model="password">
+                <label for="password">Password</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="confirmPassword" type="password" class="validate" ng-model="confirmPassword">
+                <label for="confirmPassword">Confirm Password</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <button id="signupButton" class="btn waves-effect waves-light disabled" type="submit">SIGN UP</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

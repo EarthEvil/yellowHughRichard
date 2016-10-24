@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use('', router);
 app.use(express.static('public'));
-app.use(express.static('public/views'));
+// app.use(express.static('public/views'));
 app.use(favicon(__dirname + '/public/images/favicon/favicon.ico'));
 
 // required for passport
@@ -33,8 +33,8 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-require(__dirname + '\\config\\apiRouter.js')(app, passport); // load our routes and pass in our app and fully configured passport
-require(__dirname+ '\\config\\passport.js')(passport); // pass passport for configuration
+require(__dirname + '/config/apiRouter.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require(__dirname+ '/config/passport.js')(passport); // pass passport for configuration
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
@@ -42,4 +42,10 @@ require(__dirname+ '\\config\\passport.js')(passport); // pass passport for conf
 var server = app.listen(port, function() {
     console.log("application is running at port: " + port);
 
+});
+
+// properly handle SIGINT 
+process.on('SIGINT', function(){
+	console.log("exit program with SIGINT");
+	process.exit();
 });
