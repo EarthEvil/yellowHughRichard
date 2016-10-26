@@ -163,26 +163,27 @@ module.exports = function(app, passport) {
     //pages route
 
     app.get('/index', isLoggedIn, function(req, res) {
+        console.log("user info:" + req.user);
         res.render('index.ejs', { user: req.user });
     });
     app.get('/balanceInquire', function(req, res) {
         var tagline = "Any code of your own that you haven't look";
-        res.render('balanceInquire', { tagline: tagline });
+        res.render('balanceInquire.ejs', { user: req.user, tagline: tagline });
     });
     app.get('/deposit', function(req, res) {
-        res.render('deposit');
+        res.render('deposit.ejs', { user: req.user });
     });
     app.get('/debit', function(req, res) {
-        res.render('debit');
+        res.render('debit.ejs', { user: req.user });
     });
     app.get('/inquire', function(req, res) {
-        res.render('inquire');
+        res.render('inquire.ejs', { user: req.user });
     });
     app.get('/', function(req, res) {
-        res.render('login', { message: req.flash('loginMessage') });
+        res.render('login.ejs', { message: req.flash('loginMessage') });
     });
     app.get('/signup', function(req, res) {
-        res.render('signup', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
 
@@ -198,6 +199,9 @@ module.exports = function(app, passport) {
 
         // if user is authenticated in the session, carry on 
         if (req.isAuthenticated())
+
+            console.log("user info" + req.user);
+            console.log("authenticated");
             return next();
 
         // if they aren't redirect them to the home page

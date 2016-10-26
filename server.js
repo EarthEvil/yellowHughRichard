@@ -21,15 +21,7 @@ app.set('view engine', 'ejs');
 
 
 // required for passport
-app.use(session({
-  secret: 'appsecret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: true,
-    maxAge: new Date(Date.now() + 3600000)
-  }
-}));
+app.use(session({secret: 'appsecret'}));
 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions

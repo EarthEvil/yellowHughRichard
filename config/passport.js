@@ -95,14 +95,12 @@ module.exports = function(passport) {
             });
     }
 
-
-
     passport.serializeUser(function(user, done) {
         // body...
         done(null, user.id);
     });
     passport.deserializeUser(function(id, done) {
-        done({ id: username, name: id });
+        done(null, { id: id });
     });
     passport.use('local-signin', new LocalStrategy({
             usernameField: 'username',
@@ -110,6 +108,7 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
+            console.log(username, password)
             checkPassword(username, password, checkIsSame, done);
         }));
 
