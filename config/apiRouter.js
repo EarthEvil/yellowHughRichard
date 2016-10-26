@@ -3,11 +3,15 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 module.exports = function(app, passport) {
-    router.post('/signin', passport.authenticate('local-signin', {
-        successRedirect: '/loginSuccess', // redirect to the secure profile section
-        failureRedirect: '/loginFail', // redirect back to the signup page if there is an error
-        failureFlash: true // allow flash messages
-    }));
+    // router.post('/signin', passport.authenticate('local-signin', {
+    //     successRedirect: '/loginSuccess', // redirect to the secure profile section
+    //     failureRedirect: '/loginFail', // redirect back to the signup page if there is an error
+    //     failureFlash: true // allow flash messages
+    // }));
+    router.post('/signin', passport.authenticate('local-signin'), function(req, res) {
+        console.log("redirect to: " + req.user.id);
+        res.redirect('/loginSuccess/' + req.user.id);
+    });
 
     // router.post('/signup', function(req, res) {
     //     console.log("you here");
@@ -72,6 +76,7 @@ module.exports = function(app, passport) {
 
 
     router.post('/', function(req, res) {
+        console.log("post /");
         res.send('POST request to homepage');
     });
 
@@ -146,11 +151,20 @@ module.exports = function(app, passport) {
     });
     app.use('/api', router);
 
-    app.get('/loginSuccess', function(req, res) {
-        res.send("success");
+    app.get('/loginSuccess/:username', function(req, res) {
+        res.send("haha");
+        res.json({ username: req.params.username });
     });
     app.get('/loginFail', function(req, res) {
         res.send("fail");
     });
+
+
+    var count = 0;
+    app.get('/test', function(req, res) {
+        count++;
+        console.log("log count: " + count);
+        res.send("log count: " + count);
+    })
 
 }

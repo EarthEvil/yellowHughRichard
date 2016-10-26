@@ -6,6 +6,8 @@ mainController.$injec = ["$scope", "$http"]
 function mainController($scope, $http) {
      // var url = "http://localhost:3000";
     var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
+    $scope.userInfo = {username: "test"};
+
     $scope.addCustomer = function(name, age, address) {
         $http({
             url: url + "/api/addCustomer/",

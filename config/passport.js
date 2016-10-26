@@ -32,11 +32,11 @@ module.exports = function(passport) {
                         done(null, { id: username });
                     } else {
                         console.log("incorrect password");
-                        done(null, null);
+                        done(null, false);
                     }
                 } else {
                     console.log("incorrect password");
-                    done(null, null);
+                    done(null, false);
                 }
             } else {
                 console.log("query error");
