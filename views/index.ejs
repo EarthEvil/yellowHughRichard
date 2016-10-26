@@ -1,0 +1,34 @@
+<html>
+
+<head>
+    <% include partials/head %>
+    <script src="/js/mainApp.js"></script>
+</head>
+
+<body ng-app="mainApp" ng-controller="mainController" class="mainContent">
+    <div>
+        <nav>
+            <div class="nav-wrapper blue-grey ">
+                <a href="#" class="brand-logo right">sdf</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li class="active"><a href="index">Home</a></li>
+                    <li><a href="balanceInquire">Balance Inquire</a></li>
+                    <li><a href="debit">Debit</a></li>
+                    <li><a href="deposit">Deposit</a></li>
+                    <li><a href="inquire">Inquire</a></li>
+                    <li><a href="/">login</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <br>
+    <div>
+        <a class="waves-effect waves-light btn" ng-click="addCustomer('anothetongming', '33', '13with');">add customer</a>
+        <a class="waves-effect waves-light btn" ng-click="postRequest();">postRequest</a>
+    </div>
+      <footer>
+        <% include partials/footer %>
+    </footer>
+</body>
+
+</html>

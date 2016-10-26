@@ -1,24 +1,10 @@
 <html lang="en">
 
 <head>
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <% include partials/head %>
+
     <script src='https://www.google.com/recaptcha/api.js'></script>
-    <script src="/js/signup.js"></script>
-    <style>
-    .mainContent {
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 150px;
-        max-width: 1000px;
-        position: relative;
-        width: 100%;
-    }
-    
+    <style> 
     .toRight {
         float: right;
     }
@@ -31,6 +17,7 @@
         width: 100px;
     }*/
     </style>
+    <script src="/js/signup.js"></script>
 </head>
 
 <body ng-app="signup" ng-controller="signupController" class="mainContent">
@@ -81,6 +68,9 @@
             </div>
         </div>
     </form>
+      <footer>
+        <% include partials/footer %>
+    </footer>
 </body>
 
 </html>

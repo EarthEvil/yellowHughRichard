@@ -102,7 +102,7 @@ module.exports = function(passport) {
         done(null, user.id);
     });
     passport.deserializeUser(function(id, done) {
-        done({ id: id, name: id });
+        done({ id: username, name: id });
     });
     passport.use('local-signin', new LocalStrategy({
             usernameField: 'username',

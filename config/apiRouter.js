@@ -3,15 +3,15 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 module.exports = function(app, passport) {
-    // router.post('/signin', passport.authenticate('local-signin', {
-    //     successRedirect: '/loginSuccess', // redirect to the secure profile section
-    //     failureRedirect: '/loginFail', // redirect back to the signup page if there is an error
-    //     failureFlash: true // allow flash messages
-    // }));
-    router.post('/signin', passport.authenticate('local-signin'), function(req, res) {
-        console.log("redirect to: " + req.user.id);
-        res.redirect('/loginSuccess/' + req.user.id);
-    });
+    router.post('/signin', passport.authenticate('local-signin', {
+        successRedirect: '/index', // redirect to the secure profile section
+        failureRedirect: '/', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
+    // router.post('/signin', passport.authenticate('local-signin'), function(req, res) {
+    //     console.log("redirect to: " + req.user.id);
+    //     res.redirect('/loginSuccess/' + req.user.id);
+    // });
 
     // router.post('/signup', function(req, res) {
     //     console.log("you here");
@@ -155,8 +155,34 @@ module.exports = function(app, passport) {
         res.send("haha");
         res.json({ username: req.params.username });
     });
+
     app.get('/loginFail', function(req, res) {
         res.send("fail");
+    });
+
+    //pages route
+
+    app.get('/index', isLoggedIn, function(req, res) {
+        res.render('index.ejs', { user: req.user });
+    });
+    app.get('/balanceInquire', function(req, res) {
+        var tagline = "Any code of your own that you haven't look";
+        res.render('balanceInquire', { tagline: tagline });
+    });
+    app.get('/deposit', function(req, res) {
+        res.render('deposit');
+    });
+    app.get('/debit', function(req, res) {
+        res.render('debit');
+    });
+    app.get('/inquire', function(req, res) {
+        res.render('inquire');
+    });
+    app.get('/', function(req, res) {
+        res.render('login', { message: req.flash('loginMessage') });
+    });
+    app.get('/signup', function(req, res) {
+        res.render('signup', { message: req.flash('signupMessage') });
     });
 
 
@@ -165,6 +191,17 @@ module.exports = function(app, passport) {
         count++;
         console.log("log count: " + count);
         res.send("log count: " + count);
-    })
+    });
+
+    // route middleware to make sure a user is logged in
+    function isLoggedIn(req, res, next) {
+
+        // if user is authenticated in the session, carry on 
+        if (req.isAuthenticated())
+            return next();
+
+        // if they aren't redirect them to the home page
+        res.redirect('/');
+    }
 
 }

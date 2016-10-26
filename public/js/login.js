@@ -26,21 +26,12 @@ function loginController($window, $scope, $http) {
                     Materialize.toast("welcome " + data.data.username, 2000, 'teal lighten-2');
                     Materialize.toast("Successfully log in", 2000, 'teal lighten-2');
                     Materialize.toast("Redirecting to home page...", 2000, 'teal lighten-2');
-                    setTimeout(function() { window.location.replace(url); }, 2000);
+                    // setTimeout(function() { window.location.replace(url); }, 2000);
                 } else {
                     // login fail
                     Materialize.toast("Incorrect username or password", 4000, 'red');
 
                 }
-                // if (data.data === 'success') {
-                //     Materialize.toast("Successfully log in", 2000, 'teal lighten-2');
-                //     Materialize.toast("Redirecting to home page...", 2000, 'teal lighten-2');
-                //     setTimeout(function() { window.location.replace(url); }, 2000);
-                // } else {
-                //     // login fail
-                //     Materialize.toast("Incorrect username or password", 4000, 'red');
-
-                // }
             }, function(response) {
                 // POST fail
                 console.log("POST fail");

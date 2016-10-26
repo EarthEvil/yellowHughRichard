@@ -11,12 +11,13 @@
     "node": "^0.0.0",
     "serve-favicon": "^2.3.0",
     "mysql": "^2.11.1",
-    "passport" : "~0.1.17",
-    "passport-local" : "~0.1.6",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6",
     "express-session": "~1.0.0",
-    "connect-flash" : "~0.1.1",     
-    "bcryptjs" : "latest",
-    "pm2": "^2.0.18"
+    "connect-flash": "~0.1.1",
+    "bcryptjs": "latest",
+    "pm2": "^2.0.18",
+    "ejs": "~2.5.2"
   },
   "devDependencies": {},
   "scripts": {

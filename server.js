@@ -8,15 +8,17 @@ var router = express.Router(); // get an instance of the express Router
 var passport = require('passport');
 var session = require('express-session');
 var flash = require('connect-flash');
+var path = require('path');
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use('', router);
-app.use(express.static('public'));
-// app.use(express.static('public/views'));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(__dirname + '/public/images/favicon/favicon.ico'));
+app.set('view engine', 'ejs');
+
 
 // required for passport
 app.use(session({
