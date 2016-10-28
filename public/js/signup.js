@@ -27,7 +27,8 @@ function signupController($window, $scope, $http) {
         // console.log($scope.userID);
         // console.log($scope.email);
         // console.log($scope.password);
-        var v = grecaptcha.getResponse();
+        // var v = grecaptcha.getResponse();
+        var v = "sdf";
         if (v.length == 0) {
             Materialize.toast("You can't leave Captcha Code empty", 2000, 'red');
         } else {
@@ -46,13 +47,13 @@ function signupController($window, $scope, $http) {
             }).then(function(data, status, headers, config) {
                 console.log("success post");
                 console.log("return:" + data.data);
-                if (data.data === 'success') {
-                    Materialize.toast("Thank you for signing up", 2000, 'teal lighten-2');
-                    Materialize.toast("Redirecting to home page...", 2000, 'teal lighten-2');
+                if (data.data.includes("login")) {
+                    Materialize.toast("SIGN UP SUCCESS", 2000, 'teal lighten-2');
+                    Materialize.toast("PLEASE LOG IN AGAIN...", 2000, 'teal lighten-2');
                     setTimeout(function() { window.location.replace(url); }, 2000);
 
                 } else {
-                    Materialize.toast("user ID already exist", 3000, 'red');
+                    Materialize.toast("USER ID ALREADY EXIST", 3000, 'red');
 
                 }
             }, function(response) {

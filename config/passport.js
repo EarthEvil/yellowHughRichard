@@ -1,17 +1,18 @@
 var LocalStrategy = require('passport-local').Strategy;
-var mysqlConnection = require(__dirname + '/database.js')
+var mysqlConnection = require(__dirname + '/database.js');
 var bcrypt = require('bcryptjs');
+var logger = require(__dirname + '/logger.js')
 
 module.exports = function(passport) {
 
     function checkIsSame(string1, string2, done) {
-        console.log("string1: " + string1);
-        console.log("string2: " + string2);
+        logger.info("string1: " + string1);
+        logger.info("string2: " + string2);
         if (string1 === string2) {
-            console.log("correct password");
+            logger.info("correct password");
             done(null, { id: "username", password: string2 });
         } else {
-            console.log("incorrect password");
+            logger.warn("incorrect password");
 
             done(null, null);
 
@@ -23,55 +24,56 @@ module.exports = function(passport) {
         var sql = 'select salt, hash from user where username = ?;';
         var inserts = [username];
         sql = mysqlConnection.format(sql, inserts);
-        console.log("checkPassword sql: " + sql);
+        logger.info("checkPassword sql: " + sql);
         mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
-                if (rows[0].hash != null) {
+                if (rows[0] != null && rows[0].hash != null) {
                     if (bcrypt.compareSync(password, rows[0].hash)) {
-                        console.log("correct password");
+                        logger.info("correct password");
                         done(null, { id: username });
                     } else {
-                        console.log("incorrect password");
-                        done(null, false);
+                        logger.warn("incorrect password");
+                        done(null, null);
                     }
                 } else {
-                    console.log("incorrect password");
+                    logger.warn("incorrect password");
                     done(null, false);
                 }
             } else {
-                console.log("query error");
+                logger.error("query error");
 
                 done(null, null);
             }
         });
     };
 
-    function checkUser(username, password, callback, done) {
+    function checkUser(req, username, password, callback, done) {
         //user prepared query
         var sql = 'select username from user where username = ?;';
         var inserts = [username];
         sql = mysqlConnection.format(sql, inserts);
-        console.log("checkUser sql: " + sql);
+        logger.info("checkUser sql: " + sql);
 
-        mysqlConnection.query(sql, function(err, rows, fields) {
+        mysqlConnection.query(sql, function(err, rows, fields, req) {
             if (!err) {
                 if (rows[0] != null) {
-                    console.log("user already exist");
-                    done(null, null);
+                    logger.warn("user already exist");
+                    return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
 
                 } else {
-                    console.log("user does not exist");
+                    logger.warn("user does not exist");
 
                     if (typeof callback === 'function') {
                         callback(username, password, done);
-                        done(null, { id: username });
+                        return done(null, { id: username });
 
                     } else {
-                        console.log("callback is not a function");
+                        logger.error("callback is not a function");
                     }
                 }
             } else {
-                done(null, null);
+                logger.error("query error");
+                return done(null, null);
             }
         });
     }
@@ -83,14 +85,14 @@ module.exports = function(passport) {
         var sql = 'insert into user (username, salt,hash) values (?,?,?)';
         var inserts = [username, salt, hash];
         sql = mysqlConnection.format(sql, inserts);
-        console.log("addUser sql: " + sql);
+        logger.info("addUser sql: " + sql);
 
         mysqlConnection.query(sql,
             function(err, rows, fields) {
                 if (!err) {
-                    console.log("add user to database: " + username + "\t" + salt + "\t" + hash);
+                    logger.info("add user to database: " + username + "\t" + salt + "\t" + hash);
                 } else {
-                    console.log("qurey error");
+                    logger.error("qurey error");
                 }
             });
     }
@@ -108,7 +110,6 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
-            console.log(username, password)
             checkPassword(username, password, checkIsSame, done);
         }));
 
@@ -119,6 +120,6 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
-            checkUser(username, password, addUser, done);
+            checkUser(req, username, password, addUser, done);
         }));
 };

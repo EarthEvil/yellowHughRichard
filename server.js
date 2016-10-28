@@ -9,6 +9,8 @@ var passport = require('passport');
 var session = require('express-session');
 var flash = require('connect-flash');
 var path = require('path');
+var logger = require(__dirname + '/config/logger.js');
+
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(cookieParser());
@@ -22,10 +24,10 @@ app.set('view engine', 'ejs');
 
 // required for passport
 app.use(session({secret: 'appsecret'}));
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
 
 require(__dirname + '/config/apiRouter.js')(app, passport); // load our routes and pass in our app and fully configured passport
 require(__dirname+ '/config/passport.js')(passport); // pass passport for configuration
@@ -34,12 +36,12 @@ require(__dirname+ '/config/passport.js')(passport); // pass passport for config
 // all of our routes will be prefixed with /api
 
 var server = app.listen(port, function() {
-    console.log("application is running at port: " + port);
+    logger.info("application is running at port: " + port);
 
 });
 
 // properly handle SIGINT 
 process.on('SIGINT', function(){
-	console.log("exit program with SIGINT");
+	logger.info("exit program with SIGINT");
 	process.exit();
 });
