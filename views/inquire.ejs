@@ -18,7 +18,7 @@
     <div>
         <nav>
             <div class="nav-wrapper blue-grey ">
-                <a href="#" class="brand-logo right">Logo</a>
+                <a href="#" class="brand-logo right">Elastic</a>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li><a href="index">Home</a></li>
                     <li><a href="balanceInquire">Balance Inquire</a></li>
@@ -31,8 +31,8 @@
     </div>
     <br>
     <div>
-        <a class="waves-effect waves-light btn" ng-click="thoughtputTest(100)">thoughtputTest</a>
-        <a class="waves-effect waves-light btn" ng-click="getTransaction()">inquire</a>
+        <!-- <a class="waves-effect waves-light btn" ng-click="thoughtputTest(100)">thoughtputTest</a> -->
+        <a class="waves-effect waves-light btn" ng-click="getTransaction()">GET TRANSACTION HISTORY</a>
     </div>
     <div id="transactionTable" ng-show="showTable">
         <table st-table="hah" class="bordered highlight responsive-table ">
@@ -62,37 +62,15 @@
             </tfoot>
         </table>
     </div>
-    <!-- 
-    <div id="transactionTable" ng-show="showTable">
-        <table class="bordered highlight responsive-table ">
-            <thead>
-                <tr>
-                    <th data-field="date">Date</th>
-                    <th data-field="transaction_id">Transaction ID</th>
-                    <th data-field="from">From</th>
-                    <th data-field="to">To</th>
-                    <th data-field="amount">Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="transaction in transactionHistory">
-                    <td>{{ transaction.time | date:'medium'}}</td>
-                    <td>{{ transaction.transaction_id}}</td>
-                    <td>{{ transaction.account_id}}</td>
-                    <td>{{ transaction.transaction_type}}</td>
-                    <td>{{ transaction.amount | currency}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    -->
-    <br>
-    <div ng-show="showTable">
-        count: {{count}}
-    </div>
+ 
+    <!-- <br> -->
+    
     <div>
         <a class="waves-effect waves-light btn toRight" ng-click="exportData()" ng-show="showTable">Export</a>
     </div>
+    <br>
+    <br>
+    <br>
     <footer>
         <% include partials/footer %>
     </footer>

@@ -58,7 +58,8 @@ module.exports = function(passport) {
             if (!err) {
                 if (rows[0] != null) {
                     logger.warn("user already exist");
-                    return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    // return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    return done(null, false);
 
                 } else {
                     logger.warn("user does not exist");

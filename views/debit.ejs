@@ -10,7 +10,7 @@
     <h4>Welcome, <%= user.id%></h4>
         <nav>
             <div class="nav-wrapper blue-grey ">
-                <a href="#" class="brand-logo right">Logo</a>
+                <a href="#" class="brand-logo right">Elastic</a>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li><a href="index">Home</a></li>
                     <li><a href="balanceInquire">Balance Inquire</a></li>
@@ -35,6 +35,16 @@
                 </div>
                 <button class="btn waves-effect waves-light" type="submit"> debit
                 </button>
+            </div>
+            <div id="alert" ng-show="postError" class="row">
+                <div class="card-panel">
+                    <span class="red-text text-darken-2">Failed to debit {{amount|currency}} from account {{accountID}}</span>
+                </div>
+            </div>
+            <div id="alert" ng-show="successPost" class="row">
+                <div class="card-panel">
+                    <span class="blue-grey-text text-darken-2">Successly debit {{amount|currency}} from account {{accountID}}</span>
+                </div>
             </div>
         </form>
     </div>

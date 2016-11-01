@@ -100,7 +100,8 @@ module.exports = function(app, passport) {
     });
 
     function addTransaction(account_id, transaction_type, amount) {
-        var transactionQuery = 'insert into transaction (account_id,transaction_type, amount, time) values (' + account_id + ',  \'' + transaction_type + ' \' , ' + amount + ', ' + 'CURDATE()' + ');';
+        var transactionQuery = 'insert into transaction (account_id,transaction_type, amount, time) values (' +
+            account_id + ',  \'' + transaction_type + ' \' , ' + amount + ', ' + 'CURDATE()' + ');';
         // (${account_id},${transaction_type}, ${amount}, CURDATE());';
         mysqlConnection.query(transactionQuery, function(err, rows, fields) {
             if (!err) {
@@ -111,7 +112,8 @@ module.exports = function(app, passport) {
                 logger.warn("ERROR: " + transactionQuery);
             };
         });
-    }
+    };
+
     router.post('/debit', function(req, res) {
 
         var account_id = req.body.account_id;
@@ -120,32 +122,61 @@ module.exports = function(app, passport) {
         var getAmountQuery = 'select balance from account where account_id = ' + account_id;
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
             // res.json(rows);
-            var currentBalance = parseInt(rows[0].balance);
-            var newBalane = currentBalance - amount;
-            logger.warn("currentBalance:" + currentBalance);
-            var updateBalance = 'UPDATE account SET balance=' +
-                newBalane + ' WHERE account_id=' +
-                account_id + ';'
-            mysqlConnection.query(updateBalance, addTransaction(account_id, 'debit', amount));
+            if (!err) {
+                if (rows[0] != null && rows[0].balance != null) {
+                    var currentBalance = parseInt(rows[0].balance);
+                    var newBalane = currentBalance - amount;
+                    logger.warn("currentBalance:" + currentBalance);
+                    var updateBalance = 'UPDATE account SET balance=' +
+                        newBalane + ' WHERE account_id=' +
+                        account_id + ';'
+                    mysqlConnection.query(updateBalance, addTransaction(account_id, 'debit', amount));
+                    res.send('POST success');
+
+                } else {
+                    logger.warn("no such account");
+                    res.status(400);
+                    res.send('None shall pass');
+                }
+            } else {
+                logger.warn("qurey error");
+                logger.warn(query);
+                res.status(400);
+                res.send('None shall pass');
+            }
         });
-        res.send('POST request to homepage');
     });
 
     router.post('/deposit', function(req, res) {
-
         var account_id = req.body.account_id;
         var amount = parseInt(req.body.amount);
-        // get amount
         var getAmountQuery = 'select balance from account where account_id = ' + account_id;
+        // get amount
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
-            var currentBalance = parseInt(rows[0].balance);
-            var newBalane = currentBalance + amount;
-            var updateBalance = 'UPDATE account SET balance=' +
-                newBalane + ' WHERE account_id=' +
-                account_id + ';'
-            mysqlConnection.query(updateBalance, addTransaction(account_id, 'deposit', amount));
+            if (!err) {
+                if (rows[0] != null && rows[0].balance != null) {
+                    var currentBalance = parseInt(rows[0].balance);
+                    var newBalane = currentBalance + amount;
+                    var updateBalance = 'UPDATE account SET balance=' +
+                        newBalane + ' WHERE account_id=' +
+                        account_id + ';'
+                    mysqlConnection.query(updateBalance, addTransaction(account_id, 'deposit', amount));
+                    res.send('POST success');
+
+                } else {
+                    logger.warn("no such account");
+
+                    res.status(400);
+                    res.send('None shall pass');
+                }
+            } else {
+                res.status(400);
+                res.send('None shall pass');
+                logger.warn("qurey error");
+                logger.warn(query);
+            }
         });
-        res.send('POST request to homepage');
+
     });
     app.use('/api', router);
 
