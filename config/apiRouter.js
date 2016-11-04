@@ -10,16 +10,6 @@ module.exports = function(app, passport) {
         failureRedirect: '/', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
-    // router.post('/signin', passport.authenticate('local-signin'), function(req, res) {
-    //     console.log("redirect to: " + req.user.id);
-    //     res.redirect('/loginSuccess/' + req.user.id);
-    // });
-
-    // router.post('/signup', function(req, res) {
-    //     console.log("you here");
-    //     res.send("good");
-
-    // });
 
     router.post('/signup', passport.authenticate('local-signup', {
         successRedirect: '/', // redirect to the secure profile section
@@ -39,9 +29,9 @@ module.exports = function(app, passport) {
     });
 
     router.get('/inquire/:account_id', function(req, res) {
+        logger.info(req.ip + " request query: " + query);
         var query = 'select * from transaction where account_id =' + req.params.account_id;
         mysqlConnection.query(query, function(err, rows, fields) {
-            logger.info(req.ip + "request query: " + query);
             if (!err) {
                 res.send(rows);
             } else {
@@ -59,10 +49,10 @@ module.exports = function(app, passport) {
     });
 
     router.get('/balanceinqure/:account_id', function(req, res) {
+        logger.log(req.ip + " request query: " + query);
 
         var query = 'select * from account where account_id =' + req.params.account_id;
         mysqlConnection.query(query, function(err, rows, fields) {
-            logger.log(req.ip + " request query: " + query);
             if (!err) {
                 res.send(rows);
             } else {
@@ -115,9 +105,9 @@ module.exports = function(app, passport) {
     };
 
     router.post('/debit', function(req, res) {
-
         var account_id = req.body.account_id;
         var amount = parseInt(req.body.amount);
+        logger.log(req.ip + " debit " + amount + " from account " + account_id);
         // get amount
         var getAmountQuery = 'select balance from account where account_id = ' + account_id;
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
@@ -150,6 +140,8 @@ module.exports = function(app, passport) {
     router.post('/deposit', function(req, res) {
         var account_id = req.body.account_id;
         var amount = parseInt(req.body.amount);
+        logger.log(req.ip + " deposit " + amount + " to account " + account_id);
+
         var getAmountQuery = 'select balance from account where account_id = ' + account_id;
         // get amount
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
@@ -178,9 +170,9 @@ module.exports = function(app, passport) {
         });
 
     });
-    app.use('/api', router);
 
     app.get('/signupSuccess/:username', function(req, res) {
+        logger.info(req.ip + "successfully signup as " + req.params.username);
         res.send("haha");
         res.json({ username: req.params.username });
     });
@@ -189,54 +181,5 @@ module.exports = function(app, passport) {
         res.send("fail");
     });
 
-    //pages route
-    app.get('/index', isLoggedIn, function(req, res) {
-        logger.info("user " + req.user.username + "try to log in");
-        res.render('index.ejs', { user: req.user });
-    });
-    app.get('/balanceInquire', function(req, res) {
-        var tagline = "Any code of your own that you haven't look";
-        res.render('balanceInquire.ejs', { user: req.user, tagline: tagline });
-    });
-    app.get('/deposit', function(req, res) {
-        res.render('deposit.ejs', { user: req.user });
-    });
-    app.get('/debit', function(req, res) {
-        res.render('debit.ejs', { user: req.user });
-    });
-    app.get('/inquire', function(req, res) {
-        res.render('inquire.ejs', { user: req.user });
-    });
-    app.get('/', function(req, res) {
-        res.render('login.ejs', { message: req.flash('signupMessage') });
-    });
-    app.get('/signup', function(req, res) {
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
-    });
-
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
-
-
-    var count = 0;
-    app.get('/test', function(req, res) {
-        count++;
-        logger.info("log count: " + count);
-        res.send("log count: " + count);
-    });
-
-    // route middleware to make sure a user is signed in
-    function isLoggedIn(req, res, next) {
-
-        // if user is authenticated in the session, carry on 
-        if (req.isAuthenticated()) {
-            logger.info(req.user.username + "is authenticated");
-            return next();
-        }
-        // if they aren't redirect them to the home page
-        res.redirect('/');
-    }
-
+    app.use('/api', router);
 }

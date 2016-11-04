@@ -29,7 +29,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-require(__dirname + '/config/apiRouter.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require(__dirname + '/config/apiRouter.js')(app, passport); 
+require(__dirname + '/config/pageRouter.js')(app); 
 require(__dirname+ '/config/passport.js')(passport); // pass passport for configuration
 
 // REGISTER OUR ROUTES -------------------------------
