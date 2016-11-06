@@ -19,12 +19,12 @@ module.exports = function(passport) {
         }
     }
 
-    function checkPassword(username, password, callback, done) {
+    function singinCheck(username, password, callback, done) {
         //user prepared query
         var sql = 'select salt, hash from user where username = ?;';
         var inserts = [username];
         sql = mysqlConnection.format(sql, inserts);
-        logger.info("checkPassword sql: " + sql);
+        logger.info("singinCheck sql: " + sql);
         mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
                 if (rows[0] != null && rows[0].hash != null) {
@@ -47,25 +47,25 @@ module.exports = function(passport) {
         });
     };
 
-    function checkUser(req, username, password, callback, done) {
+    function signupCheck(req, username, password, addUser, user, done) {
         //user prepared query
+
         var sql = 'select username from user where username = ?;';
         var inserts = [username];
         sql = mysqlConnection.format(sql, inserts);
-        logger.info("checkUser sql: " + sql);
+        // logger.info("signupCheck sql: " + sql);
 
         mysqlConnection.query(sql, function(err, rows, fields, req) {
             if (!err) {
                 if (rows[0] != null) {
-                    logger.warn("user already exist");
+                    logger.info(JSON.stringify(rows[0]));
+                    logger.info("user already exist");
                     // return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                     return done(null, false);
 
                 } else {
-                    logger.warn("user does not exist");
-
-                    if (typeof callback === 'function') {
-                        callback(username, password, done);
+                    if (typeof addUser === 'function') {
+                        addUser(user, username, password, done);
                         return done(null, { id: username });
 
                     } else {
@@ -79,12 +79,23 @@ module.exports = function(passport) {
         });
     }
 
-    function addUser(username, password) {
+    function addUser(user, username, password) {
+        logger.info("user: " + JSON.stringify(user));
+
         var salt = bcrypt.genSaltSync(10);
         var hash = bcrypt.hashSync(password, salt);
-
-        var sql = 'insert into user (username, salt,hash) values (?,?,?)';
-        var inserts = [username, salt, hash];
+        var first_name = user.first_name || "";
+        logger.info("addUser firstname: " + first_name);
+        var last_name = user.last_name || "";
+        var phone_number = user.phone_number || "";
+        var email = user.email || "";
+        var gender = user.gender || "";
+        var income = parseInt(user.income) || "";
+        var date_of_birth = user.date_of_birth || "";
+        var address = user.address || "";
+        var sql = 'insert into user (username, salt, hash, first_name, last_name,phone_number,email, gender, income, date_of_birth, address)' +
+            ' values (?,?,?,?,?,?,?,?,?,?,?)';
+        var inserts = [username, salt, hash, first_name, last_name, phone_number, email, gender, income, date_of_birth, address];
         sql = mysqlConnection.format(sql, inserts);
         logger.info("addUser sql: " + sql);
 
@@ -93,9 +104,25 @@ module.exports = function(passport) {
                 if (!err) {
                     logger.info("add user to database: " + username + "\t" + salt + "\t" + hash);
                 } else {
-                    logger.error("qurey error");
+                    logger.warn("qurey error");
                 }
             });
+    }
+
+    function createUserObject(body) {
+        var user = {
+            first_name: body.first_name,
+            last_name: body.last_name,
+            phone_number: body.phone_number,
+            email: body.email,
+            gender: body.gender,
+            income: parseInt(body.income),
+            date_of_birth: body.date_of_birth,
+            address: body.address
+        };
+        logger.info("firstname: " + user.first_name);
+
+        return user;
     }
 
     passport.serializeUser(function(user, done) {
@@ -111,7 +138,7 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
-            checkPassword(username, password, checkIsSame, done);
+            singinCheck(username, password, checkIsSame, done);
         }));
 
 
@@ -121,6 +148,10 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
-            checkUser(req, username, password, addUser, done);
+            logger.info("req.body is: " + JSON.stringify(req.body));
+            var user = createUserObject(req.body);
+            logger.info("req.params is: " + JSON.stringify(req.params));
+            logger.info("usasdfaer is: " + JSON.stringify(user));
+            signupCheck(req, username, password, addUser, user, done);
         }));
 };

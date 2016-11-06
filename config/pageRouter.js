@@ -31,14 +31,18 @@ module.exports = function(app) {
     router.get('/signup', function(req, res) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
-
+    router.get('/signupSummary', function(req, res) {
+        // res.status(200);
+        logger.info("signupSummary Page")
+        res.render('signupSummary.ejs', { user: req.user });
+    });
     router.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
     });
 
     app.use('/', router)
-    // route middleware to make sure a user is signed in
+        // route middleware to make sure a user is signed in
     function isLoggedIn(req, res, next) {
 
         // if user is authenticated in the session, carry on 

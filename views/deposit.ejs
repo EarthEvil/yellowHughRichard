@@ -26,11 +26,11 @@
         <form ng-submit="deposit(accountID, amount)">
             <div class="row">
                 <div class="input-field col s6">
-                    <input placeholder="type your account id" ng-model="accountID" type="text" class="validate" required="" aria-required="true">
+                    <input placeholder="type your account id" ng-model="accountID" type="text" class="validate" required="" aria-required="true" maxlength="20">
                     <label for="account_id">Account ID</label>
                 </div>
                 <div class="input-field col s6">
-                    <input placeholder="amount" ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true">
+                    <input placeholder="amount" ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
                     <label for="amount">Amount</label>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit"> deposit
@@ -38,12 +38,14 @@
             </div>
             <div id="alert" ng-show="postError" class="row">
                 <div class="card-panel">
-                    <span class="red-text text-darken-2">Failed to deposit to {{accountID}}</span>
+                    <span class="red-text text-darken-2">DEPOSIT FAILED</span>
+                    <span class="red-text text-darken-2">PLEASE ENSURE YOU HAVE SUFFICIENT BALANCE IN YOUR ACCOUNT</span>
                 </div>
             </div>
             <div id="alert" ng-show="successPost" class="row">
                 <div class="card-panel">
-                    <span class="blue-grey-text text-darken-2">Successly deposit {{amount|currency}} to account {{accountID}}</span>
+                    <span class="blue-grey-text text-darken-2">DEPOSIT SUCCESSED</span>
+                    <span class="blue-grey-text text-darken-2">{{amount|currency}} IS NOW DEPOSITED TO YOUR ACCOUNT: {{accountID}}</span>
                 </div>
             </div>
         </form>

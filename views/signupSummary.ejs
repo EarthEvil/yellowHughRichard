@@ -1,0 +1,24 @@
+<html>
+
+<head>
+    <% include partials/head %>
+        <script src="/js/mainApp.js"></script>
+</head>
+
+<body ng-app="summary" ng-controller="summaryController" class="mainContent">
+    <div>
+        <h4>Welcome, </h4>
+        <h4 id="usernameHeader"><%= user.id%></h4>
+        <br>
+    </div>
+    <div>
+        <div ng-repeat="(key, val) in user_information">
+            <p>asdasd{{key}}aasdas:{{val}}</p>
+        </div>
+    </div>
+    <footer>
+        <% include partials/footer %>
+    </footer>
+</body>
+
+</html>

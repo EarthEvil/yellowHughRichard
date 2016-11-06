@@ -2,19 +2,19 @@
 
 <head>
     <% include partials/head %>
-    <script src="js/debit.js"></script>
+        <script src="js/debit.js"></script>
 </head>
 
 <body ng-app="debit" ng-controller="debitController" class="mainContent">
     <div>
-    <h4>Welcome, <%= user.id%></h4>
+        <h4>Welcome, <%= user.id%></h4>
         <nav>
             <div class="nav-wrapper blue-grey ">
                 <a href="#" class="brand-logo right">Elastic</a>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li><a href="index">Home</a></li>
                     <li><a href="balanceInquire">Balance Inquire</a></li>
-                    <li class="active"><a href="debit" >Debit</a></li>
+                    <li class="active"><a href="debit">Debit</a></li>
                     <li><a href="deposit">Deposit</a></li>
                     <li><a href="inquire">Inquire</a></li>
                 </ul>
@@ -26,11 +26,11 @@
         <form ng-submit="debit(accountID, amount)">
             <div class="row">
                 <div class="input-field col s6">
-                    <input placeholder="type your account id" ng-model="accountID" type="text" class="validate" required="" aria-required="true">
+                    <input placeholder="type your account id" ng-model="accountID" type="text" class="validate" required="" aria-required="true" maxlength="20">
                     <label for="account_id">Account ID</label>
                 </div>
                 <div class="input-field col s6">
-                    <input placeholder="amount" ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true">
+                    <input ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
                     <label for="amount">Amount</label>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit"> debit
@@ -38,17 +38,17 @@
             </div>
             <div id="alert" ng-show="postError" class="row">
                 <div class="card-panel">
-                    <span class="red-text text-darken-2">Failed to debit {{amount|currency}} from account {{accountID}}</span>
+                    <span class="red-text text-darken-2">DEBIT FAILED</span>
                 </div>
             </div>
             <div id="alert" ng-show="successPost" class="row">
                 <div class="card-panel">
-                    <span class="blue-grey-text text-darken-2">Successly debit {{amount|currency}} from account {{accountID}}</span>
+                    <span class="blue-grey-text text-darken-2">{{amount|currency}} IS NOW DEBIT FROM YOUR ACCOUNT: {{accountID}}</span>
                 </div>
             </div>
         </form>
     </div>
-      <footer>
+    <footer>
         <% include partials/footer %>
     </footer>
 </body>

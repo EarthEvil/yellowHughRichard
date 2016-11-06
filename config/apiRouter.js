@@ -12,18 +12,22 @@ module.exports = function(app, passport) {
     }));
 
     router.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/', // redirect to the secure profile section
-        failureRedirect: '/signup', // redirect back to the signup page if there is an error
+        successRedirect: '/signupSummary', // redirect to the secure profile section
+        failureRedirect: '/', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
 
-    router.get('/customer/:customer_id', function(req, res) {
-        var query = 'select * from customer where customer_id = ' + req.params.customer_id;
-        mysqlConnection.query(query, function(err, rows, fields) {
+    router.get('/user/:username', function(req, res) {
+        var sql = 'select * from user where username = ?;';
+        var inserts = [req.params.username];
+        sql = mysqlConnection.format(sql, inserts);
+        mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
                 res.send(rows);
             } else {
-                logger.warn("qurey error");
+                logger.info("qurey error: " + query);
+
+                res.status(401).send("fk");
             }
         });
     });

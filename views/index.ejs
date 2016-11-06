@@ -2,11 +2,15 @@
 
 <head>
     <% include partials/head %>
-    <script src="/js/mainApp.js"></script>
+        <script src="/js/mainApp.js"></script>
 </head>
 
 <body ng-app="mainApp" ng-controller="mainController" class="mainContent">
-    <h4>Welcome, <%= user.id%></h4>
+    <div>
+        <h4>Welcome, </h4>
+        <h4 id="usernameHeader"><%= user.id%></h4>
+        <br>
+    </div>
     <div>
         <nav>
             <div class="nav-wrapper blue-grey ">
@@ -27,7 +31,37 @@
         <a class="waves-effect waves-light btn" ng-click="addCustomer('anothetongming', '33', '13with');">add customer</a>
         <a class="waves-effect waves-light btn" ng-click="postRequest();">postRequest</a>
     </div> -->
-      <footer>
+    <div>
+        <div ng-repeat="(key, val) in user_information">
+            <p>{{ key }}</p>
+            <p>{{ val }}</p>
+        </div>
+    </div>
+    <!-- create new account -->
+    <div>
+        <form ng-submit="createAccount()">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
+                    <label for="amount">Amount you want to deposite to your new account</label>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">create</button>
+            </div>
+            <div id="alert" ng-show="postError" class="row">
+                <div class="card-panel">
+                    <span class="red-text text-darken-2">Create New Account FAILED</span>
+                </div>
+            </div>
+            <div id="alert" ng-show="successPost" class="row">
+                <div class="card-panel">
+                    <span class="blue-grey-text text-darken-2">YOUR NEW ACCOUNT NUMBER IS: {{}}</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <footer>
         <% include partials/footer %>
     </footer>
 </body>

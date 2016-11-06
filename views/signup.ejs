@@ -2,74 +2,112 @@
 
 <head>
     <% include partials/head %>
-
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-    <style> 
-    .toRight {
-        float: right;
-    }
-    
-    .center {
-        position: relative;
-        width: 100%;
-    }
-    /*.btn {
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <style>
+        .toRight {
+            float: right;
+        }
+        
+        .center {
+            position: relative;
+            width: 100%;
+        }
+        /*.btn {
         width: 100px;
     }*/
-    </style>
-    <script src="/js/signup.js"></script>
+        </style>
+        <script src="/js/signup.js"></script>
 </head>
 
 <body ng-app="signup" ng-controller="signupController" class="mainContent">
     <div class="row">
         <h4>SIGN UP</h4>
-        <p>Message<%= message %></p>
+        <p>Message
+            <%= message %>
+        </p>
     </div>
-    <form class="col s12" ng-submit = "signup()">
+    <form class="col s12" method="post" action="/api/signup">
+        <div class="row">
+            <p>Personal Information</p>
+        </div>
         <div class="row">
             <div class="input-field col s6">
-                <input id="first_name" name = "first_name" type="text" class="validate" ng-model="first_name">
+                <input id="first_name" name="first_name" type="text" class="validate" ng-model="first_name" maxlength="20" required="" aria-required="true">
                 <label for="first_name">First Name</label>
             </div>
             <div class="input-field col s6">
-                <input id="last_name" name = "last_name" type="text" class="validate" ng-model="last_name">
+                <input id="last_name" name="last_name" type="text" class="validate" ng-model="last_name" maxlength="20" required="" aria-required="true">
                 <label for="last_name">Last Name</label>
             </div>
         </div>
         <div class="row">
-            <div class="input-field col s12">
-                <input id="userID" name = "userID" type="text" class="validate" ng-model="userID">
-                <label for="userID">User ID</label>
+            <div class="input-field col s6">
+                <input type="tel" class="validate" name="phone_number" ng-model="phone_number" pattern="[0-9]{10}" maxlength="10">
+                <label for="phone_number">Phone Number</label>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="email" name = "email" type="email" class="validate" ng-model="email">
+            <div class="input-field col s6">
+                <input type="email" class="validate" name="email" ng-model="email" maxlength="30" required="" aria-required="true">
                 <label for="email">Email</label>
             </div>
         </div>
         <div class="row">
+            <div class="input-field col s4">
+                <select ng-model="selectedGender" ng-options="x for x in genders">
+                </select>
+                <label>Gender</label>
+                <p> you select {{selectedGender}}</p>
+            </div>
+            <div class="input-field col s4">
+                <input type="date" id="birthdate" name="birthdate" ng-model="date_of_birth" max="2013-12-31" class="datepicker">
+                <label for="birthdate">Date of Birth</label>
+            </div>
+            <div class="input-field col s4">
+                <input ng-model="income" name="income" type="number" class="validate" maxlength="20" required="" aria-required="true">
+                <label for="income">Annual Income</label>
+            </div>
+        </div>
+        <div class="row">
             <div class="input-field col s12">
-                <input id="password" name = "password" type="password" class="validate" ng-model="password">
+                <input id="address" name="address" ng-model="address" type="text" class="validate">
+                <label for="address">Address</label>
+            </div>
+        </div>
+        <br>
+        <p>Account Information</p>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="username" name="username" type="text" class="validate" ng-model="username" maxlength="20" required="" aria-required="true">
+                <label for="username">username</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password" name="password" type="password" class="validate" ng-model="password" maxlength="20" required="" aria-required="true">
                 <label for="password">Password</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input id="confirmPassword" name = "confirmPassword" type="password" class="validate" ng-model="confirmPassword">
+                <input id="confirmPassword" name="confirmPassword" type="password" class="validate" ng-model="confirmPassword" maxlength="20" required="" aria-required="true">
                 <label for="confirmPassword">Confirm Password</label>
             </div>
         </div>
-       <!--  <div class="row">
+        <!--  <div class="row">
             <div class="g-recaptcha" data-sitekey="6LcgKAoUAAAAADv7uJlipSWqPXswGpQekLcwZeWC"></div>
         </div> -->
+        <div class="row">
+            <p>
+                <input type="checkbox" class="filled-in" id="filled-in-box" />
+                <label for="filled-in-box">I have read and agree to the Privacy Policy</label>
+            </p>
+        </div>
         <div class="row">
             <div class="col s4">
                 <button id="signupButton" class="btn waves-effect waves-light disabled" type="submit">SIGN UP</button>
             </div>
         </div>
     </form>
-      <footer>
+    <footer>
         <% include partials/footer %>
     </footer>
 </body>
