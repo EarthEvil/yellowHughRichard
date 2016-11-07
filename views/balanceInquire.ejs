@@ -2,29 +2,42 @@
 
 <head>
     <% include partials/head %>
-    <script src="../js/balance_inquire.js"></script>
+        <script src="../js/balance_inquire.js"></script>
 </head>
 
 <body ng-app="balanceInquire" ng-controller="balanceInquireController" class="mainContent">
-    <header>  
-    <h4>Welcome, <%= user.id%></h4>
-    <div>
-        <nav>
-            <div class="nav-wrapper blue-grey ">
-                <a href="#" class="brand-logo right">Elastic</a>
-                <ul id="nav-mobile" class="left hide-on-med-and-down">
-                    <li><a href="index">Home</a></li>
-                    <li class="active"><a href="balanceInquire">Balance Inquire</a></li>
-                    <li><a href="debit">Debit</a></li>
-                    <li><a href="deposit">Deposit</a></li>
-                    <li><a href="inquire">Inquire</a></li>
-                </ul>
+    <header>
+        <div>
+            <div class="row">
+                <div class="col s2">
+                    <h4>Welcome, </h4>
+                </div>
+                <div class="col s6">
+                    <h4 id="usernameHeader"><%= user.id%></h4>
+                </div>
+                <div class="right">
+                    <a class="btn waves-effect waves-light blue-grey" href="logout">Log out</a>
+                </div>
+                <br>
             </div>
-        </nav>
-    </div>
+        </div>
+        <div>
+            <nav>
+                <div class="nav-wrapper blue-grey ">
+                    <a href="#" class="brand-logo right">Elastic</a>
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                        <li><a href="index">Home</a></li>
+                        <li class="active"><a href="balanceInquire">Balance Inquire</a></li>
+                        <li><a href="debit">Debit</a></li>
+                        <li><a href="deposit">Deposit</a></li>
+                        <li><a href="inquire">Inquire</a></li>
+                        <li><a href="/addAccount">Add New Account</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </header>
     <br>
-
     <div>
         <form ng-submit="getBalance(accountID)">
             <div class="row">
@@ -38,7 +51,6 @@
         </form>
     </div>
     <!-- <div class="row"> -->
-        
     <div id="alert" ng-show="isEmptyResultSet" class="row">
         <div class="card-panel">
             <span class="red-text text-darken-2">NOT RESULT FOUND WITH ACCOUNT ID: {{accountID}} </span>
@@ -46,20 +58,20 @@
     </div>
     </div>
     <!-- <div> -->
-        <div class="row">
-            <div class="col s12 m6">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Account Detail</span>
-                        <p>Account ID: {{accountDetail.account_id}}</p>
-                        <p>Customer ID: {{accountDetail.customer_id}}</p>
-                        <p>Balance: {{accountDetail.balance}}</p>
-                    </div>
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Account Detail</span>
+                    <p>Account ID: {{accountDetail.account_id}}</p>
+                    <p>Customer ID: {{accountDetail.customer_id}}</p>
+                    <p>Balance: {{accountDetail.balance}}</p>
                 </div>
             </div>
         </div>
     </div>
-      <footer>
+    </div>
+    <footer>
         <% include partials/footer %>
     </footer>
 </body>

@@ -1,11 +1,13 @@
 // var express = require('express');
+require(__dirname+ '/env.js');
 var mysql = require('mysql');
 
 var mysqlConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123456',
-    database: 'bank'
+    host: process.env.RDS_HOSTNAME,
+    user: process.env.RDS_USERNAME,
+    password: process.env.RDS_PASSWORD,
+    database: process.env.RDS_DATABASE,
+    port: process.env.RDS_PORT
 });
 
 

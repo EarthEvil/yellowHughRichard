@@ -10,7 +10,6 @@ CREATE TABLE user
 	phone_number varchar(20),
 	email varchar(40),
 	gender varchar(6),   #ISO/IEC 5218 0= unknow, 1 = male 2 = female .....
-	age int,
 	income int,
 	date_of_birth date,
 	address varchar(30),

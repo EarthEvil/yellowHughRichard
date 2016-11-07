@@ -7,7 +7,20 @@
 
 <body ng-app="debit" ng-controller="debitController" class="mainContent">
     <div>
-        <h4>Welcome, <%= user.id%></h4>
+        <div>
+            <div class="row">
+                <div class="col s2">
+                    <h4>Welcome, </h4>
+                </div>
+                <div class="col s6">
+                    <h4 id="usernameHeader"><%= user.id%></h4>
+                </div>
+                <div class="right">
+                    <a class="btn waves-effect waves-light blue-grey" href="logout">Log out</a>
+                </div>
+                <br>
+            </div>
+        </div>
         <nav>
             <div class="nav-wrapper blue-grey ">
                 <a href="#" class="brand-logo right">Elastic</a>
@@ -17,6 +30,7 @@
                     <li class="active"><a href="debit">Debit</a></li>
                     <li><a href="deposit">Deposit</a></li>
                     <li><a href="inquire">Inquire</a></li>
+                    <li><a href="/addAccount">Add New Account</a></li>
                 </ul>
             </div>
         </nav>

@@ -2,7 +2,7 @@
 
 <head>
     <% include partials/head %>
-        <script src="/js/mainApp.js"></script>
+        <script src="/js/signupSummary.js"></script>
 </head>
 
 <body ng-app="summary" ng-controller="summaryController" class="mainContent">
@@ -15,6 +15,9 @@
         <div ng-repeat="(key, val) in user_information">
             <p>asdasd{{key}}aasdas:{{val}}</p>
         </div>
+    </div>
+    <div>
+        <p>home</p> <a class="btn waves-effect waves-light blue" href="index">Home</a>
     </div>
     <footer>
         <% include partials/footer %>

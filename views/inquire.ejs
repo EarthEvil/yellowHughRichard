@@ -1,20 +1,30 @@
 <html lang="en">
 
 <head>
-       <% include partials/head %>
-
-    <style>
-    .toRight {
-        float: right;
-    }
-    </style>
-    <script src="/js/inquire.js"></script>
-    <script src="/js/FileSaver.min.js"></script>
-    <script src="/js/smart-table.js"></script>
+    <% include partials/head %>
+        <style>
+        .toRight {
+            float: right;
+        }
+        </style>
+        <script src="/js/inquire.js"></script>
+        <script src="/js/FileSaver.min.js"></script>
+        <script src="/js/smart-table.js"></script>
 </head>
 
 <body ng-app="inquire" ng-controller="inquireController" class="mainContent">
-    <h4>Welcome, <%= user.id%></h4>
+    <div class="row">
+        <div class="col s2">
+            <h4>Welcome, </h4>
+        </div>
+        <div class="col s6">
+            <h4 id="usernameHeader"><%= user.id%></h4>
+        </div>
+        <div class="right">
+            <a class="btn waves-effect waves-light blue-grey" href="logout">Log out</a>
+        </div>
+        <br>
+    </div>
     <div>
         <nav>
             <div class="nav-wrapper blue-grey ">
@@ -25,6 +35,7 @@
                     <li><a href="debit">Debit</a></li>
                     <li><a href="deposit">Deposit</a></li>
                     <li class="active"><a href="inquire">Inquire</a></li>
+                    <li><a href="/addAccount">Add New Account</a></li>
                 </ul>
             </div>
         </nav>
@@ -62,9 +73,7 @@
             </tfoot>
         </table>
     </div>
- 
     <!-- <br> -->
-    
     <div>
         <a class="waves-effect waves-light btn toRight" ng-click="exportData()" ng-show="showTable">Export</a>
     </div>

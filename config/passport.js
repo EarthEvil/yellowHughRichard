@@ -19,12 +19,12 @@ module.exports = function(passport) {
         }
     }
 
-    function singinCheck(username, password, callback, done) {
+    function signinCheck(username, password, callback, done) {
         //user prepared query
         var sql = 'select salt, hash from user where username = ?;';
         var inserts = [username];
         sql = mysqlConnection.format(sql, inserts);
-        logger.info("singinCheck sql: " + sql);
+        logger.info("signinCheck sql: " + sql);
         mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
                 if (rows[0] != null && rows[0].hash != null) {
@@ -138,7 +138,7 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
-            singinCheck(username, password, checkIsSame, done);
+            signinCheck(username, password, checkIsSame, done);
         }));
 
 

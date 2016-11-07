@@ -1,7 +1,7 @@
 var mainApp = angular.module('mainApp', []);
 
 mainApp.controller("mainController", mainController);
-mainController.$injec = ["$scope", "$http"]
+mainController.$inject = ["$scope", "$http"]
 
 function mainController($scope, $http) {
     // var url = "http://localhost:3000";

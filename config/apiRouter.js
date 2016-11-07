@@ -5,6 +5,7 @@ var path = require('path');
 var logger = require(__dirname + '/logger.js');
 
 module.exports = function(app, passport) {
+
     router.post('/signin', passport.authenticate('local-signin', {
         successRedirect: '/index', // redirect to the secure profile section
         failureRedirect: '/', // redirect back to the signup page if there is an error
@@ -12,20 +13,20 @@ module.exports = function(app, passport) {
     }));
 
     router.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/signupSummary', // redirect to the secure profile section
-        failureRedirect: '/', // redirect back to the signup page if there is an error
+        successRedirect: '/signupSummary', // redirect to the sign up summary
+        failureRedirect: '/signup', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
 
     router.get('/user/:username', function(req, res) {
-        var sql = 'select * from user where username = ?;';
+        var sql = 'select username, first_name, last_name, phone_number, email, gender, income, date_of_birth, address from user where username = ?;';
         var inserts = [req.params.username];
         sql = mysqlConnection.format(sql, inserts);
         mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
                 res.send(rows);
             } else {
-                logger.info("qurey error: " + query);
+                logger.info("qurey error: " + sql);
 
                 res.status(401).send("fk");
             }
@@ -64,14 +65,6 @@ module.exports = function(app, passport) {
                 logger.info(query);
             }
         });
-    });
-
-
-
-
-    router.post('/', function(req, res) {
-        logger.info("post /");
-        res.send('POST request to homepage');
     });
 
     // HTTP POST 

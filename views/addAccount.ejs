@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <% include partials/head %>
+        <script src="/js/addAccount.js"></script>
+</head>
+
+<body ng-app="addAccountApp" ng-controller="addAccountController" class="mainContent">
+    <div>
+        <div class="row">
+            <div class="col s2">
+                <h4>Welcome, </h4>
+            </div>
+            <div class="col s6">
+                <h4 id="usernameHeader"><%= user.id%></h4>
+            </div>
+            <div class="right">
+                <a class="btn waves-effect waves-light blue-grey" href="logout">Log out</a>
+            </div>
+            <br>
+        </div>
+    </div>
+    <div>
+        <nav>
+            <div class="nav-wrapper blue-grey ">
+                <a href="#" class="brand-logo right">Elastic</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="index">Home</a></li>
+                    <li><a href="balanceInquire">Balance Inquire</a></li>
+                    <li><a href="debit">Debit</a></li>
+                    <li><a href="deposit">Deposit</a></li>
+                    <li><a href="inquire">Inquire</a></li>
+                    <li class="active"><a href="/addAccount">Add New Account</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <br>
+    <!-- create new account -->
+    <div>
+        <form ng-submit="createAccount()">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
+                    <label for="amount">Amount you want to deposite to your new account</label>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">create</button>
+            </div>
+            <div id="alert" ng-show="postError" class="row">
+                <div class="card-panel">
+                    <span class="red-text text-darken-2">Create New Account FAILED</span>
+                </div>
+            </div>
+            <div id="alert" ng-show="successPost" class="row">
+                <div class="card-panel">
+                    <span class="blue-grey-text text-darken-2">YOUR NEW ACCOUNT NUMBER IS: {{}}</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <footer>
+        <% include partials/footer %>
+    </footer>
+</body>
+
+</html>

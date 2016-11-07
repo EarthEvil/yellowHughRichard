@@ -1,9 +1,9 @@
-var mainApp = angular.module('mainApp', []);
+var summary = angular.module('summary', []);
 
-mainApp.controller("mainController", mainController);
-mainController.$injec = ["$scope", "$http"]
+summary.controller("summaryController", summaryController);
+summaryController.$inject = ["$scope", "$http"]
 
-function mainController($scope, $http) {
+function summaryController($scope, $http) {
     // var url = "http://localhost:3000";
     var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
     var username = document.getElementById('usernameHeader').innerHTML;
