@@ -4,15 +4,46 @@ mainApp.controller("mainController", mainController);
 mainController.$inject = ["$scope", "$http"]
 
 function mainController($scope, $http) {
+    $(document).ready(function() {
+        $('.tooltipped').tooltip({ delay: 50 });
+    });
     // var url = "http://localhost:3000";
     var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
     var username = document.getElementById('usernameHeader').innerHTML;
-    $http({
-        url: url + '/api/user/' + username,
-        method: "GET",
-    }).then(function(data, status, headers, config) {
-        $scope.user_information = data.data[0];
-    }, function(response) {
-        console.log("fail");
-    });
+    $scope.accounts;
+    $scope.transactionHistory;
+    $scope.showTable = false;
+    $scope.getAccountInfo = function() {
+
+        $http({
+            url: url + '/api/get_account_info/' + username,
+            method: "GET",
+        }).then(function(data, status, headers, config) {
+            $scope.accounts = data.data;
+            console.log(JSON.stringify($scope.accounts));
+        }, function(response) {
+            console.log("fail");
+        });
+    };
+
+
+    $scope.getAccountInfo();
+
+    $scope.getTransaction = function(account_id) {
+        console.log("clicked");
+        console.log(account_id);
+        $scope.showTable = true;
+        $http({
+            url: url + "/api/inquire/" + account_id,
+            method: "GET"
+        }).then(function(data, status, headers, config) {
+            $scope.transactionHistory = data.data;
+            $scope.count++;
+            console.log("success", $scope.transactionHistory);
+
+        }, function() {
+            console.log("erfsdfror!");
+
+        });
+    };
 };

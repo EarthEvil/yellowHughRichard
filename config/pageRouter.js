@@ -12,7 +12,7 @@ module.exports = function(app) {
         res.render('index.ejs', { user: req.user });
     });
     router.get('/balanceInquire', function(req, res) {
-        logger.info(req.ip + " access balanceInquire Page")
+        logger.info(req.user.id + " access balanceInquire Page")
         res.render('balanceInquire.ejs', { user: req.user });
     });
     router.get('/deposit', function(req, res) {

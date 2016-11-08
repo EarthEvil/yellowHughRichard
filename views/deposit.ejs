@@ -14,20 +14,18 @@
             <h4 id="usernameHeader"><%= user.id%></h4>
         </div>
         <div class="right">
-            <a class="btn waves-effect waves-light blue-grey" href="logout">Log out</a>
+            <a class="btn waves-effect waves-light blue lighten-1" href="logout">Log out</a>
         </div>
         <br>
     </div>
     <div>
         <nav>
-            <div class="nav-wrapper blue-grey ">
+            <div class="nav-wrapper blue lighten-1 ">
                 <a href="#" class="brand-logo right">Elastic</a>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li><a href="index">Home</a></li>
-                    <li><a href="balanceInquire">Balance Inquire</a></li>
                     <li><a href="debit">Debit</a></li>
                     <li class="active"><a href="deposit">Deposit</a></li>
-                    <li><a href="inquire">Inquire</a></li>
                     <li><a href="/addAccount">Add New Account</a></li>
                 </ul>
             </div>
@@ -56,8 +54,8 @@
             </div>
             <div id="alert" ng-show="successPost" class="row">
                 <div class="card-panel">
-                    <span class="blue-grey-text text-darken-2">DEPOSIT SUCCESSED</span>
-                    <span class="blue-grey-text text-darken-2">{{amount|currency}} IS NOW DEPOSITED TO YOUR ACCOUNT: {{accountID}}</span>
+                    <span class="blue-text ">DEPOSIT SUCCESSED</span>
+                    <span class="blue-text ">{{amount|currency}} IS NOW DEPOSITED TO YOUR ACCOUNT: {{accountID}}</span>
                 </div>
             </div>
         </form>

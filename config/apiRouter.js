@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var logger = require(__dirname + '/logger.js');
+var request = require('request');
 
 module.exports = function(app, passport) {
 
@@ -17,6 +18,46 @@ module.exports = function(app, passport) {
         failureRedirect: '/signup', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
+
+    router.get('/create_account/:amount', function(req, res) {
+        var user = req.user.id;
+        var amount = req.params.amount;
+        console.log(user);
+        request({
+            url: "http://ec2-54-210-169-238.compute-1.amazonaws.com/generate_account_number",
+            method: "GET",
+            timeout: 10000,
+            followRedirect: true,
+            maxRedirects: 10
+        }, function(error, response, body) {
+            var sql = 'select user_id from user where username = ?';
+            var inserts = [user];
+            sql = mysqlConnection.format(sql, inserts);
+            // var query = 'select user_id from user where username = ' + user;
+            console.log("user: " + user);
+            mysqlConnection.query(sql, function(err, rows) {
+                if (!err) {
+                    console.log("row: " + rows[0].user_id);
+                    console.log(body);
+                    var sql2 = 'insert into account (user_id,account_number, balance) values (?,?,?);';
+                    var inserts = [rows[0].user_id, body, amount];
+                    sql2 = mysqlConnection.format(sql2, inserts);
+                    mysqlConnection.query(sql2, function(err, rows) {
+                        if (!err) {
+                            logger.info("successfully");
+                            res.send(body);
+                        } else {
+                            logger.info("query error： " + sql2);
+                        }
+                    });
+                } else {
+                    logger.info("query error： " + sql);
+                }
+            });
+        });
+    });
+
+
 
     router.get('/user/:username', function(req, res) {
         var sql = 'select username, first_name, last_name, phone_number, email, gender, income, date_of_birth, address from user where username = ?;';
@@ -33,15 +74,32 @@ module.exports = function(app, passport) {
         });
     });
 
+    router.get('/get_account_info/:username', function(req, res) {
+        var sql = 'select account_id, account_number, balance from account join (select user_id from user where username = ?) user_table;';
+        var inserts = [req.params.username];
+        sql = mysqlConnection.format(sql, inserts);
+        mysqlConnection.query(sql, function(err, rows, fields) {
+            if (!err) {
+                res.send(rows);
+            } else {
+                logger.info("qurey error: " + sql);
+
+                res.status(401).send("fk");
+            }
+        });
+    });
+
+
+
     router.get('/inquire/:account_id', function(req, res) {
-        logger.info(req.ip + " request query: " + query);
         var query = 'select * from transaction where account_id =' + req.params.account_id;
+        logger.info(req.user.id + " request query: " + query);
         mysqlConnection.query(query, function(err, rows, fields) {
             if (!err) {
                 res.send(rows);
             } else {
-                logger.warn("qurey error");
-                logger.warn(query);
+                logger.info("qurey error");
+                logger.info(query);
             }
         });
     });
@@ -54,7 +112,7 @@ module.exports = function(app, passport) {
     });
 
     router.get('/balanceinqure/:account_id', function(req, res) {
-        logger.log(req.ip + " request query: " + query);
+        logger.log(JSON.stringify(req.user) + " request query: " + query);
 
         var query = 'select * from account where account_id =' + req.params.account_id;
         mysqlConnection.query(query, function(err, rows, fields) {
@@ -78,7 +136,7 @@ module.exports = function(app, passport) {
             if (!err) {
 
             } else {
-                logger.warn("qurey error");
+                logger.info("qurey error");
                 logger.warn(query);
             }
         });
@@ -96,7 +154,7 @@ module.exports = function(app, passport) {
 
                 // 
             } else {
-                logger.warn("ERROR: " + transactionQuery);
+                logger.info("ERROR: " + transactionQuery);
             };
         });
     };
@@ -113,21 +171,28 @@ module.exports = function(app, passport) {
                 if (rows[0] != null && rows[0].balance != null) {
                     var currentBalance = parseInt(rows[0].balance);
                     var newBalane = currentBalance - amount;
-                    logger.warn("currentBalance:" + currentBalance);
-                    var updateBalance = 'UPDATE account SET balance=' +
-                        newBalane + ' WHERE account_id=' +
-                        account_id + ';'
-                    mysqlConnection.query(updateBalance, addTransaction(account_id, 'debit', amount));
-                    res.send('POST success');
+                    if (newBalane >= 0) {
+                        logger.info("currentBalance:" + currentBalance);
+                        var updateBalance = 'UPDATE account SET balance=' +
+                            newBalane + ' WHERE account_id=' +
+                            account_id + ';'
+                        mysqlConnection.query(updateBalance, addTransaction(account_id, 'debit', amount));
+                        res.send('POST success');
+
+                    } else {
+                        logger.info("insufficient ");
+                        res.status(400);
+                        res.send('None shall pass');
+                    }
 
                 } else {
-                    logger.warn("no such account");
+                    logger.info("wrong account_number ");
                     res.status(400);
                     res.send('None shall pass');
                 }
             } else {
-                logger.warn("qurey error");
-                logger.warn(query);
+                logger.info("qurey error");
+                logger.infos(query);
                 res.status(400);
                 res.send('None shall pass');
             }
@@ -153,7 +218,7 @@ module.exports = function(app, passport) {
                     res.send('POST success');
 
                 } else {
-                    logger.warn("no such account");
+                    logger.info("no such account");
 
                     res.status(400);
                     res.send('None shall pass');
@@ -161,8 +226,8 @@ module.exports = function(app, passport) {
             } else {
                 res.status(400);
                 res.send('None shall pass');
-                logger.warn("qurey error");
-                logger.warn(query);
+                logger.info("qurey error");
+                logger.info(query);
             }
         });
 

@@ -29,7 +29,7 @@ function signupController($window, $scope, $http) {
     }
     passwordField.onchange = validatePassword;
     confirmPasswordField.onkeyup = validatePassword;
-    
+
     function mysqlDate(date) {
         date = date || new Date();
         return date.toISOString().split('T')[0];
