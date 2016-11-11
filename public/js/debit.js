@@ -12,6 +12,7 @@ function debitController($window, $scope, $http) {
     var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
     $scope.postError = false;
     $scope.successPost = false;
+    // $scope.amount = 0;
 
     $scope.getAccountInfo = function() {
         $http({
@@ -28,25 +29,20 @@ function debitController($window, $scope, $http) {
         });
     };
 
-    $scope.debit = function(account_id, amount) {
-        console.log($scope.amount);
-        console.log($scope.accountID);
+    $scope.debit = function(selectedAccount, amount) {
+        console.log("amount:" + amount);
+        console.log(selectedAccount);
         $http({
             url: url + "/api/debit/",
             method: "POST",
             data: {
-                account_id: account_id,
+                account_number: $scope.selectedAccount,
                 amount: amount
             }
         }).then(function(data, status, headers, config) {
-            $scope.postError = false;
-            $scope.successPost = true;
             console.log("success post");
 
         }, function(response) {
-
-            $scope.postError = true;
-            $scope.successPost = false;
             console.log("fail: " + JSON.stringify(response));
         });
     };

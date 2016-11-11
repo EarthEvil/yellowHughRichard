@@ -36,26 +36,25 @@
     </div>
     <br>
     <div>
-        <form ng-submit="deposit(account_number, amount)">
-            <div ng-app="debit" ng-controller="debitController">
-                <select name="resourceTemp" ng-model="selectedAccount">
-                    <option ng-repeat="account in accounts" value="{{account.account_number}}">{{account.account_number}}</option>
-                </select>
-                {{selectedAccount}}
-            </div>
-            <button class="btn waves-effect waves-light" type="submit">deposit</button>
-        </form>
-        <div>
-            <div id="alert" ng-show="postError" class="row">
-                <div class="card-panel">
-                    <span class="red-text text-darken-2">DEBIT FAILED</span>
+        <div ng-app="debit" ng-controller="debitController">
+            <form ng-submit="debit(selectedAccount, amount)">
+                <div class="row">
+                    <div class=" input-field col s6">
+                        Account Number
+                        <select name="resourceTemp" ng-model="selectedAccount">
+                            <option ng-repeat="account in accounts" value="{{account.account_number}}">{{account.account_number}}</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div id="alert" ng-show="successPost" class="row">
-                <div class="card-panel">
-                    <span class="blue-text">{{amount|currency}} IS NOW DEBIT FROM YOUR ACCOUNT: {{accountID}}</span>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="amount you want to debit" ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
+                        <label for="amount">Amount</label>
+                    </div>
                 </div>
-            </div>
+                <!-- {{selectedAccount}} -->
+                <button class="btn waves-effect waves-light" type="submit">debit</button>
+            </form>
         </div>
         <footer>
             <% include partials/footer %>

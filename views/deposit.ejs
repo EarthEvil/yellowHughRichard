@@ -33,31 +33,26 @@
     </div>
     <br>
     <div>
-        <form ng-submit="deposit(account_number, amount)">
-            <div class="row">
-                <div class="input-field col s6">
-                    <input placeholder="type your account number" ng-model="account_number" type="text" class="validate" required="" aria-required="true" maxlength="20">
-                    <label for="account_id">Account Number</label>
+        <div ng-app="deposit" ng-controller="depositController">
+            <form ng-submit="deposit(selectedAccount, amount)">
+                <div class="row">
+                    <div class=" input-field col s6">
+                        Account Number
+                        <select name="resourceTemp" ng-model="selectedAccount">
+                            <option ng-repeat="account in accounts" value="{{account.account_number}}">{{account.account_number}}</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="input-field col s6">
-                    <input placeholder="amount you want to deposit" ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
-                    <label for="amount">Amount</label>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="amount you want to deposit" name="amount" ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
+                        <label for="amount">Amount</label>
+                    </div>
                 </div>
-                <button class="btn waves-effect waves-light" type="submit"> deposit
-                </button>
-            </div>
-            <div id="alert" ng-show="postError" class="row">
-                <div class="card-panel">
-                    <span class="red-text text-darken-2">DEPOSIT FAILED</span>
-                </div>
-            </div>
-            <div id="alert" ng-show="successPost" class="row">
-                <div class="card-panel">
-                    <span class="blue-text ">DEPOSIT SUCCESSED</span>
-                    <span class="blue-text ">{{amount|currency}} IS NOW DEPOSITED TO YOUR ACCOUNT: {{account_number}}</span>
-                </div>
-            </div>
-        </form>
+                <!-- {{selectedAccount}} -->
+                <button class="btn waves-effect waves-light" type="submit">deposit</button>
+            </form>
+        </div>
     </div>
     <footer>
         <% include partials/footer %>
