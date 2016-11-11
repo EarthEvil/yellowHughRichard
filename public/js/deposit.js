@@ -8,14 +8,14 @@ function depositController($window, $scope, $http) {
     var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
     $scope.postError = false;
     $scope.successPost= false;
-    $scope.deposit = function(account_id, amount) {
+    $scope.deposit = function(account_number, amount) {
         console.log($scope.amount);
-        console.log($scope.accountID);
+        console.log($scope.account_number);
         $http({
             url: url + "/api/deposit/",
             method: "POST",
             data: {
-                account_id: account_id,
+                account_number: account_number,
                 amount: amount
             }
         }).then(function(data, status, headers, config) {

@@ -11,24 +11,29 @@ module.exports = function(app) {
         logger.info(req.ip + " access home page ");
         res.render('index.ejs', { user: req.user });
     });
-    router.get('/balanceInquire', function(req, res) {
+    router.get('/balanceInquire', isLoggedIn, function(req, res) {
         logger.info(req.user.id + " access balanceInquire Page")
         res.render('balanceInquire.ejs', { user: req.user });
     });
-    router.get('/deposit', function(req, res) {
+    router.get('/deposit', isLoggedIn, function(req, res) {
         logger.info(req.ip + " access deposit Page")
 
         res.render('deposit.ejs', { user: req.user });
     });
-    router.get('/debit', function(req, res) {
+    router.get('/debit', isLoggedIn, function(req, res) {
         logger.info(req.ip + " access debit Page")
 
         res.render('debit.ejs', { user: req.user });
     });
-    router.get('/inquire', function(req, res) {
+    router.get('/inquire', isLoggedIn, function(req, res) {
         logger.info(req.ip + " access inquire Page")
 
         res.render('inquire.ejs', { user: req.user });
+    });
+
+    router.get('/accountManagement', isLoggedIn, function(req, res) {
+        logger.info(req.ip + " access addAccount Page")
+        res.render('account_management.ejs', { user: req.user });
     });
     router.get('/', function(req, res) {
         logger.info(req.ip + " access log in page");
@@ -44,10 +49,7 @@ module.exports = function(app) {
         logger.info(req.ip + " access signupSummary Page")
         res.render('signupSummary.ejs', { user: req.user });
     });
-    router.get('/addAccount', function(req, res) {
-        logger.info(req.ip + " access addAccount Page")
-        res.render('addAccount.ejs', { user: req.user });
-    });
+
 
 
     router.get('/logout', function(req, res) {

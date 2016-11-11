@@ -8,35 +8,25 @@ function debitController($window, $scope, $http) {
     $(document).ready(function() {
         $scope.getAccountInfo();
     });
-
     // var url = "http://localhost:3000";
     var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
     $scope.postError = false;
     $scope.successPost = false;
-    // $scope.accounts;
-    $scope.chosenAccount = [{
-        account_number: ""
-    }];
-    // $scope.accounts = [{ account_number: "adfs" }, { account_number: "xys" }];
-    // console.log(JSON.stringify($scope.accounts));
-    // $scope.names = ["Emil", "Tobias", "Linus"];
 
     $scope.getAccountInfo = function() {
-
         $http({
             url: url + '/api/get_account_info/' + username,
             method: "GET",
-        }).then(function(data, status, headers, config) {
+        }).then(function(data) {
             $scope.accounts = data.data;
-            console.log(JSON.stringify($scope.accounts))
+            $scope.selectedAccount = $scope.accounts[1].account_number;
             $('select').material_select();
+            // console.log("accounts: " + JSON.stringify($scope.accounts));
             console.log("good");
-            $scope.repeats = [{ item: "item1" }];
         }, function(response) {
             console.log("fail");
         });
     };
-
 
     $scope.debit = function(account_id, amount) {
         console.log($scope.amount);

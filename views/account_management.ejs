@@ -1,0 +1,86 @@
+<html>
+
+<head>
+    <% include partials/head %>
+        <script src="/js/account_management.js"></script>
+</head>
+
+<body ng-app="accountManagement" ng-controller="accountManagementController" class="mainContent">
+    <div>
+        <div class="row">
+            <div class="col s2">
+                <h4>Welcome, </h4>
+            </div>
+            <div class="col s6">
+                <h4 id="usernameHeader"><%= user.id%></h4>
+            </div>
+            <div class="right">
+                <a class="btn waves-effect waves-light blue lighten-1" href="logout">Log out</a>
+            </div>
+            <br>
+        </div>
+    </div>
+    <div>
+        <nav>
+            <div class="nav-wrapper blue lighten-1 ">
+                <a href="#" class="brand-logo right">Elastic</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="index">Home</a></li>
+                    <li><a href="debit">Debit</a></li>
+                    <li><a href="deposit">Deposit</a></li>
+                    <li class="active"><a href="accountManagement">Manage Account</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <br>
+    <!-- create new account -->
+    <div>
+        Create New Account
+        <form ng-submit="createAccount(amount)">
+            <div class="row">
+                <div class="input-field col s4">
+                    <input ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
+                    <label for="amount">Amount to deposite to account</label>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">create</button>
+            </div>
+            <div id="alert" ng-show="postError" class="row">
+                <div class="card-panel">
+                    <span class="red-text text-darken-2">Create New Account FAILED</span>
+                </div>
+            </div>
+            <div id="alert" ng-show="successPost" class="row">
+                <div class="card-panel">
+                    <span class="blue lighten-1-text text-darken-2">YOUR NEW ACCOUNT NUMBER IS: {{}}</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        Delete Account
+        <form ng-submit="deleteAccount(account_number)">
+            <div class="row">
+                <div class="input-field col s4">
+                    <input id="account_number" name="account_number" type="text" ng-model="account_number" class="validate" required="" aria-required="true" maxlength="20">
+                    <label for="account_number">Account Number</label>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light " type="submit">Delete</button>
+            </div>
+            <div id="alert" ng-show="!(serverResponse === undefined)" class="row">
+                <div class="card-panel">
+                    <span class="red-text flow-text ">{{serverResponse}}</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <footer>
+        <% include partials/footer %>
+    </footer>
+</body>
+
+</html>

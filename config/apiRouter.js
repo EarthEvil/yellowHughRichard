@@ -5,6 +5,9 @@ var path = require('path');
 var logger = require(__dirname + '/logger.js');
 var request = require('request');
 
+// const SQL query string 
+
+
 module.exports = function(app, passport) {
 
     router.post('/signin', passport.authenticate('local-signin', {
@@ -57,6 +60,35 @@ module.exports = function(app, passport) {
         });
     });
 
+    router.delete('/delete_account/:account_number', function(req, res) {
+        var account_number = req.params.account_number;
+        var sql = 'SELECT account_id FROM account WHERE account_number = ?;';
+        var inserts = [account_number];
+        sql = mysqlConnection.format(sql, inserts);
+        mysqlConnection.query(sql, function(err, rows, fields) {
+            if (!err) {
+                if (rows[0] != null) {
+                    var deleteSQL = 'DELETE FROM account WHERE account_id = ?';
+                    var inserts = [parseInt(rows[0].account_id)];
+                    deleteSQL = mysqlConnection.format(deleteSQL, inserts);
+                    mysqlConnection.query(deleteSQL, function(err, rows, fields) {
+                        if (!err) {
+                            res.send("Delete account " + account_number);
+                        } else {
+                            res.send("Failed to Delete Account");
+                        }
+                    });
+                } else {
+                    res.send("Not such account, Please check your account number.");
+                }
+
+
+            } else {
+                logger.info("QUERY ERROR: " + sql);
+                res.send("Failed to Delete Account");
+            }
+        });
+    });
 
 
     router.get('/user/:username', function(req, res) {
@@ -92,79 +124,90 @@ module.exports = function(app, passport) {
 
 
     router.get('/inquire/:account_id', function(req, res) {
-        var query = 'select * from transaction where account_id =' + req.params.account_id;
-        logger.info(req.user.id + " request query: " + query);
-        mysqlConnection.query(query, function(err, rows, fields) {
+        var sql = 'select * from transaction where account_id= ?';
+        var inserts = [req.params.account_id];
+        sql = mysqlConnection.format(sql, inserts);
+        logger.info(req.user.id + " request query: " + sql);
+        mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
                 res.send(rows);
             } else {
                 logger.info("qurey error");
-                logger.info(query);
+                logger.info(sql);
             }
         });
     });
 
-    router.get('/thoughtputTest/:runs', function(req, res) {
-        var query = 'select * from transaction limit 1;';
-        for (var i = 0; i < 1000; i++) {
-            mysqlConnection.query(query);
-        }
-    });
 
     router.get('/balanceinqure/:account_id', function(req, res) {
-        logger.log(JSON.stringify(req.user) + " request query: " + query);
-
-        var query = 'select * from account where account_id =' + req.params.account_id;
-        mysqlConnection.query(query, function(err, rows, fields) {
+        var sql = 'select * from account where account_id= ?';
+        var inserts = [req.params.account_id];
+        sql = mysqlConnection.format(sql, inserts);
+        logger.log(JSON.stringify(req.user) + " request query: " + sql);
+        mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
                 res.send(rows);
             } else {
                 logger.info("qurey error");
-                logger.info(query);
+                logger.info(sql);
             }
         });
     });
 
     // HTTP POST 
-    router.post('/addCustomer', function(req, res) {
-        var name = req.body.name;
-        var age = req.body.age;
-        var address = req.body.address;
-        var query = 'insert into customer (name, age, address)  values("' + name + '" , ' + age + ', "' + address + '")';
-        mysqlConnection.query(query, function(err, rows, fields) {
-            logger.info(req.ip + " request query: " + query);
+    function getAccountId(account_number, callback) {
+        var sql = 'select account_id from account where account_number = ?';
+        var inserts = [account_number];
+        sql = mysqlConnection.format(sql, inserts);
+        mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
-
+                logger.info("rows: " + JSON.stringify(rows));
+                return rows[0].account_id;
             } else {
-                logger.info("qurey error");
-                logger.warn(query);
-            }
+                logger.info("ERROR: " + sql);
+                return null;
+            };
         });
-        logger.log(name, age, address);
-        res.send('POST request to homepage');
-    });
+    }
 
-    function addTransaction(account_id, transaction_type, amount) {
-        var transactionQuery = 'insert into transaction (account_id,transaction_type, amount, time) values (' +
-            account_id + ',  \'' + transaction_type + ' \' , ' + amount + ', ' + 'CURDATE()' + ');';
-        // (${account_id},${transaction_type}, ${amount}, CURDATE());';
-        mysqlConnection.query(transactionQuery, function(err, rows, fields) {
+    function addTransaction(account_number, transaction_type, amount) {
+        // find account_id by account_number
+
+        var sql = 'select account_id from account where account_number = ?';
+        var inserts = [account_number];
+        sql = mysqlConnection.format(sql, inserts);
+        mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
-                logger.info("EXECUTED: " + transactionQuery);
-
-                // 
+                logger.info("rows: " + JSON.stringify(rows));
+                if (rows[0] != null && rows[0].account_id != null) {
+                    var sql = 'insert into transaction (account_id,transaction_type, amount, time) values (?,?,?, NOW())';
+                    var inserts = [rows[0].account_id, transaction_type, amount];
+                    sql = mysqlConnection.format(sql, inserts);
+                    mysqlConnection.query(sql, function(err, rows, fields) {
+                        if (!err) {
+                            logger.info("EXECUTED: " + sql);
+                        } else {
+                            logger.info("ERROR: " + sql);
+                        };
+                    });
+                }
+                return rows[0].account_id;
             } else {
-                logger.info("ERROR: " + transactionQuery);
+                logger.info("ERROR: " + sql);
+                return null;
             };
         });
     };
 
     router.post('/debit', function(req, res) {
-        var account_id = req.body.account_id;
+        var account_number = req.body.account_number;
         var amount = parseInt(req.body.amount);
-        logger.log(req.ip + " debit " + amount + " from account " + account_id);
+        logger.log(req.ip + " debit " + amount + " from account " + account_number);
         // get amount
-        var getAmountQuery = 'select balance from account where account_id = ' + account_id;
+        var getAmountQuery = 'select balance from account where account_number = ?';
+        var inserts = [account_number];
+        getAmountQuery = mysqlConnection.format(getAmountQuery, inserts);
+
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
             // res.json(rows);
             if (!err) {
@@ -172,49 +215,54 @@ module.exports = function(app, passport) {
                     var currentBalance = parseInt(rows[0].balance);
                     var newBalane = currentBalance - amount;
                     if (newBalane >= 0) {
-                        logger.info("currentBalance:" + currentBalance);
-                        var updateBalance = 'UPDATE account SET balance=' +
-                            newBalane + ' WHERE account_id=' +
-                            account_id + ';'
-                        mysqlConnection.query(updateBalance, addTransaction(account_id, 'debit', amount));
+                        var updateBalanceQuery = 'update account set balance = ? where account_number = ?';
+                        var inserts = [newBalane, account_number];
+                        updateBalanceQuery = mysqlConnection.format(updateBalanceQuery, inserts);
+                        mysqlConnection.query(updateBalanceQuery, addTransaction(account_number, 'debit', amount));
                         res.send('POST success');
-
                     } else {
-                        logger.info("insufficient ");
+                        logger.info("insufficient fund");
                         res.status(400);
-                        res.send('None shall pass');
+                        res.send('insufficient fund');
                     }
 
                 } else {
-                    logger.info("wrong account_number ");
+                    logger.info("no such account");
                     res.status(400);
-                    res.send('None shall pass');
+                    res.send('no such account');
                 }
             } else {
                 logger.info("qurey error");
                 logger.infos(query);
                 res.status(400);
-                res.send('None shall pass');
+                res.send('query error');
             }
         });
     });
 
     router.post('/deposit', function(req, res) {
-        var account_id = req.body.account_id;
+        var account_number = req.body.account_number;
         var amount = parseInt(req.body.amount);
-        logger.log(req.ip + " deposit " + amount + " to account " + account_id);
+        logger.log(req.ip + " deposit " + amount + " to account " + account_number);
 
-        var getAmountQuery = 'select balance from account where account_id = ' + account_id;
+        var getAmountQuery = 'select balance from account where account_number = ' + account_number;
         // get amount
+        var getAmountQuery = 'select balance from account where account_number = ?';
+        var inserts = [account_number];
+        getAmountQuery = mysqlConnection.format(getAmountQuery, inserts);
+
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
             if (!err) {
                 if (rows[0] != null && rows[0].balance != null) {
                     var currentBalance = parseInt(rows[0].balance);
                     var newBalane = currentBalance + amount;
-                    var updateBalance = 'UPDATE account SET balance=' +
-                        newBalane + ' WHERE account_id=' +
-                        account_id + ';'
-                    mysqlConnection.query(updateBalance, addTransaction(account_id, 'deposit', amount));
+                    // get account_id from 
+
+                    var updateBalanceQuery = 'UPDATE account SET balance= ? WHERE account_number= ? '
+                    var inserts = [newBalane, account_number];
+                    updateBalanceQuery = mysqlConnection.format(updateBalanceQuery, inserts);
+
+                    mysqlConnection.query(updateBalanceQuery, addTransaction(account_number, 'deposit', amount));
                     res.send('POST success');
 
                 } else {
@@ -225,9 +273,8 @@ module.exports = function(app, passport) {
                 }
             } else {
                 res.status(400);
-                res.send('None shall pass');
-                logger.info("qurey error");
-                logger.info(query);
+                res.send('qurey error');
+                logger.info("qurey error: " + query);
             }
         });
 
