@@ -55,3 +55,8 @@ REST and SOAP comparison: http://spf13.com/post/soap-vs-rest | why we choose RES
 
 - choose angular $http over $ajax
 - caching  
+
+
+
+Error: listen EADDRINUSE
+ps aux | grep node
