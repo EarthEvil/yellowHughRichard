@@ -2,17 +2,15 @@
 
 <head>
     <% include partials/head %>
-    <style>
-    .toRight {
-        float: right;
-    }
-    .center {
-        position: relative;
-        width: 100%;
-    }
-    </style>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-    <script src="/js/login.js"></script>
+        <style>
+        .center {
+            position: relative;
+            width: 100%;
+        }
+        </style>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <script src="/js/login.js"></script>
+        <title>Log In</title>
 </head>
 
 <body ng-app="login" ng-controller="loginController" class="mainContent">
@@ -22,20 +20,20 @@
                 <div class="card-content black-text">
                     <div class="row">
                         <!-- <form class="col s6" ng-submit="login(username, password)"> -->
-                        <form class="col s6" method = "post"  action = "/api/signin">
+                        <form class="col l6" method="post" action="/api/signin">
                             <div class="row">
                                 <span class="card-title">Log In</span>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="username" name = "username" ng-model="username" type="text" class="validate" autocomplete="off" required="" aria-required="true" maxlength="20">
+                                    <input id="username" name="username" ng-model="username" type="text" class="validate" autocomplete="off" required="" aria-required="true" maxlength="20">
                                     <label for="username">username</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="password" name = "password" ng-model="password" type="password" class="validate" required="" aria-required="true" maxlength="20">
-                                    <label for="password" >Password</label>
+                                    <input id="password" name="password" ng-model="password" type="password" class="validate" required="" aria-required="true" maxlength="20">
+                                    <label for="password">Password</label>
                                 </div>
                             </div>
                             <!-- <div class="row">
@@ -43,9 +41,9 @@
                             </div> -->
                             <div class="row">
                                 <div class="col s4">
-                                    <button class="btn waves-effect waves-light"  type="submit">Log in</button>
+                                    <button class="btn waves-effect waves-light" type="submit">Login</button>
                                 </div>
-                                <div class="col s6">
+                                <div class="col s6 hide-on-small-only">
                                     <div class="switch">
                                         <P>Remember me</P>
                                         <label>
@@ -56,17 +54,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="divider"></div>
                             <div class="row">
                                 <br>
-                                <div class="col s6">
+                                <div class="col 6">
                                     <p>Do not have an account? </p> <a class="btn waves-effect waves-light blue" href="signup">Sign up</a>
                                 </div>
-                               <!--  <div class="col s6">
+                                <!--  <div class="col s6">
                                     <p>Go back to home</p> <a class="btn waves-effect waves-light blue" href="index">Home</a>
                                 </div> -->
                             </div>
                         </form>
-                        <div class="col s6">
+                        <div class="col l6 hide-on-small-only">
                             <img class="center" src="/images/logo.png" alt="Mountain View">
                         </div>
                     </div>
@@ -74,7 +73,8 @@
             </div>
         </div>
     </div>
-      <footer>
+    <footer>
+        <div class="divider"></div>
         <% include partials/footer %>
     </footer>
 </body>

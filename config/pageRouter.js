@@ -32,7 +32,7 @@ module.exports = function(app) {
     });
 
     router.get('/accountManagement', isLoggedIn, function(req, res) {
-        logger.info(req.ip + " access addAccount Page")
+        logger.info(req.ip + " access accountManagement Page")
         res.render('account_management.ejs', { user: req.user });
     });
     router.get('/', function(req, res) {
@@ -48,6 +48,12 @@ module.exports = function(app) {
         // res.status(200);
         logger.info(req.ip + " access signupSummary Page")
         res.render('signupSummary.ejs', { user: req.user });
+    });
+
+    router.get('/privacyPolicy', function(req, res) {
+        // res.status(200);
+        logger.info(req.ip + " access privacy_policy Page")
+        res.render('privacy_policy.ejs');
     });
 
 

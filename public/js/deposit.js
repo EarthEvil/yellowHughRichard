@@ -4,6 +4,7 @@ deposit.controller("depositController", depositController);
 depositController.$inject = ["$window", "$scope", "$http"]
 
 function depositController($window, $scope, $http) {
+    var depositForm = document.getElementById('depositForm');
     var username = document.getElementById('usernameHeader').innerHTML;
     $(document).ready(function() {
         $scope.getAccountInfo();
@@ -15,7 +16,11 @@ function depositController($window, $scope, $http) {
             method: "GET",
         }).then(function(data) {
             $scope.accounts = data.data;
-            $scope.selectedAccount = $scope.accounts[1].account_number;
+            if ($scope.accounts[0] !== undefined) {
+                $scope.selectedAccount = $scope.accounts[0].account_number;
+            } else {
+                $scope.enmpty = true;
+            }
             $('select').material_select();
             console.log("accounts: " + JSON.stringify($scope.accounts));
             console.log("good");
@@ -36,11 +41,13 @@ function depositController($window, $scope, $http) {
                 amount: amount
             }
         }).then(function(data, status, headers, config) {
-            console.log("success post");
+            $scope.serverResponse = data.data;
 
         }, function(response) {
-            console.log("fail");
+            $scope.serverResponse = response;
         });
+        console.log("afterward");
+        depositForm.reset();
     };
 
 };
