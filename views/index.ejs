@@ -12,75 +12,63 @@
 </head>
 
 <body ng-app="mainApp" ng-controller="mainController" class="mainContent">
-    <% include partials/top %>
-        <div>
-            <nav>
-                <div class="nav-wrapper blue lighten-1 ">
-                    <a href="#" class="brand-logo right">Elastic</a>
-                    <ul id="nav-mobile" class="left hide-on-med-and-down">
-                        <li class="active"><a href="index">Home</a></li>
-                        <li><a href="debit">Debit</a></li>
-                        <li><a href="deposit">Deposit</a></li>
-                        <li><a href="accountManagement">Manage Account</a></li>
-                        <li><a href="location">Find Nearby Branch</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-        <br>
-        <!-- if no account, as use to add new account -->
-        <!-- show account -->
-        <div class="row">
-            <div class="col s4" id="account_card">
-                <div ng-repeat="account in accounts">
-                    <div class="card vertical accoutCard hoverable" ng-click="getTransaction(account.account_id)">
-                        <div class="card-image">
-                            <img src="/images/blue_bar.png">
-                        </div>
-                        <div class="card-stacked">
-                            <div class="card-content black-text ">
-                                <span class="card-title">Account #: {{account.account_number}}</span>
-                                <p>Balance: {{account.balance |currency}}</p>
-                            </div>
+    <div>
+        <% include partials/side_menu %>
+    </div>
+    <br>
+    <!-- if no account, as use to add new account -->
+    <!-- show account -->
+    <div class="row content">
+        <div class="col s4" id="account_card">
+            <div ng-repeat="account in accounts">
+                <div class="card vertical accoutCard hoverable" ng-click="getTransaction(account.account_id)">
+                    <div class="card-image">
+                        <img src="/images/blue_bar.png">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content black-text ">
+                            <span class="card-title">Account #: {{account.account_number}}</span>
+                            <p>Balance: {{account.balance |currency}}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col s8 border" id="transactions">
-                <div id="transactionTable" ng-show="showTable">
-                    <h5>Your Recent Transactions: </h5>
-                    <table st-table="hah" class="bordered highlight responsive-table ">
-                        <thead>
-                            <tr>
-                                <th data-field="date">Date</th>
-                                <th data-field="transaction_id">Transaction ID</th>
-                                <th data-field="from">From</th>
-                                <th data-field="type">Type</th>
-                                <th data-field="amount">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="transaction in transactionHistory">
-                                <td>{{ transaction.time | date:'medium'}}</td>
-                                <td>{{ transaction.transaction_id}}</td>
-                                <td>{{ transaction.account_id}}</td>
-                                <td>{{ transaction.transaction_type}}</td>
-                                <td>{{ transaction.amount | currency}}</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="5" class="text-center" st-pagination="" st-items-by-page="5" colspan="4">
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+        </div>
+        <div class="col s8 border" id="transactions">
+            <div id="transactionTable" ng-show="showTable">
+                <h5>Your Recent Transactions: </h5>
+                <table st-table="hah" class="bordered highlight responsive-table ">
+                    <thead>
+                        <tr>
+                            <th data-field="date">Date</th>
+                            <th data-field="transaction_id">Transaction ID</th>
+                            <th data-field="from">From</th>
+                            <th data-field="type">Type</th>
+                            <th data-field="amount">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="transaction in transactionHistory">
+                            <td>{{ transaction.time | date:'medium'}}</td>
+                            <td>{{ transaction.transaction_id}}</td>
+                            <td>{{ transaction.account_id}}</td>
+                            <td>{{ transaction.transaction_type}}</td>
+                            <td>{{ transaction.amount | currency}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-center" st-pagination="" st-items-by-page="5" colspan="4">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
-        <footer>
-            <% include partials/footer %>
-        </footer>
+    </div>
+    <footer>
+        <% include partials/footer %>
+    </footer>
 </body>
 
 </html>

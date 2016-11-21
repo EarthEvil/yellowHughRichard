@@ -8,74 +8,62 @@
 
 <body ng-app="accountManagement" ng-controller="accountManagementController" class="mainContent">
     <div>
-        <% include partials/top %>
-    </div>
-    <div>
-        <nav>
-            <div class="nav-wrapper blue lighten-1 ">
-                <a href="#" class="brand-logo right">Elastic</a>
-                <ul id="nav-mobile" class="left hide-on-med-and-down">
-                    <li><a href="index">Home</a></li>
-                    <li><a href="debit">Debit</a></li>
-                    <li><a href="deposit">Deposit</a></li>
-                    <li class="active"><a href="accountManagement">Manage Account</a></li>
-                    <li><a href="location">Find Nearby Branch</a></li>
-                </ul>
-            </div>
-        </nav>
+        <% include partials/side_menu %>
     </div>
     <br>
-    <!-- create new account -->
-    <div class="section">
-        <h5>Create New Account</h5>
-        <div class="row">
-            <div class="col s4">
-                <form ng-submit="createAccount(amount)">
-                    <div class="row">
-                        <div class="input-field ">
-                            <input ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
-                            <label for="amount">Amount to deposite to account</label>
+    <div class="content">
+        <!-- create new account -->
+        <div class="section">
+            <h5>Create New Account</h5>
+            <div class="row">
+                <div class="col s4">
+                    <form ng-submit="createAccount(amount)">
+                        <div class="row">
+                            <div class="input-field ">
+                                <input ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
+                                <label for="amount">Amount to deposite to account</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light" type="submit">create</button>
-                    </div>
-                </form>
-                <div ng-show="createResponse !== undefined">
-                    <div class="card white">
-                        <div class="card-content blue-text flow-text">
-                            {{createResponse}}
+                        <div class="row">
+                            <button class="btn waves-effect waves-light" type="submit">create</button>
+                        </div>
+                    </form>
+                    <div ng-show="createResponse !== undefined">
+                        <div class="card white">
+                            <div class="card-content blue-text flow-text">
+                                {{createResponse}}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col s4">
+                <div class="col s4">
+                </div>
             </div>
         </div>
-    </div>
-    <br>
-    <br>
-    <div>
-        <div ng-app="accountManagement" ng-controller="accountManagementController" ng-show="accounts[0] !== undefined">
-            <div class="section">
-                <h5>Delete Account</h5>
-                <form ng-submit="deleteAccount(selectedAccount)">
-                    <div class="row">
-                        <div class=" input-field col s4">
-                            Account Number
-                            <select name="resourceTemp" ng-model="selectedAccount">
-                                <option ng-repeat="account in accounts" value="{{account.account_number}}">{{account.account_number}}</option>
-                            </select>
+        <br>
+        <br>
+        <div>
+            <div ng-app="accountManagement" ng-controller="accountManagementController" ng-show="accounts[0] !== undefined">
+                <div class="section">
+                    <h5>Delete Account</h5>
+                    <form ng-submit="deleteAccount(selectedAccount)">
+                        <div class="row">
+                            <div class=" input-field col s4">
+                                Account Number
+                                <select name="resourceTemp" ng-model="selectedAccount">
+                                    <option ng-repeat="account in accounts" value="{{account.account_number}}">{{account.account_number}}</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <!-- {{selectedAccount}} -->
-                    <button class="btn waves-effect waves-light" type="submit">delete</button>
-                </form>
-                <div>
-                    <div ng-show="deleteResponse !== undefined">
-                        <div class="card white">
-                            <div class="card-content red-text flow-text">
-                                {{deleteResponse}}
+                        <!-- {{selectedAccount}} -->
+                        <button class="btn waves-effect waves-light" type="submit">delete</button>
+                    </form>
+                    <div>
+                        <div ng-show="deleteResponse !== undefined">
+                            <div class="card white">
+                                <div class="card-content red-text flow-text">
+                                    {{deleteResponse}}
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <% include partials/head %>
+        <script src="/js/profile.js"></script>
+        <style>
+        .accoutCard {
+            cursor: pointer;
+        }
+        
+        .collapsible-body {
+            min-height: 100px;
+        }
+        </style>
+        <title>Home</title>
+</head>
+
+<body ng-app="profileApp" ng-controller="profileAppController" class="mainContent">
+    <div>
+        <% include partials/side_menu %>
+    </div>
+    <div class="content">
+        <ul class="collapsible" data-collapsible="expandable">
+           
+            <li>
+                <div class="collapsible-header">Name</div>
+                <div class="collapsible-body">
+                    {{profile.first_name}} {{profile.last_name}}
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header">Phone Number</div>
+                <div class="collapsible-body">
+                    {{profile.phone_number}}
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header">Email Address</div>
+                <div class="collapsible-body">
+                    {{profile.email}}
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header">Name</div>
+                <div class="collapsible-body">
+                    {{profile.first_name}} {{profile.last_name}}
+                </div>
+            </li>
+        </ul>
+    </div>
+    <footer>
+        <% include partials/footer %>
+    </footer>
+</body>
+
+</html>

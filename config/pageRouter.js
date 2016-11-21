@@ -55,13 +55,16 @@ module.exports = function(app) {
         logger.info(req.ip + " access privacy_policy Page")
         res.render('privacy_policy.ejs');
     });
-        // res.status(200);
-    router.get('/location', function(req, res) {
+    // res.status(200);
+    router.get('/location', isLoggedIn, function(req, res) {
         logger.info(req.ip + " access location Page")
-        res.render('location.ejs');
+        res.render('location.ejs', { user: req.user });
     });
 
-
+    router.get('/profile', isLoggedIn, function(req, res) {
+        logger.info(req.ip + " access profile Page")
+        res.render('profile.ejs', { user: req.user });
+    });
 
     router.get('/logout', function(req, res) {
         req.logout();
