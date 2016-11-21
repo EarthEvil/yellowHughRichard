@@ -4,9 +4,19 @@ deposit.controller("depositController", depositController);
 depositController.$inject = ["$window", "$scope", "$http"]
 
 function depositController($window, $scope, $http) {
+    // var url = "http://localhost:3000";
+    var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
     var depositForm = document.getElementById('depositForm');
     var username = document.getElementById('usernameHeader').innerHTML;
+    var idleTime = 0;
     $(document).ready(function() {
+        var idleInterval = setInterval(timerIncrement, 10000);
+        $(this).mousemove(function(e) {
+            idletime = 0;
+        });
+        $(this).keypress(function(e) {
+            idletime = 0;
+        });
         $scope.getAccountInfo();
     });
 
@@ -15,21 +25,18 @@ function depositController($window, $scope, $http) {
             url: url + '/api/get_account_info/' + username,
             method: "GET",
         }).then(function(data) {
-            $scope.accounts = data.data;
-            if ($scope.accounts[0] !== undefined) {
+            if (data.data[0]) {
+                $scope.accounts = data.data;
+                // $scope.show = true;
                 $scope.selectedAccount = $scope.accounts[0].account_number;
             } else {
-                $scope.enmpty = true;
+                // $scope.show = false;
             }
-            $('select').material_select();
-            console.log("accounts: " + JSON.stringify($scope.accounts));
-            console.log("good");
-        }, function(response) {
-            console.log("fail");
-        });
+            setTimeout(function() {
+                $('select').material_select();
+            }, 1);
+        }, function(response) {});
     };
-    // var url = "http://localhost:3000";
-    var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
     $scope.deposit = function(account_number, amount) {
         console.log(account_number);
         console.log(amount);
@@ -50,4 +57,10 @@ function depositController($window, $scope, $http) {
         depositForm.reset();
     };
 
+    function timerIncrement() {
+        idleTime = idleTime + 1;
+        if (idleTime > 2) {
+            window.location.replace(url);
+        }
+    }
 };

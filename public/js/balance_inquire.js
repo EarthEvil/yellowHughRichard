@@ -5,7 +5,7 @@ balanceInquireController.$inject = ["$window", "$scope", "$http"]
 
 function balanceInquireController($window, $scope, $http) {
     // var url = "http://localhost:3000";
-    var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
+    var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
     var error = function() {
         console.log("error!");
     }

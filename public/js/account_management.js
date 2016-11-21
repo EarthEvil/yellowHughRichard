@@ -5,11 +5,19 @@ accountManagementController.$inject = ["$scope", "$http"]
 
 function accountManagementController($scope, $http) {
     // var url = "http://localhost:3000";
-    var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
+    var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
     var username = document.getElementById('usernameHeader').innerHTML;
     $scope.enmpty = false;
     // $scope.serverResponse;
+    var idleTime = 0;
     $(document).ready(function() {
+        var idleInterval = setInterval(timerIncrement, 10000);
+        $(this).mousemove(function(e) {
+            idletime = 0;
+        });
+        $(this).keypress(function(e) {
+            idletime = 0;
+        });
         $scope.getAccountInfo();
     });
     $scope.getAccountInfo = function() {
@@ -43,16 +51,30 @@ function accountManagementController($scope, $http) {
         });
     }
     $scope.deleteAccount = function(account_number) {
-        $http({
-            url: url + '/api/delete_account/' + account_number,
-            method: "DELETE",
-        }).then(function(data, status, headers, config) {
-            $scope.deleteResponse = data.data;
-            setTimeout(function() {
-                window.location.reload();
-            }, 3000);
-        }, function(response) {
-            $scope.deleteResponse = response;
-        });
+        var txt;
+        var r = confirm("Are you sure you want to delete this account?");
+        if (r == true) {
+            txt = "You have deleted the account!";
+            $http({
+                url: url + '/api/delete_account/' + account_number,
+                method: "DELETE",
+            }).then(function(data, status, headers, config) {
+                $scope.deleteResponse = data.data;
+                setTimeout(function() {
+                    window.location.reload();
+                }, 3000);
+            }, function(response) {
+                $scope.deleteResponse = response;
+            });
+        } else {
+            txt = "You pressed cancel!";
+        }
+    }
+
+    function timerIncrement() {
+        idleTime = idleTime + 1;
+        if (idleTime > 2) {
+            window.location.replace(url);
+        }
     }
 };

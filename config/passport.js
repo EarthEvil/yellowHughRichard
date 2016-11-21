@@ -2,6 +2,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var mysqlConnection = require(__dirname + '/database.js');
 var bcrypt = require('bcryptjs');
 var logger = require(__dirname + '/logger.js')
+var flash = require('connect-flash');
 
 module.exports = function(passport) {
 
@@ -19,7 +20,9 @@ module.exports = function(passport) {
         }
     }
 
-    function signinCheck(username, password, callback, done) {
+    function signinCheck(req, username, password, callback, done) {
+        // check if req has all required field
+
         //user prepared query
         var sql = 'select salt, hash from user where username = ?;';
         var inserts = [username];
@@ -32,36 +35,34 @@ module.exports = function(passport) {
                         logger.info("correct password");
                         done(null, { id: username });
                     } else {
-                        logger.warn("incorrect password");
-                        done(null, null);
+                        logger.info("incorrect password");
+                        done(null, false, req.flash('signInMessage', 'Your username or password does not match what we have on file.'));
                     }
                 } else {
-                    logger.warn("incorrect password");
-                    done(null, false);
+                    logger.info("NO SUCH USER");
+                    done(null, false, req.flash('signInMessage', 'Your username or password does not match what we have on file.'));
                 }
             } else {
                 logger.error("query error");
-
-                done(null, null);
+                done(null, null, req.flash('signInMessage', 'SERVER ERROR, PLEASE TRY AGAIN LATER'));
             }
         });
     };
 
     function signupCheck(req, username, password, addUser, user, done) {
-        //user prepared query
+
 
         var sql = 'select username from user where username = ?;';
         var inserts = [username];
         sql = mysqlConnection.format(sql, inserts);
         // logger.info("signupCheck sql: " + sql);
 
-        mysqlConnection.query(sql, function(err, rows, fields, req) {
+        mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
                 if (rows[0] != null) {
                     logger.info(JSON.stringify(rows[0]));
                     logger.info("user already exist");
-                    // return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-                    return done(null, false);
+                    return done(null, false, req.flash('signUpMessage', 'USER ALREADY EXIST'));
 
                 } else {
                     if (typeof addUser === 'function') {
@@ -70,11 +71,13 @@ module.exports = function(passport) {
 
                     } else {
                         logger.error("callback is not a function");
+                        return done(null, false, req.flash('signUpMessage', 'SERVER ERROR'));
+
                     }
                 }
             } else {
                 logger.error("query error");
-                return done(null, null);
+                done(null, null, req.flash('signUpMessage', 'SERVER ERROR, PLEASE TRY AGAIN LATER'));
             }
         });
     }
@@ -125,6 +128,24 @@ module.exports = function(passport) {
         return user;
     }
 
+    function isValidSignUpParameters(body) {
+        if (body.first_name && body.last_name &&
+            body.phone_number && body.email &&
+            body.gender && body.birthdate && body.income &&
+            body.address &&
+            body.username && body.password) {
+            return true;
+        }
+        return false;
+    }
+
+    function isValidSignInParameters(body) {
+        if (body.username && body.password) {
+            return true;
+        }
+        return false;
+    }
+
     passport.serializeUser(function(user, done) {
         // body...
         done(null, user.id);
@@ -138,7 +159,13 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
-            signinCheck(username, password, checkIsSame, done);
+            console.log(" parameters：" + JSON.stringify(req.body));
+            if (!isValidSignInParameters(req.body)) {
+                console.log("invalide parameters");
+                return done(null, false, req.flash('signInMessage', 'invalide request parameters'));
+            } else {
+                signinCheck(req, username, password, checkIsSame, done);
+            }
         }));
 
 
@@ -149,9 +176,14 @@ module.exports = function(passport) {
         },
         function(req, username, password, done) {
             logger.info("req.body is: " + JSON.stringify(req.body));
-            var user = createUserObject(req.body);
-            logger.info("req.params is: " + JSON.stringify(req.params));
-            logger.info("usasdfaer is: " + JSON.stringify(user));
-            signupCheck(req, username, password, addUser, user, done);
+            // check if req has all required field
+            if (!isValidSignUpParameters(req.body)) {
+                console.log("invalide parameters");
+                return done(null, false, req.flash('signUpMessage', 'invalide request parameters'));
+            } else {
+                var user = createUserObject(req.body);
+                logger.info("usasdfaer is: " + JSON.stringify(user));
+                signupCheck(req, username, password, addUser, user, done);
+            }
         }));
 };

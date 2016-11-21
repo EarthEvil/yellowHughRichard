@@ -19,7 +19,6 @@
             <div class="card white darken-1 ">
                 <div class="card-content black-text">
                     <div class="row">
-                        <!-- <form class="col s6" ng-submit="login(username, password)"> -->
                         <form class="col l6" method="post" action="/api/signin">
                             <div class="row">
                                 <span class="card-title">Log In</span>
@@ -69,9 +68,15 @@
                             <img class="center" src="/images/logo.png" alt="Mountain View">
                         </div>
                     </div>
+                    <% if (message.length > 0) { %>
+                        <div class="card-content red-text flow-text">
+                            <%= message %>
+                        </div>
+                        <% } %>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <footer>
         <div class="divider"></div>

@@ -37,12 +37,12 @@ module.exports = function(app) {
     });
     router.get('/', function(req, res) {
         logger.info(req.ip + " access log in page");
-        res.render('login.ejs', { message: req.flash('signupMessage') });
+        res.render('login.ejs', { message: req.flash('signInMessage') });
     });
     router.get('/signup', function(req, res) {
         logger.info(req.ip + " access signup Page")
 
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', { message: req.flash('signUpMessage') });
     });
     router.get('/signupSummary', function(req, res) {
         // res.status(200);
@@ -54,6 +54,11 @@ module.exports = function(app) {
         // res.status(200);
         logger.info(req.ip + " access privacy_policy Page")
         res.render('privacy_policy.ejs');
+    });
+        // res.status(200);
+    router.get('/location', function(req, res) {
+        logger.info(req.ip + " access location Page")
+        res.render('location.ejs');
     });
 
 

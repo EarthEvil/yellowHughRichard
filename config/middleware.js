@@ -84,7 +84,7 @@ var middleware = {
             if (!err) {
                 if (rows[0] != null) {
                     var inserts = [parseInt(rows[0].account_id)];
-                    deleteSQL = mysqlConnection.format(delete_account_SQL, inserts);
+                    deleteSQL = mysqlConnection.format(middleware.delete_account_SQL, inserts);
                     mysqlConnection.query(deleteSQL, function(err, rows, fields) {
                         if (!err) {
                             res.send("YOU HAVE DELETED ACCOUNT: " + account_number);

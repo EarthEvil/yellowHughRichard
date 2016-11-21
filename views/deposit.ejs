@@ -19,14 +19,18 @@
                     <li><a href="debit">Debit</a></li>
                     <li class="active"><a href="deposit">Deposit</a></li>
                     <li><a href="accountManagement">Manage Account</a></li>
+                    <li><a href="location">Find Nearby Branch</a></li>
                 </ul>
             </div>
         </nav>
     </div>
     <br>
     <div>
-        <div ng-app="deposit" ng-controller="depositController" ng-show="accounts[0] !== undefined">
-            <form id= "depositForm" ng-submit="deposit(selectedAccount, amount)">
+        <div ng-show="!accounts[0]">
+            You don't have any acount yet. Go to Manage Account to create a new account.
+        </div>
+        <div ng-show="accounts[0]">
+            <form id="depositForm" ng-submit="deposit(selectedAccount, amount)">
                 <div class="row">
                     <div class=" input-field col s6">
                         Account Number
@@ -37,7 +41,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <input id= "amount" placeholder="amount you want to deposit" name="amount" ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
+                        <input id="amount" placeholder="amount you want to deposit" name="amount" ng-model="amount" type="number" min="1" class="validate" required="" aria-required="true" maxlength="20">
                         <label for="amount">Amount</label>
                     </div>
                 </div>

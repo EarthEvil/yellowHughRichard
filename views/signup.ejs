@@ -3,16 +3,73 @@
 <head>
     <% include partials/head %>
         <script src='https://www.google.com/recaptcha/api.js'></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
         <script src="/js/signup.js"></script>
+        <style>
+        meter {
+            /* Reset the default appearance */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0 auto 1em;
+            width: 100%;
+            height: 0.5em;
+            /* Applicable only to Firefox */
+            background: none;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        meter::-webkit-meter-bar {
+            background: none;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        meter[value="1"]::-webkit-meter-optimum-value {
+            background: red;
+        }
+        
+        meter[value="2"]::-webkit-meter-optimum-value {
+            background: yellow;
+        }
+        
+        meter[value="3"]::-webkit-meter-optimum-value {
+            background: orange;
+        }
+        
+        meter[value="4"]::-webkit-meter-optimum-value {
+            background: green;
+        }
+        /* Gecko based browsers */
+        
+        meter[value="1"]::-moz-meter-bar {
+            background: red;
+        }
+        
+        meter[value="2"]::-moz-meter-bar {
+            background: yellow;
+        }
+        
+        meter[value="3"]::-moz-meter-bar {
+            background: orange;
+        }
+        
+        meter[value="4"]::-moz-meter-bar {
+            background: green;
+        }
+        </style>
         <title>Sign Up</title>
 </head>
 
 <body ng-app="signup" ng-controller="signupController" class="mainContent">
     <div class="row">
         <h4>SIGN UP</h4>
-        <p>Message
-            <%= message %>
-        </p>
+        <div>
+            <% if (message.length > 0) { %>
+                <div class="card-content red-text flow-text">
+                    <%= message %>
+                </div>
+                <% } %>
+        </div>
     </div>
     <form class="col s12" method="post" action="/api/signup">
         <div class="row">
@@ -40,10 +97,10 @@
         </div>
         <div class="row">
             <div class="input-field col s4">
-                <select ng-model="selectedGender" ng-options="x for x in genders">
+                <select ng-model="selectedGender" name = "gender" ng-options="x for x in genders">
                 </select>
                 <label>Gender</label>
-                <p> you select {{selectedGender}}</p>
+                <!-- <p> you select {{selectedGender}}</p> -->
             </div>
             <div class="input-field col s4">
                 <input type="date" id="birthdate" name="birthdate" ng-model="date_of_birth" max="2013-12-31" class="datepicker">
@@ -72,6 +129,8 @@
             <div class="input-field col s12">
                 <input id="password" name="password" type="password" class="validate" ng-model="password" maxlength="20" required="" aria-required="true">
                 <label for="password">Password</label>
+                <meter max="4" id="password-strength-meter"></meter>
+                <p id="password-strength-text"></p>
             </div>
         </div>
         <div class="row">

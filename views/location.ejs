@@ -1,0 +1,93 @@
+<html>
+
+<head>
+    <% include partials/head %>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw5WYepzSfvX0rEjiD6bci818ZKzqnP2k&libraries=places"></script>
+        <script src="/js/location.js"></script>
+        <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+        
+        #map {
+            height: 60%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        /*html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }*/
+        </style>
+        <title>Geolocation</title>
+</head>
+
+<body ng-app="locationApp" ng-controller="locationAppController" class="mainContent">
+    <!-- <body class="mainContent"> -->
+    <div>
+        <nav>
+            <div class="nav-wrapper blue lighten-1 ">
+                <a href="#" class="brand-logo right">Elastic</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="index">Home</a></li>
+                    <li><a href="debit">Debit</a></li>
+                    <li><a href="deposit">Deposit</a></li>
+                    <li><a href="accountManagement">Manage Account</a></li>
+                    <li class="active"><a href="location">Find Nearby Branch</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <br>
+    <div ng-controller="locationAppController">
+        <div class="section">
+            <h5>Find Nearby Branches and ATMs</h5>
+            <form>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input id="address" placeholder="Enter your zip code" type="text" class="validate" required="" aria-required="true" maxlength="20">
+                        <label for="Zip Code">Zip Code</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <button class="btn waves-effect waves-light" ng-click="find()">Find</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <div id="locationTable" ng-show="showTable">
+                    <table st-table="hah" class="bordered highlight responsive-table ">
+                        <thead>
+                            <tr>
+                                <th data-field="Name">Name</th>
+                                <th data-field="Address">Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="location in locations">
+                                <td>{{ location.name }}</td>
+                                <td>{{ location.formatted_address}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="col s8">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <% include partials/footer %>
+    </footer>
+</body>
+
+</html>
