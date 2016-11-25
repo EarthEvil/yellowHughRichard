@@ -10,16 +10,6 @@ function accountManagementController($scope, $http) {
     $scope.enmpty = false;
     // $scope.serverResponse;
     var idleTime = 0;
-    $(document).ready(function() {
-        var idleInterval = setInterval(timerIncrement, 10000);
-        $(this).mousemove(function(e) {
-            idletime = 0;
-        });
-        $(this).keypress(function(e) {
-            idletime = 0;
-        });
-        $scope.getAccountInfo();
-    });
     $scope.getAccountInfo = function() {
         $http({
             url: url + '/api/get_account_info/' + username,
@@ -36,6 +26,7 @@ function accountManagementController($scope, $http) {
         }, function(response) {});
     };
 
+    $scope.getAccountInfo();
     $scope.createAccount = function(amount) {
         $http({
             url: url + '/api/create_account/' + amount,
@@ -71,10 +62,5 @@ function accountManagementController($scope, $http) {
         }
     }
 
-    function timerIncrement() {
-        idleTime = idleTime + 1;
-        if (idleTime > 2) {
-            window.location.replace(url);
-        }
-    }
+
 };

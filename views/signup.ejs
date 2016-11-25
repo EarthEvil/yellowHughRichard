@@ -58,6 +58,7 @@
         }
         </style>
         <title>Sign Up</title>
+        <% include partials/shared_js %>
 </head>
 
 <body ng-app="signup" ng-controller="signupController" class="mainContent">
@@ -97,7 +98,7 @@
         </div>
         <div class="row">
             <div class="input-field col s4">
-                <select ng-model="selectedGender" name = "gender" ng-options="x for x in genders">
+                <select ng-model="selectedGender" name="gender" ng-options="x for x in genders">
                 </select>
                 <label>Gender</label>
                 <!-- <p> you select {{selectedGender}}</p> -->
@@ -155,7 +156,7 @@
         </div>
         <div class="row">
             <div class="col s8">
-                <button id="signupButton" class="btn waves-effect waves-light disabled" type="submit">SIGN UP</button>
+                <button id="submit" class="btn waves-effect waves-light disabled" type="submit">SIGN UP</button>
             </div>
             <div class="col s4">
                 <a class="btn waves-effect waves-light blue" href="index">LOGIN</a>

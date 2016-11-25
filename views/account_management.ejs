@@ -4,6 +4,7 @@
     <% include partials/head %>
         <script src="/js/account_management.js"></script>
         <title>Account Management</title>
+        <% include partials/shared_js %>
 </head>
 
 <body ng-app="accountManagement" ng-controller="accountManagementController" class="mainContent">
@@ -25,7 +26,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <button class="btn waves-effect waves-light" type="submit">create</button>
+                            <button id='create_submit' class="btn waves-effect waves-light" type="submit">create</button>
                         </div>
                     </form>
                     <div ng-show="createResponse !== undefined">
@@ -56,7 +57,7 @@
                             </div>
                         </div>
                         <!-- {{selectedAccount}} -->
-                        <button class="btn waves-effect waves-light" type="submit">delete</button>
+                        <button id='delete_submit' class="btn waves-effect waves-light" type="submit">delete</button>
                     </form>
                     <div>
                         <div ng-show="deleteResponse !== undefined">

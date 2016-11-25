@@ -36,11 +36,23 @@ CREATE TABLE transaction
 	time DATETIME, 
 	PRIMARY KEY (transaction_id),
 	FOREIGN KEY (account_id) REFERENCES account(account_id)	ON DELETE CASCADE);
-CREATE TABLE account_activation
-	(account_activation_id  int NOT NULL AUTO_INCREMENT,
+
+CREATE TABLE user_activation
+	(user_activation_id  int NOT NULL AUTO_INCREMENT,
 	user_id int NOT NULL,
 	username varchar(30) NOT NULL,
 	email varchar(30) NOT NULL,
 	activate boolean,
-	PRIMARY KEY (account_activation),
+	PRIMARY KEY (user_activation_id),
 	FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE);
+
+
+CREATE TABLE login_history
+	(id  int NOT NULL AUTO_INCREMENT,
+	user_id int NOT NULL,
+	ip_address varchar(20) NOT NULL,
+	time DATETIME  NOT NULL,
+	location varchar(20),
+	INDEX (user_id),
+	PRIMARY KEY (id),
+	FOREIGN KEY (user_id) REFERENCES user(user_id)	ON DELETE CASCADE);

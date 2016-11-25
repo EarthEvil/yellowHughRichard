@@ -4,12 +4,21 @@ var router = express.Router();
 var path = require('path');
 var logger = require(__dirname + '/logger.js');
 
+
 module.exports = function(app) {
 
     //pages route
     router.get('/index', isLoggedIn, function(req, res) {
         logger.info(req.ip + " access home page ");
+        var hrstart = process.hrtime();
+        setTimeout(function() {
+            console.log("timeout");
+        }, 1000);
         res.render('index.ejs', { user: req.user });
+        var hrend = process.hrtime(hrstart);
+        console.log("Execution time (hr): ", hrend[0], hrend[1] / 1000000);
+
+
     });
     router.get('/balanceInquire', isLoggedIn, function(req, res) {
         logger.info(req.user.id + " access balanceInquire Page")
@@ -80,6 +89,7 @@ module.exports = function(app) {
             logger.info(req.user.username + "is authenticated");
             return next();
         }
+        logger.info("Unauthenticated " + req.ip + "tries to access" + JSON.stringify(req.url));
         // if they aren't redirect them to the home page
         res.redirect('/');
     }

@@ -4,6 +4,7 @@ mainApp.controller("mainController", mainController);
 mainController.$inject = ["$scope", "$http"]
 
 function mainController($scope, $http) {
+
     // var url = "http://localhost:3000";
     var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
     var username = document.getElementById('usernameHeader').innerHTML;

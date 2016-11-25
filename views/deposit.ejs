@@ -4,6 +4,7 @@
     <% include partials/head %>
         <script src="js/deposit.js"></script>
         <title>Deposit</title>
+        <% include partials/shared_js %>
 </head>
 
 <body ng-app="deposit" ng-controller="depositController" class="mainContent">
@@ -32,7 +33,7 @@
                     </div>
                 </div>
                 <!-- {{selectedAccount}} -->
-                <button class="btn waves-effect waves-light" type="submit">deposit</button>
+                <button id='submit' class="btn waves-effect waves-light" type="submit">deposit</button>
             </form>
             <div>
                 <div ng-show="serverResponse !== undefined">

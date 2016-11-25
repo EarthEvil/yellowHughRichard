@@ -1,3 +1,16 @@
+<!-- make active side-nav -->
+<script>
+$(function() {
+    var pgurl = window.location.href.substr(window.location.href.lastIndexOf("/") + 1);
+    $(".side-nav li").each(function() {
+        var id = $(this).attr("id");
+        if (id == pgurl || id == '') {
+            var element = document.getElementById(id);
+            element.classList.add("active");
+        }
+    })
+});
+</script>
 <div class="row">
     <div class="right">
         <a class="btn waves-effect waves-light blue lighten-1" href="logout">Log out</a>
@@ -9,23 +22,23 @@
     <ul id="slide-out" class="side-nav fixed">
         <li>
             <div class="userView">
-                <a href="#!user"><img class="circle" src="images/fink.jpg"></a>
-                <a href="#!name"><span id="usernameHeader" class="black-text name"><%= user.id%></span></a>
+                <a href="profile"><img class="circle" src="images/fink.jpg"></a>
+                <a href="profile"><span id="usernameHeader" class="black-text name"><%= user.id%></span></a>
             </div>
         </li>
         <li>
             <div class="divider"></div>
         </li>
-        <li><a href="index"><i class="material-icons">account_balance</i>Home</a></li>
-        <li><a href="debit"><i class="material-icons">credit_card</i>Debit</a></li>
-        <li><a href="deposit"><i class="material-icons">monetization_on</i>Deposit</a></li>
-        <li><a href="accountManagement"><i class="material-icons">assessment</i>Manage Account</a></li>
-        <li><a href="location"><i class="material-icons">map</i>Find Nearby Branch</a></li>
-        <li><a href="profile"><i class="material-icons">account_circle</i>My Profile</a></li>
+        <li id='index'><a class="waves-effect" href="index"><i class="material-icons">account_balance</i>Home</a></li>
+        <li id='debit'><a class="waves-effect" href="debit"><i class="material-icons">credit_card</i>Debit</a></li>
+        <li id='deposit'><a class="waves-effect" href="deposit"><i class="material-icons">monetization_on</i>Deposit</a></li>
+        <li id='accountManagement'><a class="waves-effect" href="accountManagement"><i class="material-icons">assessment</i>Manage Account</a></li>
+        <li id='location'><a class="waves-effect" href="location"><i class="material-icons">map</i>Find Nearby Branch</a></li>
+        <li id='profile'><a class="waves-effect" href="profile"><i class="material-icons">account_circle</i>My Profile</a></li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a class="subheader">More</a></li>
-        <li><a class="waves-effect" href="#!">More</a></li>
+        <li><a class="waves-effect" href="#!">Contact Us</a></li>
     </ul>
 </div>

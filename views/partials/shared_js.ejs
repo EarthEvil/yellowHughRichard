@@ -1,0 +1,19 @@
+<script>
+var idleTime = 0;
+$(document).ready(function() {
+    var idleInterval = setInterval(timerIncrement, 120000);
+    $(this).mousemove(function(e) {
+        idletime = 0;
+    });
+    $(this).keypress(function(e) {
+        idletime = 0;
+    });
+});
+
+function timerIncrement() {
+    idleTime = idleTime + 1;
+    if (idleTime > 2) {
+        window.location.replace(window.location.origin);
+    }
+}
+</script>

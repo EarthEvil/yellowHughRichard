@@ -3,6 +3,7 @@ var mysqlConnection = require(__dirname + '/database.js');
 var bcrypt = require('bcryptjs');
 var logger = require(__dirname + '/logger.js')
 var flash = require('connect-flash');
+var middleware = require(__dirname + '/middleware.js');
 
 module.exports = function(passport) {
 
@@ -33,6 +34,7 @@ module.exports = function(passport) {
                 if (rows[0] != null && rows[0].hash != null) {
                     if (bcrypt.compareSync(password, rows[0].hash)) {
                         logger.info("correct password");
+                        middleware.saveLoginHistory(req, username);
                         done(null, { id: username });
                     } else {
                         logger.info("incorrect password");
@@ -159,7 +161,7 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
-            console.log(" parameters：" + JSON.stringify(req.body));
+            console.log("signin parameters：" + JSON.stringify(req.body));
             if (!isValidSignInParameters(req.body)) {
                 console.log("invalide parameters");
                 return done(null, false, req.flash('signInMessage', 'invalide request parameters'));
@@ -175,7 +177,7 @@ module.exports = function(passport) {
             passReqToCallback: true
         },
         function(req, username, password, done) {
-            logger.info("req.body is: " + JSON.stringify(req.body));
+            logger.info("signup req.body is: " + JSON.stringify(req.body));
             // check if req has all required field
             if (!isValidSignUpParameters(req.body)) {
                 console.log("invalide parameters");

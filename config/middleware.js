@@ -1,6 +1,7 @@
 var logger = require(__dirname + '/logger.js');
 var mysqlConnection = require(__dirname + '/database.js');
 var request = require('request');
+var geoip = require('geoip-lite');
 
 var middleware = {
     getUserAccountSQL: 'select account_id, a.user_id, account_number, balance from account a join (select user_id from user where username = ?) user_table where a.user_id = user_table.user_id',
@@ -9,22 +10,56 @@ var middleware = {
     insert_new_account_SQL: 'insert into account (user_id,account_number, balance) values (?,?,?);',
     get_account_id_SQL: 'SELECT account_id FROM account WHERE account_number = ?',
     delete_account_SQL: 'DELETE FROM account WHERE account_id = ?',
-    get_user_info_SQL: 'select username, first_name, last_name, phone_number, email, gender, income, date_of_birth, address from user where username = ?;',
+    get_user_profile_SQL: 'select username, first_name, last_name, phone_number, email, gender, income, date_of_birth, address from user where username = ?;',
     get_account_info_SQL: 'select * from account where account_id= ?',
     insert_transaction_SQL: 'insert into transaction (account_id,transaction_type, amount, time) values (?,?,?, NOW())',
     get_balance_SQL: 'select balance from account where account_number = ?',
     update_balance_SQL: 'UPDATE account SET balance= ? WHERE account_number= ?',
+    save_login_history_SQL: 'insert into login_history(user_id, ip_address,time, location) values(?,?, NOW(), ?) ON DUPLICATE KEY UPDATE user_id = ?',
+    last_login_SQL: 'select * from login_history where user_id = ? order by time desc limit 1',
+    saveLoginHistory: function(req, username) {
+        var ip = req.ip;
+        if (ip.substr(0, 7) == "::ffff:") {
+            ip = ip.substr(7)
+        }
+        var geo = geoip.lookup(ip);
+        var physical_location = geo["city"] + ", " + geo["region"] + ", " + geo["country"];
+
+        var inserts = [username];
+        var sql = mysqlConnection.format(middleware.get_user_id_SQL, inserts);
+        mysqlConnection.query(sql, function(err, rows) {
+            if (!err) {
+                var inserts = [rows[0].user_id, ip, physical_location, rows[0].user_id];
+                var sql2 = mysqlConnection.format(middleware.save_login_history_SQL, inserts);
+                console.log("history sql: " + sql2);
+                mysqlConnection.query(sql2, function(err, rows) {
+                    if (!err) {
+                        logger.info("saveLoginHistory success");
+                    } else {
+                        logger.info("saveLoginHistory success");
+                    }
+                });
+            } else {
+
+            }
+        });
+    },
+
+    getLastLogin: function(req, res) {
+
+    },
 
     getUserAccount: function(req, res) {
+
         var inserts = [req.params.username];
         sql = mysqlConnection.format(middleware.getUserAccountSQL, inserts);
-        console.log(sql);
         mysqlConnection.query(sql, function(err, rows, fields) {
             if (!err) {
+                logger.info(req.ip + "executes query:" + sql);
+                logger.info("query result: " + JSON.stringify(rows));
                 res.send(rows);
             } else {
-                // logger.info("qurey error: " + sql);
-
+                logger.info("QUERY ERROR: " + err.code);
                 res.status(401).send("fk");
             }
         });
@@ -35,15 +70,21 @@ var middleware = {
         sql = mysqlConnection.format(middleware.transactionInquireSQL, inserts);
         logger.info(req.user.id + " request query: " + sql);
         mysqlConnection.query(sql, function(err, rows, fields) {
+            logger.info(req.ip + "executes query:" + sql);
             if (!err) {
+                logger.info("query result: " + JSON.stringify(rows));
                 res.send(rows);
             } else {
-                logger.info("qurey error");
-                logger.info(sql);
+                logger.info("QUERY ERROR: " + err.code);
+
             }
         });
     },
     createAccount: function(req, res) {
+        console.log("1");
+
+        console.time("create_account");
+
         var user = req.user.id;
         var amount = req.params.amount;
         console.log(user);
@@ -54,64 +95,76 @@ var middleware = {
             followRedirect: true,
             maxRedirects: 10
         }, function(error, response, body) {
-            // var sql = 'select user_id from user where username = ?';
             var inserts = [user];
             sql = mysqlConnection.format(middleware.get_user_id_SQL, inserts);
             mysqlConnection.query(sql, function(err, rows) {
+                logger.info(req.ip + "executes query:" + sql);
                 if (!err) {
+                    logger.info("query result: " + JSON.stringify(rows));
                     var inserts = [rows[0].user_id, body, amount];
                     sql2 = mysqlConnection.format(middleware.insert_new_account_SQL, inserts);
                     mysqlConnection.query(sql2, function(err, rows) {
+                        logger.info(req.ip + "executes query:" + sql);
                         if (!err) {
+                            logger.info("query result: " + JSON.stringify(rows));
                             res.send("Congratulation! You have create account. Your new account number is " + body);
                         } else {
-                            logger.info("query error： " + sql2);
+                            logger.info("QUERY ERROR: " + err.code);
                             res.send("Sorry, failed to create new account");
                         }
+                        console.log("2");
+                        console.timeEnd("create_account");
                     });
                 } else {
-                    logger.info("query error： " + sql);
+                    logger.info("QUERY ERROR: " + err.code);
                     res.send("Sorry, failed to create new account");
                 }
             });
         });
+        console.log("3");
+        console.timeEnd("create_account");
+
     },
     deleteAccount: function(req, res) {
         var account_number = req.params.account_number;
         var inserts = [account_number];
         sql = mysqlConnection.format(middleware.get_account_id_SQL, inserts);
         mysqlConnection.query(sql, function(err, rows, fields) {
+            logger.info(req.ip + "executes query:" + sql);
             if (!err) {
+                logger.info("query result: " + JSON.stringify(rows));
                 if (rows[0] != null) {
                     var inserts = [parseInt(rows[0].account_id)];
                     deleteSQL = mysqlConnection.format(middleware.delete_account_SQL, inserts);
                     mysqlConnection.query(deleteSQL, function(err, rows, fields) {
+                        logger.info(req.ip + "executes query:" + sql);
                         if (!err) {
+                            logger.info("query result: " + JSON.stringify(rows));
                             res.send("YOU HAVE DELETED ACCOUNT: " + account_number);
                         } else {
+                            logger.info("QUERY ERROR: " + err.code);
                             res.send("FAILED TO DELETE ACCOUNT: " + account_number);
                         }
                     });
                 } else {
                     res.send("NOT SUCH ACCOUNT, PLEASE CHECK YOUR ACCOUNT NUMBER.");
                 }
-
-
             } else {
-                logger.info("QUERY ERROR: " + sql);
+                logger.info("QUERY ERROR: " + err.code);
                 res.send("FAILED TO DELETE ACCOUNT: " + account_number);
             }
         });
     },
     getUser: function(req, res) {
         var inserts = [req.params.username];
-        sql = mysqlConnection.format(middleware.get_user_info_SQL, inserts);
+        sql = mysqlConnection.format(middleware.get_user_profile_SQL, inserts);
         mysqlConnection.query(sql, function(err, rows, fields) {
+            logger.info(req.ip + "executes query:" + sql);
             if (!err) {
+                logger.info("query result: " + JSON.stringify(rows));
                 res.send(rows);
             } else {
-                logger.info("qurey error: " + sql);
-
+                logger.info("QUERY ERROR: " + err.code);
                 res.send("Not such user");
             }
         });
@@ -121,11 +174,12 @@ var middleware = {
         sql = mysqlConnection.format(middleware.get_account_info_SQL, inserts);
         logger.log(JSON.stringify(req.user) + " request query: " + sql);
         mysqlConnection.query(sql, function(err, rows, fields) {
+            logger.info(req.ip + "executes query:" + sql);
             if (!err) {
+                logger.info("query result: " + JSON.stringify(rows));
                 res.send(rows);
             } else {
-                logger.info("qurey error");
-                logger.info(sql);
+                logger.info("QUERY ERROR: " + err.code);
             }
         });
     },
@@ -133,11 +187,12 @@ var middleware = {
         var inserts = [account_number];
         sql = mysqlConnection.format(middleware.get_account_id_SQL, inserts);
         mysqlConnection.query(sql, function(err, rows, fields) {
+            logger.info(req.ip + "executes query:" + sql);
             if (!err) {
                 logger.info("rows: " + JSON.stringify(rows));
                 return rows[0].account_id;
             } else {
-                logger.info("ERROR: " + sql);
+                logger.info("QUERY ERROR: " + err.code);
                 return null;
             };
         });
@@ -147,22 +202,24 @@ var middleware = {
         var inserts = [account_number];
         sql = mysqlConnection.format(middleware.get_account_id_SQL, inserts);
         mysqlConnection.query(sql, function(err, rows, fields) {
+            logger.info(req.ip + "executes query:" + sql);
             if (!err) {
-                logger.info("rows: " + JSON.stringify(rows));
+                logger.info("query result: " + JSON.stringify(rows));
                 if (rows[0] != null && rows[0].account_id != null) {
                     var inserts = [rows[0].account_id, transaction_type, amount];
                     sql = mysqlConnection.format(middleware.insert_transaction_SQL, inserts);
                     mysqlConnection.query(sql, function(err, rows, fields) {
+                        logger.info(req.ip + "executes query:" + sql);
                         if (!err) {
-                            logger.info("EXECUTED: " + sql);
+                            logger.info("query result: " + JSON.stringify(rows));
                         } else {
-                            logger.info("ERROR: " + sql);
+                            logger.info("QUERY ERROR: " + err.code);
                         };
                     });
                 }
                 return rows[0].account_id;
             } else {
-                logger.info("ERROR: " + sql);
+                logger.info("QUERY ERROR: " + err.code);
                 return null;
             };
         });
@@ -177,7 +234,9 @@ var middleware = {
         getAmountQuery = mysqlConnection.format(middleware.get_balance_SQL, inserts);
 
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
+            logger.info(req.ip + "executes query:" + sql);
             if (!err) {
+                logger.info("query result: " + JSON.stringify(rows));
                 if (rows[0] != null && rows[0].balance != null) {
                     var currentBalance = parseInt(rows[0].balance);
                     var newBalane = currentBalance + amount;
@@ -192,7 +251,7 @@ var middleware = {
                     res.send("NOT SUCH ACCOUNT, PLEASE CHECK YOUR ACCOUNT NUMBER.");
                 }
             } else {
-                logger.info("qurey error: " + query);
+                logger.info("QUERY ERROR: " + err.code);
                 res.send('FAILED TO DEPOSIT $' + amount + ' TO ACCOUNT ' + account_number + '.');
             }
         });
@@ -206,8 +265,9 @@ var middleware = {
         getAmountQuery = mysqlConnection.format(middleware.get_balance_SQL, inserts);
 
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
-            // res.json(rows);
+            logger.info(req.ip + "executes query:" + sql);
             if (!err) {
+                logger.info("query result: " + JSON.stringify(rows));
                 if (rows[0] != null && rows[0].balance != null) {
                     var currentBalance = parseInt(rows[0].balance);
                     var newBalane = currentBalance - amount;
@@ -220,13 +280,12 @@ var middleware = {
                         logger.info("insufficient fund");
                         res.send('INSUFFICIENT FUND IN ACCOUNT ' + account_number);
                     }
-
                 } else {
                     logger.info("no such account");
                     res.send("NOT SUCH ACCOUNT, PLEASE CHECK YOUR ACCOUNT NUMBER.");
                 }
             } else {
-                logger.info("qurey error： " + query);
+                logger.info("QUERY ERROR: " + err.code);
                 res.send('FAILED TO DEBIT $' + amount + ' FROM ACCOUNT ' + account_number + '.');
             }
         });

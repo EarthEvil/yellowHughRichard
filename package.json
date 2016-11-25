@@ -12,6 +12,7 @@
     "ejs": "~2.5.2",
     "express": "^4.14.0",
     "express-session": "~1.0.0",
+    "geoip-lite": "^1.1.8",
     "latest-version": "~2.0.0",
     "multer": "^1.2.0",
     "mysql": "^2.11.1",

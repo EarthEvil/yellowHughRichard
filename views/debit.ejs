@@ -4,6 +4,7 @@
     <% include partials/head %>
         <script src="js/debit.js"></script>
         <title>Debit</title>
+        <% include partials/shared_js %>
 </head>
 <!-- <body ng-app="debit" ng-controller="debitController" class="mainContent"> -->
 
@@ -32,7 +33,7 @@
                         <label for="amount">Amount</label>
                     </div>
                     <div class="input-field col s6">
-                        <button class="btn waves-effect waves-light" type="submit">debit</button>
+                        <button id = 'submit' class="btn waves-effect waves-light" type="submit">debit</button>
                     </div>
                 </div>
                 <!-- {{selectedAccount}} -->
