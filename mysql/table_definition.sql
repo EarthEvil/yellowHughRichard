@@ -42,7 +42,8 @@ CREATE TABLE user_activation
 	user_id int NOT NULL,
 	username varchar(30) NOT NULL,
 	email varchar(30) NOT NULL,
-	activate boolean,
+	activate boolean NOT NULL,
+	token varchar(64) NOT NULL,
 	PRIMARY KEY (user_activation_id),
 	FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE);
 
@@ -50,9 +51,24 @@ CREATE TABLE user_activation
 CREATE TABLE login_history
 	(id  int NOT NULL AUTO_INCREMENT,
 	user_id int NOT NULL,
+	username varchar(30), 
 	ip_address varchar(20) NOT NULL,
 	time DATETIME  NOT NULL,
 	location varchar(20),
 	INDEX (user_id),
 	PRIMARY KEY (id),
 	FOREIGN KEY (user_id) REFERENCES user(user_id)	ON DELETE CASCADE);
+
+
+CREATE TABLE login_attempts
+	(id  int NOT NULL AUTO_INCREMENT,
+	user_id int NOT NULL,
+	username int NOT NULL,
+	ip_address varchar(20) NOT NULL,
+	attempts int NOT NULL,
+	last_attempt DATETIME NOT NULL,
+	locked boolean NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (user_id) REFERENCES user(user_id)	ON DELETE CASCADE);
+
+

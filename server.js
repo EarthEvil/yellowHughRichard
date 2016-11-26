@@ -10,6 +10,7 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var path = require('path');
 var logger = require(__dirname + '/config/logger.js');
+var responseTime = require('response-time')
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -20,18 +21,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(__dirname + '/public/images/favicon/favicon.ico'));
 app.set('view engine', 'ejs');
-
+// app.use(responseTime());
 
 // required for passport
-app.use(session({secret: 'appsecret'}));
+app.use(session({ secret: 'appsecret' }));
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-require(__dirname + '/config/apiRouter.js')(app, passport); 
-require(__dirname + '/config/pageRouter.js')(app); 
-require(__dirname+ '/config/passport.js')(passport); // pass passport for configuration
+require(__dirname + '/config/apiRouter.js')(app, passport);
+require(__dirname + '/config/pageRouter.js')(app);
+require(__dirname + '/config/passport.js')(passport); // pass passport for configuration
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
@@ -42,7 +43,7 @@ var server = app.listen(port, function() {
 });
 
 // properly handle SIGINT 
-process.on('SIGINT', function(){
-	logger.info("exit program with SIGINT");
-	process.exit();
+process.on('SIGINT', function() {
+    logger.info("exit program with SIGINT");
+    process.exit();
 });

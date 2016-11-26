@@ -15,7 +15,7 @@ var middleware = {
     insert_transaction_SQL: 'insert into transaction (account_id,transaction_type, amount, time) values (?,?,?, NOW())',
     get_balance_SQL: 'select balance from account where account_number = ?',
     update_balance_SQL: 'UPDATE account SET balance= ? WHERE account_number= ?',
-    save_login_history_SQL: 'insert into login_history(user_id, ip_address,time, location) values(?,?, NOW(), ?) ON DUPLICATE KEY UPDATE user_id = ?',
+    save_login_history_SQL: 'insert into login_history(user_id, username, ip_address,time, location) values(?,?,?, NOW(), ?) ON DUPLICATE KEY UPDATE user_id = ?',
     last_login_SQL: 'select * from login_history where user_id = ? order by time desc limit 1',
     saveLoginHistory: function(req, username) {
         var ip = req.ip;
@@ -29,14 +29,14 @@ var middleware = {
         var sql = mysqlConnection.format(middleware.get_user_id_SQL, inserts);
         mysqlConnection.query(sql, function(err, rows) {
             if (!err) {
-                var inserts = [rows[0].user_id, ip, physical_location, rows[0].user_id];
+                var inserts = [rows[0].user_id, username, ip, physical_location, rows[0].user_id];
                 var sql2 = mysqlConnection.format(middleware.save_login_history_SQL, inserts);
                 console.log("history sql: " + sql2);
                 mysqlConnection.query(sql2, function(err, rows) {
                     if (!err) {
                         logger.info("saveLoginHistory success");
                     } else {
-                        logger.info("saveLoginHistory success");
+                        logger.error("saveLoginHistory failed");
                     }
                 });
             } else {
@@ -59,7 +59,7 @@ var middleware = {
                 logger.info("query result: " + JSON.stringify(rows));
                 res.send(rows);
             } else {
-                logger.info("QUERY ERROR: " + err.code);
+                logger.error("QUERY ERROR: " + err.code);
                 res.status(401).send("fk");
             }
         });

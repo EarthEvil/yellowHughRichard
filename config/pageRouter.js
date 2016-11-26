@@ -6,84 +6,104 @@ var logger = require(__dirname + '/logger.js');
 
 
 module.exports = function(app) {
-
     //pages route
     router.get('/index', isLoggedIn, function(req, res) {
-        logger.info(req.ip + " access home page ");
         var hrstart = process.hrtime();
-        setTimeout(function() {
-            console.log("timeout");
-        }, 1000);
-        res.render('index.ejs', { user: req.user });
-        var hrend = process.hrtime(hrstart);
-        console.log("Execution time (hr): ", hrend[0], hrend[1] / 1000000);
-
-
+        res.render('index.ejs', { user: req.user }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access home page. Send index.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
-    router.get('/balanceInquire', isLoggedIn, function(req, res) {
-        logger.info(req.user.id + " access balanceInquire Page")
-        res.render('balanceInquire.ejs', { user: req.user });
-    });
+
     router.get('/deposit', isLoggedIn, function(req, res) {
-        logger.info(req.ip + " access deposit Page")
-
-        res.render('deposit.ejs', { user: req.user });
+        var hrstart = process.hrtime();
+        res.render('deposit.ejs', { user: req.user }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access deposit page. Send deposit.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
+
     router.get('/debit', isLoggedIn, function(req, res) {
-        logger.info(req.ip + " access debit Page")
-
-        res.render('debit.ejs', { user: req.user });
-    });
-    router.get('/inquire', isLoggedIn, function(req, res) {
-        logger.info(req.ip + " access inquire Page")
-
-        res.render('inquire.ejs', { user: req.user });
+        var hrstart = process.hrtime();
+        res.render('debit.ejs', { user: req.user }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access debit page. Send debit.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.get('/accountManagement', isLoggedIn, function(req, res) {
-        logger.info(req.ip + " access accountManagement Page")
-        res.render('account_management.ejs', { user: req.user });
+        var hrstart = process.hrtime();
+        res.render('account_management.ejs', { user: req.user }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access account_management page. Send account_management.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
     router.get('/', function(req, res) {
-        logger.info(req.ip + " access log in page");
-        res.render('login.ejs', { message: req.flash('signInMessage') });
+        var hrstart = process.hrtime();
+        res.render('login.ejs', { message: req.flash('signInMessage') }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access login page. Send login.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
-    router.get('/signup', function(req, res) {
-        logger.info(req.ip + " access signup Page")
 
+    router.get('/signup', function(req, res) {
+        var hrstart = process.hrtime();
+        res.render('signup.ejs', { user: req.user }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access signup page. Send signup.ejs in  %dms.", hrend[1] / 1000000);
+        });
         res.render('signup.ejs', { message: req.flash('signUpMessage') });
     });
     router.get('/signupSummary', function(req, res) {
-        // res.status(200);
-        logger.info(req.ip + " access signupSummary Page")
-        res.render('signupSummary.ejs', { user: req.user });
+        var hrstart = process.hrtime();
+        res.render('signupSummary.ejs', { user: req.user }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access signupSummary page. Send signupSummary.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.get('/privacyPolicy', function(req, res) {
-        // res.status(200);
-        logger.info(req.ip + " access privacy_policy Page")
-        res.render('privacy_policy.ejs');
+        var hrstart = process.hrtime();
+        res.render('privacyPolicy.ejs', function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access privacyPolicy page. Send privacyPolicy.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
-    // res.status(200);
+
     router.get('/location', isLoggedIn, function(req, res) {
-        logger.info(req.ip + " access location Page")
-        res.render('location.ejs', { user: req.user });
+        var hrstart = process.hrtime();
+        res.render('location.ejs', { user: req.user }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access location page. Send location.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.get('/profile', isLoggedIn, function(req, res) {
-        logger.info(req.ip + " access profile Page")
-        res.render('profile.ejs', { user: req.user });
+        var hrstart = process.hrtime();
+        res.render('profile.ejs', { user: req.user }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " access profile page. Send profile.ejs in  %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.get('/logout', function(req, res) {
-        req.logout();
         res.redirect('/');
     });
 
     app.use('/', router)
-        // route middleware to make sure a user is signed in
-    function isLoggedIn(req, res, next) {
 
+    // route middleware to make sure a user is signed in
+    function isLoggedIn(req, res, next) {
         // if user is authenticated in the session, carry on 
         if (req.isAuthenticated()) {
             logger.info(req.user.username + "is authenticated");
