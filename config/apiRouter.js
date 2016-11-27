@@ -38,48 +38,77 @@ module.exports = function(app, passport) {
 
     // handle HTTP GET requests
     router.get('/create_account/:amount', isLoggedIn, function(req, res) {
-        middleware.createAccount(req, res);
+        var hrstart = process.hrtime();
+        middleware.createAccount(req, res, function() {
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + "performs createsAaccount, takes %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.delete('/delete_account/:account_number', isLoggedIn, function(req, res) {
-        middleware.deleteAccount(req, res);
+        var hrstart = process.hrtime();
+        middleware.deleteAccount(req, res, function() {
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + "performs deleteAccount, takes %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.get('/user/:username', isLoggedIn, function(req, res) {
-        middleware.getUser(req, res);
+        var hrstart = process.hrtime();
+        middleware.getUser(req, res, function() {
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " performs getUsers, takes %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.get('/get_account_info/:username', isLoggedIn, function(req, res) {
-        middleware.getUserAccount(req, res);
+        var hrstart = process.hrtime();
+        middleware.getUserAccountInfo(req, res, function() {
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " performs get_account_info, takes %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.get('/inquire/:account_id', isLoggedIn, function(req, res) {
-        middleware.transactionInquire(req, res);
+        var hrstart = process.hrtime();
+        middleware.transactionInquire(req, res, function() {
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " performs transaction inqure, takes %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.get('/balanceinqure/:account_id', isLoggedIn, function(req, res) {
-        middleware.getBalance(req, res);
+        var hrstart = process.hrtime();
+        middleware.getBalance(req, res, function() {
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " performs balance inqure, takes %dms.", hrend[1] / 1000000);
+        });
     });
 
     // Handle HTTP POST requests
     router.post('/debit', isLoggedIn, function(req, res) {
-        middleware.debit(req, res);
+        var hrstart = process.hrtime();
+        middleware.debit(req, res, function() {
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " performs debit, takes %dms.", hrend[1] / 1000000);
+        });
     });
 
     router.post('/deposit', isLoggedIn, function(req, res) {
-        middleware.deposit(req, res);
+        var hrstart = process.hrtime();
+        middleware.deposit(req, res, function() {
+            var hrend = process.hrtime(hrstart);
+            logger.info(req.ip + " performs deposit, takes %dms.", hrend[1] / 1000000);
+        });
     });
 
     function isLoggedIn(req, res, next) {
-
         // if user is authenticated in the session, carry on 
         if (req.isAuthenticated()) {
-            logger.info(req.ip + " is authenticated");
             return next();
+        } else {
+            logger.warn("Unauthenticated reqest to " + JSON.stringify(req.url) + " from " + req.ip);
+            res.send({ error_message: "Not Authentication." })
         }
-        logger.info(req.ip + " is NOT authenticated");
-        logger.info(req.ip + " try to access API: " + JSON.stringify(req.url));
-        // if they aren't redirect them to the home page
-        res.send({ error_message: "Not Authentication." })
     }
 }

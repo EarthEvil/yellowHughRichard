@@ -1,5 +1,5 @@
 // var express = require('express');
-require(__dirname+ '/env.js');
+require(__dirname + '/env.js');
 var mysql = require('mysql');
 
 var mysqlConnection = mysql.createConnection({
@@ -12,11 +12,13 @@ var mysqlConnection = mysql.createConnection({
 
 
 mysqlConnection.connect(function(err) {
-    if (!err) {
-        console.log("database is connected...");
-    } else {
-        console.log("database error fuck");
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
     }
+    console.log('database is connected as id ' + mysqlConnection.threadId);
 });
+
+
 
 module.exports = mysqlConnection;

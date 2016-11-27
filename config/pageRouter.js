@@ -82,7 +82,7 @@ module.exports = function(app) {
         var hrstart = process.hrtime();
         res.render('location.ejs', { user: req.user }, function(err, result) {
             res.send(result);
-            var hrend = process.hrtime(hrstart);
+            var hrend = process.hrtime(hrstart)[1] / 1000000;
             logger.info(req.ip + " access location page. Send location.ejs in  %dms.", hrend[1] / 1000000);
         });
     });
@@ -91,8 +91,8 @@ module.exports = function(app) {
         var hrstart = process.hrtime();
         res.render('profile.ejs', { user: req.user }, function(err, result) {
             res.send(result);
-            var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access profile page. Send profile.ejs in  %dms.", hrend[1] / 1000000);
+            var hrend = process.hrtime(hrstart)[1] / 1000000;
+            logger.info(req.ip + " access profile page. Send profile.ejs in  %dms.", hrend);
         });
     });
 
@@ -106,12 +106,12 @@ module.exports = function(app) {
     function isLoggedIn(req, res, next) {
         // if user is authenticated in the session, carry on 
         if (req.isAuthenticated()) {
-            logger.info(req.user.username + "is authenticated");
             return next();
+        } else {
+            // if they aren't, redirect them to the login page
+            logger.warn("Unauthenticated reqest to " + JSON.stringify(req.url) + "from " + req.ip);
+            res.redirect('/');
         }
-        logger.info("Unauthenticated " + req.ip + "tries to access" + JSON.stringify(req.url));
-        // if they aren't redirect them to the home page
-        res.redirect('/');
     }
 
 }
