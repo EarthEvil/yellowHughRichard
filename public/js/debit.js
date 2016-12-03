@@ -22,14 +22,12 @@ function debitController($window, $scope, $http) {
     $scope.getAccountInfo = function() {
         $http({
             url: url + '/api/get_account_info/' + username,
-            method: "GET",
+            method: "GET"
         }).then(function(data) {
             if (data.data[0]) {
                 $scope.accounts = data.data;
                 $scope.selectedAccount = $scope.accounts[0].account_number;
-            } else {
-                
-            }
+            } else {}
             setTimeout(function() {
                 $('select').material_select();
             }, 1);

@@ -1,3 +1,6 @@
+require('@risingstack/trace');
+
+// your application's code
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
@@ -38,12 +41,23 @@ require(__dirname + '/config/passport.js')(passport); // pass passport for confi
 // all of our routes will be prefixed with /api
 
 var server = app.listen(port, function() {
-    logger.info("application is running at port: " + port);
+    // logger.info("application is running at port: " + port);
+    logger.info({ messages: "application is running at port: " + port });
 
 });
+
+// setInterval(function() {
+//     server.getConnections(function(error, count) {
+//         console.log("number of connection: " + count);
+
+//     });
+// }, 1000);
 
 // properly handle SIGINT 
 process.on('SIGINT', function() {
     logger.info("exit program with SIGINT");
+    server.close(function() {
+        logger.info("server close on", server.address());
+    })
     process.exit();
 });

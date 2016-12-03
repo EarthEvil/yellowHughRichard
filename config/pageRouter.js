@@ -2,17 +2,28 @@ var mysqlConnection = require(__dirname + '/database.js');
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var logger = require(__dirname + '/logger.js');
-
+var logger = require(__dirname + '/loggerWraper.js');
+const INFO_LEVEL = "info";
+const WARN_LEVEL = "warn";
+const ERROR_LEVEL = "error";
 
 module.exports = function(app) {
     //pages route
+    router.get('/', function(req, res) {
+        var hrstart = process.hrtime();
+        res.render('login.ejs', { message: req.flash('signInMessage') }, function(err, result) {
+            res.send(result);
+            var hrend = process.hrtime(hrstart);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
+        });
+    });
+
     router.get('/index', isLoggedIn, function(req, res) {
         var hrstart = process.hrtime();
         res.render('index.ejs', { user: req.user }, function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access home page. Send index.ejs in  %dms.", hrend[1] / 1000000);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
 
@@ -21,7 +32,7 @@ module.exports = function(app) {
         res.render('deposit.ejs', { user: req.user }, function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access deposit page. Send deposit.ejs in  %dms.", hrend[1] / 1000000);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
 
@@ -30,7 +41,7 @@ module.exports = function(app) {
         res.render('debit.ejs', { user: req.user }, function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access debit page. Send debit.ejs in  %dms.", hrend[1] / 1000000);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
 
@@ -39,24 +50,17 @@ module.exports = function(app) {
         res.render('account_management.ejs', { user: req.user }, function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access account_management page. Send account_management.ejs in  %dms.", hrend[1] / 1000000);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
-    router.get('/', function(req, res) {
-        var hrstart = process.hrtime();
-        res.render('login.ejs', { message: req.flash('signInMessage') }, function(err, result) {
-            res.send(result);
-            var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access login page. Send login.ejs in  %dms.", hrend[1] / 1000000);
-        });
-    });
+
 
     router.get('/signup', function(req, res) {
         var hrstart = process.hrtime();
         res.render('signup.ejs', { user: req.user }, function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access signup page. Send signup.ejs in  %dms.", hrend[1] / 1000000);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
         res.render('signup.ejs', { message: req.flash('signUpMessage') });
     });
@@ -65,7 +69,7 @@ module.exports = function(app) {
         res.render('signupSummary.ejs', { user: req.user }, function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access signupSummary page. Send signupSummary.ejs in  %dms.", hrend[1] / 1000000);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
 
@@ -74,7 +78,7 @@ module.exports = function(app) {
         res.render('privacyPolicy.ejs', function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " access privacyPolicy page. Send privacyPolicy.ejs in  %dms.", hrend[1] / 1000000);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
 
@@ -83,7 +87,7 @@ module.exports = function(app) {
         res.render('location.ejs', { user: req.user }, function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart)[1] / 1000000;
-            logger.info(req.ip + " access location page. Send location.ejs in  %dms.", hrend[1] / 1000000);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
 
@@ -92,7 +96,7 @@ module.exports = function(app) {
         res.render('profile.ejs', { user: req.user }, function(err, result) {
             res.send(result);
             var hrend = process.hrtime(hrstart)[1] / 1000000;
-            logger.info(req.ip + " access profile page. Send profile.ejs in  %dms.", hrend);
+            logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
 
@@ -109,7 +113,7 @@ module.exports = function(app) {
             return next();
         } else {
             // if they aren't, redirect them to the login page
-            logger.warn("Unauthenticated reqest to " + JSON.stringify(req.url) + "from " + req.ip);
+            // logger.ERROR_LEVEL("Unauthenticated reqest to " + JSON.stringify(req.url) + "from " + req.ip);
             res.redirect('/');
         }
     }

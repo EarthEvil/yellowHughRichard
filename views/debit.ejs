@@ -17,7 +17,7 @@
         <div ng-show="!accounts[0]">
             You don't have any acount yet. Go to Manage Account to create a new account.
         </div>
-        <div ng-show="show">
+        <div ng-show="accounts[0]">
             <form id="debitForm" ng-submit="debit(selectedAccount, amount)" ng-show="accounts[0]">
                 <div class="row">
                     <div class=" input-field col s6">

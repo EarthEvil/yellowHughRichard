@@ -2,7 +2,11 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var middleware = require(__dirname + '/middleware.js');
-var logger = require(__dirname + '/logger.js');
+var logger = require(__dirname + '/loggerWraper.js');
+
+const INFO_LEVEL = "info";
+const WARN_LEVEL = "warn";
+const ERROR_LEVEL = "error";
 
 // const SQL query string 
 
@@ -41,7 +45,8 @@ module.exports = function(app, passport) {
         var hrstart = process.hrtime();
         middleware.createAccount(req, res, function() {
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + "performs createsAaccount, takes %dms.", hrend[1] / 1000000);
+            logger.api_log(req, res, INFO_LEVEL, Date(), "create_account", hrend[1] / 1000000);
+
         });
     });
 
@@ -49,7 +54,8 @@ module.exports = function(app, passport) {
         var hrstart = process.hrtime();
         middleware.deleteAccount(req, res, function() {
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + "performs deleteAccount, takes %dms.", hrend[1] / 1000000);
+            logger.api_log(req, res, INFO_LEVEL, Date(), "delete_account", hrend[1] / 1000000);
+
         });
     });
 
@@ -57,7 +63,7 @@ module.exports = function(app, passport) {
         var hrstart = process.hrtime();
         middleware.getUser(req, res, function() {
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " performs getUsers, takes %dms.", hrend[1] / 1000000);
+            logger.api_log(req, res, INFO_LEVEL, Date(), "get_user", hrend[1] / 1000000);
         });
     });
 
@@ -65,7 +71,7 @@ module.exports = function(app, passport) {
         var hrstart = process.hrtime();
         middleware.getUserAccountInfo(req, res, function() {
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " performs get_account_info, takes %dms.", hrend[1] / 1000000);
+            logger.api_log(req, res, INFO_LEVEL, Date(), "get_account_info", hrend[1] / 1000000);
         });
     });
 
@@ -73,7 +79,7 @@ module.exports = function(app, passport) {
         var hrstart = process.hrtime();
         middleware.transactionInquire(req, res, function() {
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " performs transaction inqure, takes %dms.", hrend[1] / 1000000);
+            logger.api_log(req, res, INFO_LEVEL, Date(), "transaction_inquire", hrend[1] / 1000000);
         });
     });
 
@@ -81,7 +87,7 @@ module.exports = function(app, passport) {
         var hrstart = process.hrtime();
         middleware.getBalance(req, res, function() {
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " performs balance inqure, takes %dms.", hrend[1] / 1000000);
+            logger.api_log(req, res, INFO_LEVEL, Date(), "balance_inqure", hrend[1] / 1000000);
         });
     });
 
@@ -90,7 +96,7 @@ module.exports = function(app, passport) {
         var hrstart = process.hrtime();
         middleware.debit(req, res, function() {
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " performs debit, takes %dms.", hrend[1] / 1000000);
+            logger.api_log(req, res, INFO_LEVEL, Date(), "debit", hrend[1] / 1000000);
         });
     });
 
@@ -98,7 +104,7 @@ module.exports = function(app, passport) {
         var hrstart = process.hrtime();
         middleware.deposit(req, res, function() {
             var hrend = process.hrtime(hrstart);
-            logger.info(req.ip + " performs deposit, takes %dms.", hrend[1] / 1000000);
+            logger.api_log(req, res, INFO_LEVEL, Date(), "deposit", hrend[1] / 1000000);
         });
     });
 
@@ -107,8 +113,7 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated()) {
             return next();
         } else {
-            logger.warn("Unauthenticated reqest to " + JSON.stringify(req.url) + " from " + req.ip);
-            res.send({ error_message: "Not Authentication." })
+            logger.api_log(req, res, WARN_LEVEL, Date(), "isLoggedIn", 'null');
         }
     }
 }

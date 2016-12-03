@@ -1,21 +1,20 @@
 var winston = require('winston'),
     WinstonCloudwatch = require('./winston-cloudwatch.js'),
-    crypto = require('crypto');
-
+    crypto = require('crypto'),
+    CloudWatchTransport = require('winston-aws-cloudwatch');
 
 // Give ourselves a randomized (time-based) hash to append to our stream name
 // so multiple instances of the server running don't log to the same
 // date-separated stream.
 var startTime = new Date().toISOString();
 
-winston.loggers.add('access-log', {
+winston.loggers.add('access_log', {
     transports: [
         new winston.transports.Console({
-            // json: true,
             prettyPrint: true,
             colorize: true,
             timestamp: true,
-            test: "hah",
+            // json: true,
             levels: { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 },
             colors: {
                 verbose: 'cyan',
@@ -36,46 +35,15 @@ winston.loggers.add('access-log', {
                     .update(startTime)
                     .digest('hex');
             },
-            awsAccessKeyId: 'AKIAIFNUSIVJ5P6ZXYIA',
-            awsSecretKey: '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',
+            awsAccessKeyId: 'AKIAJDBFZWKZA2MMVXOA',
+            awsSecretKey: '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',
             awsRegion: 'us-east-1',
-            jsonMessage: true
+            messageFormatter: function(log) {
+                return JSON.stringify(log);
+            }
         })
     ]
 });
-var logger = winston.loggers.get('access-log');
-
-// var logger = new(winston.Logger)({
-//     levels: {
-//         trace: 0,
-//         input: 1,
-//         verbose: 2,
-//         prompt: 3,
-//         debug: 4,
-//         info: 5,
-//         data: 6,
-//         help: 7,
-//         warn: 8,
-//         error: 9
-//     },
-//     colors: {
-//         trace: 'magenta',
-//         input: 'grey',
-//         verbose: 'cyan',
-//         prompt: 'grey',
-//         debug: 'blue',
-//         info: 'green',
-//         data: 'grey',
-//         help: 'cyan',
-//         warn: 'yellow',
-//         error: 'red'
-//     }
-// });
-
-// logger.add(winston.transports.Console, {
-//     prettyPrint: true,
-//     colorize: true,
-//     silent: false,
-//     timestamp: true
-// });
+var logger = winston.loggers.get('access_log');
 module.exports = logger;
+// module.exports = winston;

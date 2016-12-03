@@ -1,0 +1,31 @@
+{"messages":"application is running at port: 3000","level":"info","message":"","timestamp":"2016-12-02T17:44:10.745Z"}
+{"level":"warn","message":"Unauthenticated reqest to \"/index\"from ::ffff:128.4.200.232","timestamp":"2016-12-02T17:44:13.967Z"}
+{"timestamp":"2016-12-02T17:44:14.022Z","ip":"::ffff:128.4.200.232","message":"send login.ejs","elapsed_time":12.271127,"level":"info"}
+{"level":"info","message":"signinCheck sql: select salt, hash from user where username = 'tongmingleee';","timestamp":"2016-12-02T17:44:16.360Z"}
+{"level":"info","message":"correct password","timestamp":"2016-12-02T17:44:16.633Z"}
+{"level":"info","message":"ip:::ffff:128.4.200.232|user:tongmingleee|sessionID:lLe9hOSVrzLKBGeUFZLxWivg|message: executes save_login_history_SQL:insert into login_history(user_id, username, ip_address,time, location) values(5,'tongmingleee','::ffff:128.4.200.232', NOW(), 'Newark, DE, US') ON DUPLICATE KEY UPDATE user_id = 5","timestamp":"2016-12-02T17:44:16.647Z"}
+{"level":"info","message":"ip:::ffff:128.4.200.232|user:tongmingleee|sessionID:lLe9hOSVrzLKBGeUFZLxWivg|message: save_login_history_SQL return: {\"fieldCount\":0,\"affectedRows\":1,\"insertId\":128,\"serverStatus\":2,\"warningCount\":0,\"message\":\"\",\"protocol41\":true,\"changedRows\":0}|elapsed_time:7.877947ms","timestamp":"2016-12-02T17:44:16.647Z"}
+{"level":"info","message":"{timestamp: \"haha\"}","timestamp":"2016-12-02T17:44:16.657Z"}
+{"level":"info","message":"ip:::ffff:128.4.200.232|user:tongmingleee|sessionID:lLe9hOSVrzLKBGeUFZLxWivg|message: executes getUserAccountInfo query: select account_id, a.user_id, account_number, balance from account a join (select user_id from user where username = 'tongmingleee') user_table where a.user_id = user_table.user_id","timestamp":"2016-12-02T17:44:16.906Z"}
+{"level":"info","message":"ip:::ffff:128.4.200.232|user:tongmingleee|sessionID:lLe9hOSVrzLKBGeUFZLxWivg|message: getUserAccountInfo query return: [{\"account_id\":76,\"user_id\":5,\"account_number\":\"1000000056\",\"balance\":393},{\"account_id\":77,\"user_id\":5,\"account_number\":\"1000000057\",\"balance\":111},{\"account_id\":78,\"user_id\":5,\"account_number\":\"1000000058\",\"balance\":111},{\"account_id\":79,\"user_id\":5,\"account_number\":\"1000000059\",\"balance\":11},{\"account_id\":80,\"user_id\":5,\"account_number\":\"1000000060\",\"balance\":11},{\"account_id\":81,\"user_id\":5,\"account_number\":\"1000000061\",\"balance\":123},{\"account_id\":82,\"user_id\":5,\"account_number\":\"1000000062\",\"balance\":123},{\"account_id\":84,\"user_id\":5,\"account_number\":\"1000000064\",\"balance\":123}]|elapsed_time:2.087419ms","timestamp":"2016-12-02T17:44:16.906Z"}
+{"level":"info","message":"ip:::ffff:128.4.200.232|user:tongmingleee|sessionID:lLe9hOSVrzLKBGeUFZLxWivg|action:get_account_info|elapsed_time:3.465073ms","timestamp":"2016-12-02T17:44:16.907Z"}
+{"timestamp":"2016-12-02T17:44:27.358Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":2.757479,"level":"info"}
+{"timestamp":"2016-12-02T17:44:27.451Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":2.76914,"level":"info"}
+{"timestamp":"2016-12-02T17:44:57.388Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":2.605794,"level":"info"}
+{"timestamp":"2016-12-02T17:44:57.472Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":3.025942,"level":"info"}
+{"timestamp":"2016-12-02T17:45:27.417Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":1.086718,"level":"info"}
+{"timestamp":"2016-12-02T17:45:27.503Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":2.491004,"level":"info"}
+{"timestamp":"2016-12-02T17:45:49.913Z","ip":"::ffff:128.4.223.121","message":"send login.ejs","elapsed_time":1.027571,"level":"info"}
+{"timestamp":"2016-12-02T17:45:57.448Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":1.087679,"level":"info"}
+{"timestamp":"2016-12-02T17:45:57.504Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":0.894853,"level":"info"}
+{"timestamp":"2016-12-02T17:46:27.461Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":1.185839,"level":"info"}
+{"timestamp":"2016-12-02T17:46:27.533Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":1.007461,"level":"info"}
+{"timestamp":"2016-12-02T17:46:57.461Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":1.170287,"level":"info"}
+{"timestamp":"2016-12-02T17:46:57.566Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":2.099983,"level":"info"}
+{"timestamp":"2016-12-02T17:47:27.465Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":1.030686,"level":"info"}
+{"timestamp":"2016-12-02T17:47:27.595Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":1.206852,"level":"info"}
+{"timestamp":"2016-12-02T17:47:57.496Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":1.008473,"level":"info"}
+{"timestamp":"2016-12-02T17:47:57.606Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":3.794391,"level":"info"}
+{"timestamp":"2016-12-02T17:48:27.505Z","ip":"::ffff:172.31.58.100","message":"send login.ejs","elapsed_time":1.074146,"level":"info"}
+{"timestamp":"2016-12-02T17:48:27.629Z","ip":"::ffff:172.31.34.166","message":"send login.ejs","elapsed_time":0.989073,"level":"info"}
+{"level":"info","message":"exit program with SIGINT","timestamp":"2016-12-02T17:48:54.735Z"}
