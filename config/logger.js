@@ -2,6 +2,7 @@ var winston = require('winston'),
     WinstonCloudwatch = require('./winston-cloudwatch.js'),
     crypto = require('crypto'),
     CloudWatchTransport = require('winston-aws-cloudwatch');
+require(__dirname + '/env.js');
 
 // Give ourselves a randomized (time-based) hash to append to our stream name
 // so multiple instances of the server running don't log to the same
@@ -35,9 +36,9 @@ winston.loggers.add('access_log', {
                     .update(startTime)
                     .digest('hex');
             },
-            awsAccessKeyId: 'AKIAJDBFZWKZA2MMVXOA',
-            awsSecretKey: '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',
-            awsRegion: 'us-east-1',
+            awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            awsSecretKey: process.env.AWS_SECRET_KEY,
+            awsRegion: process.env.AWS_REGION,
             messageFormatter: function(log) {
                 return JSON.stringify(log);
             }
