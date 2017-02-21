@@ -113,7 +113,7 @@ var middleware = {
             }
         });
     },
-    createAccount: function(req, res) {
+    createAccount: function(req, res, callback) {
         var user = req.user.id;
         var amount = req.params.amount;
         console.log(user);
@@ -302,7 +302,7 @@ var middleware = {
         mysqlConnection.query(getAmountQuery, function(err, rows, fields) {
             var getbalance_end = process.hrtime(getbalance_start); // in ms
             if (!err) {
-                if (rows[0] && rows[0].balance) {
+                if (rows[0] != null && rows[0].balance != null) {
                     var currentBalance = parseInt(rows[0].balance);
                     var newBalane = currentBalance + amount;
                     var inserts = [newBalane, account_number];
@@ -311,7 +311,7 @@ var middleware = {
                     mysqlConnection.query(updateBalanceQuery, function(err, rows, fields) {
                         var updateBalanceEnd = process.hrtime(updateBalanceStart); // in ms
                         if (!err) {
-                            logger.sql_log(req, INFO_LEVEL, Date(), updateBalanceQuery, rows, err, updateBalanceEnd[1] / 1000000)
+                            logger.sql_log(req, INFO_LEVEL, Date(), updateBalanceQuery, rows, err, updateBalanceEnd[1] / 1000000);
                             var promise = middleware.addTransaction(req, account_number, 'deposit', amount);
                             promise.then(function() {
                                 res.send('YOU HAVE DEPOSIT $' + amount + ' TO ACCOUNT ' + account_number + '. NEW BALANCE IS: $' + newBalane);
@@ -321,18 +321,18 @@ var middleware = {
                                 res.send('FAILED TO DEPOSIT $' + amount + ' TO ACCOUNT ' + account_number + '.');
                             });
                         } else {
-                            logger.sql_log(req, ERROR_LEVEL, Date(), updateBalanceQuery, rows, err, updateBalanceEnd[1] / 1000000)
+                            logger.sql_log(req, ERROR_LEVEL, Date(), updateBalanceQuery, rows, err, updateBalanceEnd[1] / 1000000);
                             callback();
                             res.send('FAILED TO DEPOSIT $' + amount + ' TO ACCOUNT ' + account_number + '.');
                         }
                     });
                 } else {
-                    logger.sql_log(req, WARN_LEVEL, Date(), updateBalanceQuery, rows, err, updateBalanceEnd[1] / 1000000)
+                    logger.sql_log(req, WARN_LEVEL, Date(), updateBalanceQuery, rows, err, getbalance_end[1] / 1000000);
                     callback();
                     res.send("NOT SUCH ACCOUNT, PLEASE CHECK YOUR ACCOUNT NUMBER.");
                 }
             } else {
-                logger.sql_log(req, ERROR_LEVEL, Date(), getAmountQuery, rows, err, getbalance_start[1] / 1000000)
+                logger.sql_log(req, ERROR_LEVEL, Date(), getAmountQuery, rows, err, getbalance_end[1] / 1000000);
                 if (callback && typeof(callback) === "function") {
                     callback();
                 }

@@ -86,7 +86,7 @@ module.exports = function(app) {
         var hrstart = process.hrtime();
         res.render('location.ejs', { user: req.user }, function(err, result) {
             res.send(result);
-            var hrend = process.hrtime(hrstart)[1] / 1000000;
+            var hrend = process.hrtime(hrstart);
             logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });
@@ -95,7 +95,7 @@ module.exports = function(app) {
         var hrstart = process.hrtime();
         res.render('profile.ejs', { user: req.user }, function(err, result) {
             res.send(result);
-            var hrend = process.hrtime(hrstart)[1] / 1000000;
+            var hrend = process.hrtime(hrstart);
             logger.page_log(req, res, INFO_LEVEL, Date(), hrend[1] / 1000000);
         });
     });

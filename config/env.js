@@ -3,7 +3,7 @@ process.env['RDS_USERNAME'] = "tongmingleee"
 process.env['RDS_PASSWORD'] = "Li123456"
 process.env['RDS_PORT'] = 3306
 process.env['RDS_DATABASE'] = "bank"
-process.env['awsAccessKeyId'] = "AKIAJDBFZWKZA2MMVXOA"
-process.env['awsSecretKey'] = "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"
-process.env['awsRegion'] = "us-east-1"
+process.env['AWS_ACCESS_KEY_ID'] = "AKIAI5XE65PPLN7VAHUA"
+process.env['AWS_SECRET_KEY'] = "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"
+process.env['AWS_REGION'] = "us-east-1"
 
