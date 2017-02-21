@@ -5,7 +5,7 @@ accountManagementController.$inject = ["$scope", "$http"]
 
 function accountManagementController($scope, $http) {
     // var url = "http://localhost:3000";
-    var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
+    var url = API_SEVER_ADDRESS;
     var username = document.getElementById('usernameHeader').innerHTML;
     $scope.enmpty = false;
     // $scope.serverResponse;

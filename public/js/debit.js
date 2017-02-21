@@ -17,8 +17,7 @@ function debitController($window, $scope, $http) {
             idletime = 0;
         });
     });
-    // var url = "http://localhost:3000";
-    var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
+    var url = API_SEVER_ADDRESS;
     $scope.getAccountInfo = function() {
         $http({
             url: url + '/api/get_account_info/' + username,

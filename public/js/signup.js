@@ -14,7 +14,7 @@ function signupController($window, $scope, $http) {
     });
     $scope.genders = ["Male", "Female", "Other"];
     // var url = "http://localhost:3000";
-    var url = "http://elastic-load-balancer-189287619.us-east-1.elb.amazonaws.com";
+    var url = LOAD_BALANCER_ADDRESS;
     var signupButton = document.getElementById("signupButton");
     var passwordField = document.getElementById("password");
     var confirmPasswordField = document.getElementById("confirmPassword");

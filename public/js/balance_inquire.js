@@ -4,8 +4,7 @@ balanceInquire.controller("balanceInquireController", balanceInquireController);
 balanceInquireController.$inject = ["$window", "$scope", "$http"]
 
 function balanceInquireController($window, $scope, $http) {
-    // var url = "http://localhost:3000";
-    var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
+    var url = API_SEVER_ADDRESS;
     var error = function() {
         console.log("error!");
     }

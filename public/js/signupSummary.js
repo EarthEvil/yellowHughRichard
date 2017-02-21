@@ -5,7 +5,7 @@ summaryController.$inject = ["$scope", "$http"]
 
 function summaryController($scope, $http) {
     // var url = "http://localhost:3000";
-    var url = "http://ec2-54-208-152-167.compute-1.amazonaws.com";
+    var url = API_SEVER_ADDRESS;
     var username = document.getElementById('usernameHeader').innerHTML;
     $http({
         url: url + '/api/user/' + username,

@@ -5,7 +5,7 @@ depositController.$inject = ["$window", "$scope", "$http"]
 
 function depositController($window, $scope, $http) {
     // var url = "http://localhost:3000";
-    var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
+    var url = API_SEVER_ADDRESS;
     var depositForm = document.getElementById('depositForm');
     var username = document.getElementById('usernameHeader').innerHTML;
     var idleTime = 0;

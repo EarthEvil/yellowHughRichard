@@ -4,8 +4,7 @@ addAccountApp.controller("addAccountController", addAccountController);
 addAccountController.$inject = ["$scope", "$http"]
 
 function addAccountController($scope, $http) {
-    // var url = "http://localhost:3000";
-    var url = "http://ec2-54-85-60-93.compute-1.amazonaws.com";
+    var url = ACCOUNT_SEVER_ADDRESS;
     var username = document.getElementById('usernameHeader').innerHTML;
     $scope.createAccount = function(amount) {
         $http({
